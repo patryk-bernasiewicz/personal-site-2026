@@ -1,0 +1,21 @@
+---
+import Container from '@/components/ui/Container.astro';
+import { siteConfig } from '@/config/site';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
+---
+
+<Container tag="section" class="section-gap pt-nav">
+	<p class="eyebrow">{dictionary.about.eyebrow}</p>
+	<h1 class="mt-4 font-display text-section-title text-text-main">
+		{dictionary.about.heading(siteConfig.author.name)}
+	</h1>
+	<p class="mt-6 max-w-2xl text-body-large text-text-soft">{dictionary.about.lead}</p>
+</Container>

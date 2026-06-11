@@ -1,0 +1,15 @@
+services:
+  site:
+    environment:
+      - NODE_ENV=production
+      - PORT=${PORT:-3660}
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        CONTENTFUL_SPACE_ID: ${CONTENTFUL_SPACE_ID}
+        CONTENTFUL_DELIVERY_TOKEN: ${CONTENTFUL_DELIVERY_TOKEN}
+        SITE_URL: ${SITE_URL:-https://example.com}
+    ports:
+      - "${PORT:-3660}:${PORT:-3660}"
+    restart: unless-stopped

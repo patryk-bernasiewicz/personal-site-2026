@@ -1,0 +1,38 @@
+.prose {
+	color: var(--color-text-soft);
+	font-size: var(--text-body);
+	line-height: var(--text-body--line-height);
+}
+
+.prose :where(h2, h3) {
+	margin-top: 2em;
+	margin-bottom: 0.75em;
+	font-family: var(--font-display);
+	font-weight: 600;
+	color: var(--color-text-main);
+	letter-spacing: -0.03em;
+}
+
+.prose :where(p, ul, ol) {
+	margin-bottom: 1.25em;
+	color: var(--color-text-soft);
+}
+
+.prose a {
+	color: var(--color-gold-soft);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	transition: color 180ms ease;
+}
+
+.prose a:hover {
+	color: var(--color-gold);
+}
+
+.eyebrow {
+	font-size: var(--text-caption);
+	letter-spacing: var(--text-caption--letter-spacing);
+	text-transform: uppercase;
+	color: var(--color-gold);
+	font-weight: 600;
+}

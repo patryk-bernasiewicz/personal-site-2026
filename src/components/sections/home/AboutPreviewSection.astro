@@ -1,0 +1,175 @@
+---
+import Button from '@/components/ui/Button.astro';
+import Container from '@/components/ui/Container.astro';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+import { getLocalizedRoute } from '@/lib/i18n/urls';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
+const aboutPreview = dictionary.home.aboutPreview;
+
+type AboutPreviewIcon = (typeof aboutPreview.values)[number]['icon'];
+
+const iconPaths: Record<AboutPreviewIcon, string> = {
+	lightning:
+		'M13 2L4 14h6l-1 8 9-12h-6l1-8z',
+	cube: 'M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z M12 12l8-4.5 M12 12v9 M12 12L4 7.5',
+	pencil:
+		'M12 20h9 M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z',
+	users:
+		'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2 M9 11a4 4 0 100-8 4 4 0 000 8z M22 21v-2a4 4 0 00-3-3.87 M16 3.13a4 4 0 010 7.75',
+};
+---
+
+<Container
+	tag="section"
+	class="about-preview home-section-gap relative isolate overflow-hidden bg-ink"
+	aria-labelledby="about-preview-heading"
+	data-home-scroll-section
+>
+	<div class="grid gap-8 lg:grid-cols-12 lg:items-start lg:gap-8 xl:gap-12">
+		<div class="relative lg:col-span-5 xl:max-w-xl">
+			<aside
+				class="about-preview__rail absolute top-0 right-full z-10 mr-6 hidden flex-col items-center lg:flex xl:mr-10"
+				aria-hidden="true"
+			>
+				<span class="font-display text-sm font-semibold tracking-widest text-gold">
+					{aboutPreview.number}
+				</span>
+				<div class="relative mt-4 flex flex-col items-center">
+					<span class="size-1 rounded-full bg-white/30"></span>
+					<div class="about-preview__rail-line mt-2 w-px bg-white/14"></div>
+				</div>
+				<div
+					class="mt-4 w-px bg-[linear-gradient(to_bottom,rgba(255,255,255,0.14),rgba(217,164,65,0.42),transparent)]"
+					aria-hidden="true"
+				>
+				</div>
+			</aside>
+
+			<div class="about-preview__rail-mobile mb-6 flex items-center gap-3 lg:hidden" aria-hidden="true">
+				<span class="font-display text-sm font-semibold tracking-widest text-gold">
+					{aboutPreview.number}
+				</span>
+				<span class="h-px w-10 bg-white/14"></span>
+			</div>
+
+			<p class="eyebrow">{aboutPreview.eyebrow}</p>
+
+			<h2
+				id="about-preview-heading"
+				class="mt-5 font-display text-section-title font-semibold text-balance text-text-main"
+			>
+				<span class="block">{aboutPreview.heading.line1}</span>
+				<span class="block text-gradient-gold">{aboutPreview.heading.line2}</span>
+			</h2>
+
+			<p class="mt-5 max-w-lg text-body-large leading-relaxed text-text-muted">
+				{aboutPreview.lead}
+			</p>
+
+			<div class="mt-8">
+				<Button href={getLocalizedRoute('about', locale)} class="group">
+					{aboutPreview.cta}
+					<svg
+						class="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+						width="16"
+						height="16"
+						viewBox="0 0 16 16"
+						fill="none"
+						aria-hidden="true"
+					>
+						<path
+							d="M3 8h10M9 4l4 4-4 4"
+							stroke="currentColor"
+							stroke-width="1.25"
+							stroke-linecap="round"
+							stroke-linejoin="round"></path>
+					</svg>
+				</Button>
+			</div>
+
+			<p class="about-preview__closing mt-8 hidden pl-5 text-body leading-relaxed text-text-soft lg:block">
+				{aboutPreview.closing}
+			</p>
+		</div>
+
+		<ul class="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:col-span-7">
+			{
+				aboutPreview.values.map((value) => (
+					<li>
+						<article class="about-preview__card flex h-full flex-col rounded-card p-6 sm:p-7">
+							<div class="about-preview__icon mb-6 text-gold" aria-hidden="true">
+								<svg
+									class="size-9"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.35"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path d={iconPaths[value.icon]} />
+								</svg>
+							</div>
+							<h3 class="font-display text-base font-semibold leading-snug text-text-main">
+								{value.title}
+							</h3>
+							<p class="mt-4 text-body leading-relaxed text-text-muted">{value.description}</p>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</Container>
+
+<style>
+	.about-preview__rail-line {
+		height: clamp(3.5rem, 8vh, 5.5rem);
+	}
+
+	.about-preview__rail-mobile + .eyebrow {
+		margin-top: 0;
+	}
+
+	.about-preview__closing {
+		border-left: 1px solid rgba(217, 164, 65, 0.28);
+	}
+
+	.about-preview__card {
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.008)),
+			rgba(8, 8, 8, 0.38);
+		border: 1px solid rgba(255, 255, 255, 0.07);
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+		transition:
+			border-color 220ms ease,
+			box-shadow 220ms ease,
+			transform 220ms ease;
+	}
+
+	.about-preview__card:hover {
+		transform: translateY(-2px);
+		border-color: rgba(217, 164, 65, 0.22);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.05),
+			0 12px 40px rgba(0, 0, 0, 0.28),
+			0 0 24px rgba(217, 164, 65, 0.06);
+	}
+
+	.about-preview__icon svg {
+		filter: drop-shadow(0 0 14px rgba(217, 164, 65, 0.28));
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.about-preview__card:hover {
+			transform: none;
+		}
+	}
+</style>

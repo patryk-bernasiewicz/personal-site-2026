@@ -1,0 +1,28 @@
+---
+import heroSilhouette from '@/assets/images/hero-silhouette.png';
+import heroSilhouetteWebp from '@/assets/images/hero-silhouette.webp';
+import heroSilhouetteMobile from '@/assets/images/hero-silhouette-mobile.png';
+import heroSilhouetteMobileWebp from '@/assets/images/hero-silhouette-mobile.webp';
+import HeroMediaPicture from '@/components/sections/home/HeroMediaPicture.astro';
+import {
+	heroImageClass,
+	heroImageMobileSizes,
+	heroImageSizes,
+	heroMediaFrameClass,
+} from '@/components/sections/home/hero-media-frame';
+---
+
+<div
+	class:list={['hero-silhouette', heroMediaFrameClass, 'z-[3] opacity-50 lg:opacity-100']}
+	aria-hidden="true"
+>
+	<HeroMediaPicture
+		desktop={{ webp: heroSilhouetteWebp, fallback: heroSilhouette }}
+		mobile={{ webp: heroSilhouetteMobileWebp, fallback: heroSilhouetteMobile }}
+		alt=""
+		loading="lazy"
+		desktopSizes={heroImageSizes}
+		mobileSizes={heroImageMobileSizes}
+		class={heroImageClass}
+	/>
+</div>

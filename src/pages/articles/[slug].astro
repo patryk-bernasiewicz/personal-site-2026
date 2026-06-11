@@ -1,0 +1,22 @@
+---
+import BlogPostPage from '@/components/pages/BlogPostPage.astro';
+import { getAllBlogPosts } from '@/lib/contentful/queries';
+import type { BlogPost } from '@/lib/contentful/types';
+
+export async function getStaticPaths() {
+	const posts = await getAllBlogPosts('en');
+
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: { post },
+	}));
+}
+
+interface Props {
+	post: BlogPost;
+}
+
+const { post } = Astro.props;
+---
+
+<BlogPostPage {post} />

@@ -1,0 +1,312 @@
+<div class="hero-particle-stream" id="hero-particle-stream" data-hero-particles aria-hidden="true"></div>
+
+<style>
+	.hero-particle-stream {
+		--stream-opacity: 0.58;
+		--stream-mask-solid-end: 72%;
+		--stream-mask-mid-end: 86%;
+		--stream-mask-fade-end: 100%;
+
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		overflow: hidden;
+		opacity: var(--stream-opacity);
+		mix-blend-mode: screen;
+		mask-image: linear-gradient(
+			to right,
+			#000 0%,
+			#000 var(--stream-mask-solid-end),
+			rgb(0 0 0 / 0.88) calc(var(--stream-mask-solid-end) + 6%),
+			rgb(0 0 0 / 0.62) var(--stream-mask-mid-end),
+			rgb(0 0 0 / 0.28) calc(var(--stream-mask-mid-end) + 8%),
+			transparent var(--stream-mask-fade-end)
+		);
+		-webkit-mask-image: linear-gradient(
+			to right,
+			#000 0%,
+			#000 var(--stream-mask-solid-end),
+			rgb(0 0 0 / 0.88) calc(var(--stream-mask-solid-end) + 6%),
+			rgb(0 0 0 / 0.62) var(--stream-mask-mid-end),
+			rgb(0 0 0 / 0.28) calc(var(--stream-mask-mid-end) + 8%),
+			transparent var(--stream-mask-fade-end)
+		);
+	}
+
+	.hero-particle-stream :global(canvas) {
+		pointer-events: none;
+	}
+
+	@media (max-width: 1023px) {
+		.hero-particle-stream {
+			--stream-opacity: 0.32;
+			--stream-mask-solid-end: 78%;
+			--stream-mask-mid-end: 92%;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero-particle-stream {
+			--stream-opacity: 0.28;
+			background:
+				radial-gradient(
+					ellipse 28% 18% at 14% 48%,
+					rgb(241 198 106 / 0.12) 0%,
+					transparent 72%
+				),
+				radial-gradient(
+					ellipse 34% 22% at 32% 64%,
+					rgb(217 164 65 / 0.09) 0%,
+					transparent 70%
+				),
+				radial-gradient(
+					ellipse 22% 14% at 8% 72%,
+					rgb(241 198 106 / 0.08) 0%,
+					transparent 68%
+				);
+			mix-blend-mode: screen;
+		}
+	}
+</style>
+
+<script>
+	import type { Container, ISourceOptions } from '@tsparticles/engine';
+	import { createParticleStream } from '@/lib/particles/engine';
+
+	const MOBILE_QUERY = '(max-width: 1023px)';
+	const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
+	let particleContainer: Container | undefined;
+	let viewportObserver: IntersectionObserver | undefined;
+	let loadScheduled = false;
+	let loadStarted = false;
+	let setupGeneration = 0;
+	let idleCallbackId: number | undefined;
+	let idleTimeoutId: ReturnType<typeof setTimeout> | undefined;
+
+	function cancelScheduledIdle(): void {
+		if (idleCallbackId !== undefined) {
+			window.cancelIdleCallback(idleCallbackId);
+			idleCallbackId = undefined;
+		}
+
+		if (idleTimeoutId !== undefined) {
+			clearTimeout(idleTimeoutId);
+			idleTimeoutId = undefined;
+		}
+
+		loadScheduled = false;
+	}
+
+	function scheduleIdle(task: () => void, generation: number): void {
+		cancelScheduledIdle();
+		loadScheduled = true;
+
+		const run = () => {
+			idleCallbackId = undefined;
+			idleTimeoutId = undefined;
+			loadScheduled = false;
+
+			if (generation !== setupGeneration) {
+				return;
+			}
+
+			task();
+		};
+
+		const idleWindow = window as Window & {
+			requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
+		};
+
+		if (typeof idleWindow.requestIdleCallback === 'function') {
+			idleCallbackId = idleWindow.requestIdleCallback(run, { timeout: 2000 });
+			return;
+		}
+
+		idleTimeoutId = setTimeout(run, 16);
+	}
+
+	function prefersReducedMotion(): boolean {
+		return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+	}
+
+	function isMobileViewport(): boolean {
+		return window.matchMedia(MOBILE_QUERY).matches;
+	}
+
+	function buildOptions(): ISourceOptions {
+		const mobile = isMobileViewport();
+
+		return {
+			background: {
+				color: {
+					value: 'transparent',
+				},
+			},
+			fullScreen: {
+				enable: false,
+			},
+			fpsLimit: mobile ? 23 : 30,
+			detectRetina: true,
+			pauseOnBlur: true,
+			pauseOnOutsideViewport: false,
+			particles: {
+				number: {
+					value: mobile ? 60 : 99,
+				},
+				paint: {
+					color: {
+						value: ['#d9a441', '#f1c66a', '#fff0c8'],
+					},
+				},
+				opacity: {
+					value: {
+						min: 0.25,
+						max: 0.8,
+					},
+					animation: {
+						enable: false,
+					},
+				},
+				size: {
+					value: {
+						min: 0.7,
+						max: 2.1,
+					},
+					animation: {
+						enable: false,
+					},
+				},
+				shape: {
+					type: 'circle',
+				},
+				move: {
+					enable: true,
+					direction: 'bottom-right',
+					straight: false,
+					random: true,
+					decay: 0,
+					size: false,
+					speed: mobile
+						? {
+								min: 0.18,
+								max: 0.42,
+							}
+						: {
+								min: 0.25,
+								max: 0.52,
+							},
+					drift: 0,
+					gravity: {
+						enable: false,
+					},
+					outModes: {
+						default: 'out',
+					},
+				},
+			},
+		};
+	}
+
+	async function initParticles(root: HTMLElement, generation: number): Promise<void> {
+		if (generation !== setupGeneration || loadStarted || particleContainer) {
+			return;
+		}
+
+		loadStarted = true;
+
+		try {
+			particleContainer = await createParticleStream(root, buildOptions());
+		} catch {
+			loadStarted = false;
+			return;
+		}
+
+		if (generation !== setupGeneration) {
+			if (particleContainer && !particleContainer.destroyed) {
+				particleContainer.destroy();
+			}
+
+			particleContainer = undefined;
+			loadStarted = false;
+			return;
+		}
+
+		if (!particleContainer) {
+			loadStarted = false;
+		}
+	}
+
+	function pauseParticles(): void {
+		if (particleContainer && !particleContainer.destroyed) {
+			particleContainer.pause();
+		}
+	}
+
+	function resumeParticles(): void {
+		if (particleContainer && !particleContainer.destroyed && !particleContainer.animationStatus) {
+			particleContainer.play();
+		}
+	}
+
+	function scheduleParticleLoad(root: HTMLElement): void {
+		if (loadScheduled || loadStarted || prefersReducedMotion()) {
+			return;
+		}
+
+		const generation = setupGeneration;
+
+		scheduleIdle(() => {
+			void initParticles(root, generation);
+		}, generation);
+	}
+
+	function destroyParticles(): void {
+		setupGeneration += 1;
+		cancelScheduledIdle();
+		viewportObserver?.disconnect();
+		viewportObserver = undefined;
+
+		if (particleContainer && !particleContainer.destroyed) {
+			particleContainer.destroy();
+		}
+
+		particleContainer = undefined;
+		loadStarted = false;
+	}
+
+	function setupHeroParticles(): void {
+		destroyParticles();
+
+		if (prefersReducedMotion()) {
+			return;
+		}
+
+		const root = document.querySelector<HTMLElement>('[data-hero-particles]');
+
+		if (!root) {
+			return;
+		}
+
+		viewportObserver = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					scheduleParticleLoad(root);
+
+					if (particleContainer && !particleContainer.destroyed) {
+						resumeParticles();
+					}
+				} else {
+					pauseParticles();
+				}
+			},
+			{ threshold: 0.05 },
+		);
+
+		viewportObserver.observe(root);
+	}
+
+	setupHeroParticles();
+	document.addEventListener('astro:page-load', setupHeroParticles);
+	document.addEventListener('astro:before-swap', destroyParticles);
+</script>

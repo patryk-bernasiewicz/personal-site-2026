@@ -1,0 +1,21 @@
+---
+import { formatDate } from '@/lib/dates';
+import type { BlogPost } from '@/lib/contentful/types';
+import { getLocalizedBlogPostUrl } from '@/lib/i18n/urls';
+
+interface Props {
+	post: BlogPost;
+}
+
+const { post } = Astro.props;
+---
+
+<article class="card-glass card-gold-hover rounded-card p-6">
+	<a href={getLocalizedBlogPostUrl(post.slug, post.locale)} class="block">
+		<p class="text-caption font-semibold uppercase tracking-widest text-text-faint">
+			{formatDate(post.publishedAt, post.locale)}
+		</p>
+		<h3 class="mt-3 font-display text-xl font-medium text-text-main">{post.title}</h3>
+		<p class="mt-2 text-body text-text-muted">{post.description}</p>
+	</a>
+</article>

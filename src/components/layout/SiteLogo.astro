@@ -1,0 +1,18 @@
+---
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<img
+	src="/logo.svg"
+	alt=""
+	width="19"
+	height="19"
+	class={className}
+	aria-hidden="true"
+	loading="eager"
+	decoding="async"
+/>

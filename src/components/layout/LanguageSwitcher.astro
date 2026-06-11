@@ -1,0 +1,53 @@
+---
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import { locales, type Locale } from '@/lib/i18n/locales';
+import { routes, type RouteKey } from '@/lib/i18n/routes';
+import { getLocalizedRoute } from '@/lib/i18n/urls';
+
+interface Props {
+	locale: Locale;
+	routeKey: RouteKey | 'blogPost';
+	alternatePaths?: Partial<Record<Locale, string>>;
+}
+
+const { locale, routeKey, alternatePaths } = Astro.props;
+
+function resolveAlternateHref(targetLocale: Locale): string | undefined {
+	if (routeKey === 'blogPost') {
+		return alternatePaths?.[targetLocale];
+	}
+
+	if (routeKey === 'blogPostBase') {
+		return routes.blogIndex[targetLocale];
+	}
+
+	return getLocalizedRoute(routeKey, targetLocale);
+}
+---
+
+<ul class="flex items-center gap-2 border-l border-white/10 pl-4 text-sm">
+	{
+		locales
+			.filter((targetLocale) => targetLocale !== locale)
+			.map((targetLocale) => {
+				const href = resolveAlternateHref(targetLocale);
+				if (!href) {
+					return null;
+				}
+
+				const label = getDictionary(targetLocale).localeName;
+
+				return (
+					<li>
+						<a
+							href={href}
+							hreflang={targetLocale}
+							class="text-caption font-semibold uppercase tracking-widest text-text-muted transition-colors hover:text-gold-soft"
+						>
+							{label}
+						</a>
+					</li>
+				);
+			})
+	}
+</ul>

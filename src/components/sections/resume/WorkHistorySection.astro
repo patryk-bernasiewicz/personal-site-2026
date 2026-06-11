@@ -1,0 +1,37 @@
+---
+import Card from '@/components/ui/Card.astro';
+import Container from '@/components/ui/Container.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { getWorkHistory } from '@/config/resume-content';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
+const roles = getWorkHistory(locale);
+---
+
+<Container tag="section" class="pb-16">
+	<SectionHeading title={dictionary.resume.experienceTitle} />
+	<ul class="space-y-4">
+		{
+			roles.map((role) => (
+				<li>
+					<Card>
+						<div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+							<h3 class="font-medium text-text-main">
+								{role.title} · {role.company}
+							</h3>
+							<p class="text-caption text-text-faint">{role.period}</p>
+						</div>
+						<p class="mt-3 text-body text-text-muted">{role.summary}</p>
+					</Card>
+				</li>
+			))
+		}
+	</ul>
+</Container>

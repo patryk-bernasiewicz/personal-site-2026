@@ -1,0 +1,36 @@
+---
+import { formatDate } from '@/lib/dates';
+import type { BlogPost } from '@/lib/contentful/types';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+
+interface Props {
+	post: BlogPost;
+}
+
+const { post } = Astro.props;
+const dictionary = getDictionary(post.locale);
+---
+
+<div class="flex flex-wrap items-center gap-3 text-sm text-text-faint">
+	<time datetime={post.publishedAt}>{formatDate(post.publishedAt, post.locale)}</time>
+	{
+		post.updatedAt && post.updatedAt !== post.publishedAt && (
+			<span>
+				{dictionary.blog.updated} {formatDate(post.updatedAt, post.locale)}
+			</span>
+		)
+	}
+	{
+		post.tags.length > 0 && (
+			<ul class="flex flex-wrap gap-2">
+				{post.tags.map((tag) => (
+					<li
+						class="rounded-full border border-border-gold px-2 py-0.5 text-caption font-semibold uppercase tracking-widest text-text-muted"
+					>
+						{tag}
+					</li>
+				))}
+			</ul>
+		)
+	}
+</div>

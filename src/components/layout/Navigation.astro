@@ -1,0 +1,49 @@
+---
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+import type { StaticRouteKey } from '@/lib/i18n/routes';
+import { getLocalizedRoute } from '@/lib/i18n/urls';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
+const currentPath = Astro.url.pathname;
+
+const navItems: Array<{ routeKey: StaticRouteKey; label: string }> = [
+	{ routeKey: 'home', label: dictionary.nav.home },
+	{ routeKey: 'resume', label: dictionary.nav.resume },
+	{ routeKey: 'about', label: dictionary.nav.about },
+	{ routeKey: 'blogIndex', label: dictionary.nav.blog },
+];
+---
+
+<nav aria-label="Main">
+	<ul class="flex flex-wrap items-center gap-4 text-sm">
+		{
+			navItems.map((item) => {
+				const href = getLocalizedRoute(item.routeKey, locale);
+				const isActive =
+					currentPath === href || currentPath.startsWith(`${href}/`);
+
+				return (
+					<li>
+						<a
+							href={href}
+							class:list={[
+								'text-caption font-semibold uppercase tracking-widest transition-colors',
+								isActive
+									? 'text-gold-soft'
+									: 'text-text-muted hover:text-text-main',
+							]}
+						>
+							{item.label}
+						</a>
+					</li>
+				);
+			})
+		}
+	</ul>
+</nav>

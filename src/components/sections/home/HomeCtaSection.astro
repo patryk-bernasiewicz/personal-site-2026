@@ -1,0 +1,176 @@
+---
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
+const cta = dictionary.home.cta;
+---
+
+<section
+	class="home-cta home-section-gap relative isolate bg-ink pt-0"
+	aria-labelledby="home-cta-heading"
+	data-home-scroll-section
+>
+	<div class="page-shell">
+		<div class="home-cta__panel relative overflow-hidden rounded-card">
+			<svg
+				class="home-cta__ornament pointer-events-none absolute inset-y-0 right-0 h-full w-[min(72%,22rem)] text-gold"
+				viewBox="0 0 360 200"
+				fill="none"
+				preserveAspectRatio="xMaxYMid slice"
+				aria-hidden="true"
+			>
+				<defs>
+					<linearGradient id="home-cta-flow-a" x1="0%" y1="50%" x2="100%" y2="50%">
+						<stop offset="0%" stop-color="currentColor" stop-opacity="0" />
+						<stop offset="45%" stop-color="currentColor" stop-opacity="0.55" />
+						<stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+					</linearGradient>
+					<linearGradient id="home-cta-flow-b" x1="0%" y1="50%" x2="100%" y2="50%">
+						<stop offset="0%" stop-color="currentColor" stop-opacity="0" />
+						<stop offset="55%" stop-color="currentColor" stop-opacity="0.35" />
+						<stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+					</linearGradient>
+				</defs>
+				<path
+					d="M-20 118 C 80 92, 140 148, 240 126 S 340 88, 400 104"
+					stroke="url(#home-cta-flow-a)"
+					stroke-width="1.25"
+					stroke-linecap="round"></path>
+				<path
+					d="M-10 86 C 96 108, 168 62, 268 78 S 352 132, 400 118"
+					stroke="url(#home-cta-flow-b)"
+					stroke-width="1"
+					stroke-linecap="round"></path>
+				<path
+					d="M40 152 C 120 132, 188 168, 276 150 S 360 118, 400 136"
+					stroke="url(#home-cta-flow-a)"
+					stroke-width="0.75"
+					stroke-linecap="round"
+					opacity="0.7"></path>
+				<circle cx="248" cy="124" r="1.5" fill="currentColor" opacity="0.65"></circle>
+				<circle cx="292" cy="98" r="1" fill="currentColor" opacity="0.45"></circle>
+				<circle cx="318" cy="138" r="1.25" fill="currentColor" opacity="0.55"></circle>
+			</svg>
+
+			<div
+				class="home-cta__content relative z-10 flex flex-col items-stretch gap-5 px-5 py-7 sm:gap-6 sm:px-8 sm:py-9 lg:flex-row lg:items-center lg:gap-8 lg:text-left xl:gap-10"
+			>
+				<div
+					class="home-cta__icon flex size-14 shrink-0 items-center justify-center self-start rounded-full border border-gold-soft bg-ink/70 text-gold sm:size-16 lg:self-center"
+					aria-hidden="true"
+				>
+					<svg
+						class="size-6 sm:size-7"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M7 17L17 7M17 7H9M17 7V15"></path>
+					</svg>
+				</div>
+
+				<h2
+					id="home-cta-heading"
+					class="home-cta__heading min-w-0 font-display text-[clamp(1.75rem,6vw,2.25rem)] leading-[1.14] font-normal tracking-[-0.03em] text-text-main lg:flex-1 lg:text-[clamp(1.75rem,3vw,2.875rem)] lg:leading-[1.15]"
+				>
+					<span class="home-cta__line block">{cta.heading.line1}</span>
+					<span class="home-cta__line block">
+						<span class="home-cta__highlight font-semibold text-gradient-gold">
+							{cta.heading.highlight}
+						</span>
+						{cta.heading.line2 && <span> {cta.heading.line2}</span>}
+					</span>
+				</h2>
+
+				<button
+					type="button"
+					class="btn-gold home-cta__button w-full shrink-0 px-5 py-3 text-[0.8125rem] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-gold lg:w-auto lg:max-w-none lg:px-6 lg:py-3"
+					data-contact-modal-trigger
+				>
+					{cta.button}
+					<svg
+						class="size-4 shrink-0"
+						width="16"
+						height="16"
+						viewBox="0 0 16 16"
+						fill="none"
+						aria-hidden="true"
+					>
+						<path
+							d="M3 8h10M9 4l4 4-4 4"
+							stroke="currentColor"
+							stroke-width="1.25"
+							stroke-linecap="round"
+							stroke-linejoin="round"></path>
+					</svg>
+				</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.home-cta__panel {
+		border: 1px solid rgba(217, 164, 65, 0.3);
+		background:
+			radial-gradient(circle at 88% 50%, rgba(217, 164, 65, 0.07), transparent 42%),
+			linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.006)),
+			rgba(8, 8, 8, 0.9);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.04),
+			0 12px 36px rgba(0, 0, 0, 0.22);
+	}
+
+	.home-cta__ornament {
+		opacity: 0.42;
+		mask-image: linear-gradient(to left, black 35%, transparent 100%);
+	}
+
+	.home-cta__icon {
+		box-shadow:
+			0 0 28px rgba(217, 164, 65, 0.14),
+			inset 0 0 18px rgba(217, 164, 65, 0.08);
+	}
+
+	@media (min-width: 1024px) {
+		.home-cta__content {
+			display: grid;
+			grid-template-columns: auto minmax(0, 1fr) auto;
+			align-items: center;
+			text-align: left;
+		}
+
+		.home-cta__heading {
+			padding-inline: clamp(0.5rem, 2vw, 1.5rem);
+		}
+
+		.home-cta__line {
+			white-space: nowrap;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.home-cta__line {
+			white-space: normal;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.home-cta__button {
+			transition: none;
+		}
+
+		.home-cta__button:hover {
+			transform: none;
+		}
+	}
+</style>

@@ -1,0 +1,14 @@
+---
+import BlogLayout from '@/layouts/BlogLayout.astro';
+import { getBlogPostAlternatePaths } from '@/lib/contentful/queries';
+import type { BlogPost } from '@/lib/contentful/types';
+
+interface Props {
+	post: BlogPost;
+}
+
+const { post } = Astro.props;
+const alternatePaths = await getBlogPostAlternatePaths(post.entryId);
+---
+
+<BlogLayout {post} {alternatePaths} />

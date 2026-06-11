@@ -1,0 +1,41 @@
+---
+import AboutPreviewSection from '@/components/sections/home/AboutPreviewSection.astro';
+import ExperiencePreviewSection from '@/components/sections/home/ExperiencePreviewSection.astro';
+import HeroSection from '@/components/sections/home/HeroSection.astro';
+import HomeScrollIndicator from '@/components/sections/home/HomeScrollIndicator.astro';
+import HomeCtaSection from '@/components/sections/home/HomeCtaSection.astro';
+import LatestPostsSection from '@/components/sections/home/LatestPostsSection.astro';
+import TechStackSection from '@/components/sections/home/TechStackSection.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getLatestBlogPosts } from '@/lib/contentful/queries';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+import { getAlternateRoutes, getLocalizedRoute } from '@/lib/i18n/urls';
+import { buildPageMetadata } from '@/lib/seo';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
+const latestPosts = await getLatestBlogPosts(3, locale);
+
+const metadata = buildPageMetadata({
+	title: dictionary.meta.home.title,
+	description: dictionary.meta.home.description,
+	locale,
+	canonical: getLocalizedRoute('home', locale),
+	alternatePaths: getAlternateRoutes('home'),
+});
+---
+
+<PageLayout {metadata} routeKey="home">
+	<HomeScrollIndicator {locale} />
+	<HeroSection {locale} />
+	<AboutPreviewSection {locale} />
+	<TechStackSection {locale} />
+	<ExperiencePreviewSection {locale} />
+	<LatestPostsSection {locale} posts={latestPosts} />
+	<HomeCtaSection {locale} />
+</PageLayout>

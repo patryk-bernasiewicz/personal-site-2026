@@ -1,0 +1,31 @@
+---
+import ResumeHeader from '@/components/sections/resume/ResumeHeader.astro';
+import SkillsSection from '@/components/sections/resume/SkillsSection.astro';
+import WorkHistorySection from '@/components/sections/resume/WorkHistorySection.astro';
+import ResumeLayout from '@/layouts/ResumeLayout.astro';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+import { getAlternateRoutes, getLocalizedRoute } from '@/lib/i18n/urls';
+import { buildPageMetadata } from '@/lib/seo';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
+
+const metadata = buildPageMetadata({
+	title: dictionary.meta.resume.title,
+	description: dictionary.meta.resume.description,
+	locale,
+	canonical: getLocalizedRoute('resume', locale),
+	alternatePaths: getAlternateRoutes('resume'),
+});
+---
+
+<ResumeLayout {metadata}>
+	<ResumeHeader {locale} />
+	<SkillsSection {locale} />
+	<WorkHistorySection {locale} />
+</ResumeLayout>

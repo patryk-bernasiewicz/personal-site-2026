@@ -1,0 +1,26 @@
+---
+import heroDesktop from '@/assets/images/hero-desktop.jpg';
+import heroDesktopWebp from '@/assets/images/hero-desktop.webp';
+import heroMobile from '@/assets/images/hero-mobile.jpg';
+import heroMobileWebp from '@/assets/images/hero-mobile.webp';
+import HeroMediaPicture from '@/components/sections/home/HeroMediaPicture.astro';
+import {
+	heroImageClass,
+	heroImageMobileSizes,
+	heroImageSizes,
+	heroMediaFrameClass,
+} from '@/components/sections/home/hero-media-frame';
+---
+
+<div class:list={['z-0', heroMediaFrameClass]} aria-hidden="true">
+	<HeroMediaPicture
+		desktop={{ webp: heroDesktopWebp, fallback: heroDesktop }}
+		mobile={{ webp: heroMobileWebp, fallback: heroMobile }}
+		alt=""
+		loading="eager"
+		fetchpriority="high"
+		desktopSizes={heroImageSizes}
+		mobileSizes={heroImageMobileSizes}
+		class={heroImageClass}
+	/>
+</div>

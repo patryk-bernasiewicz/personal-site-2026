@@ -1,0 +1,35 @@
+---
+import BlogCard from '@/components/blog/BlogCard.astro';
+import Container from '@/components/ui/Container.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import type { BlogPost } from '@/lib/contentful/types';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+	posts: BlogPost[];
+}
+
+const { locale, posts } = Astro.props;
+const dictionary = getDictionary(locale);
+---
+
+{
+	posts.length > 0 && (
+		<Container tag="section" class="pb-16" data-home-scroll-section>
+			<SectionHeading
+				eyebrow={dictionary.nav.blog}
+				title={dictionary.home.latestPostsTitle}
+				description={dictionary.home.latestPostsDescription}
+			/>
+			<ul class="grid gap-4">
+				{posts.map((post) => (
+					<li>
+						<BlogCard post={post} />
+					</li>
+				))}
+			</ul>
+		</Container>
+	)
+}

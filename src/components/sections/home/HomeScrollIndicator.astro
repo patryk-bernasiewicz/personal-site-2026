@@ -1,0 +1,262 @@
+---
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const scrollIndicator = getDictionary(locale).home.scrollIndicator;
+---
+
+<nav
+	id="home-scroll-indicator"
+	class="home-scroll-indicator pointer-events-none fixed top-1/2 right-[clamp(1rem,2.5vw,2rem)] z-10 hidden -translate-y-1/2 flex-col items-center gap-3.5 opacity-0 transition-opacity duration-300 lg:flex"
+	aria-label={scrollIndicator.label}
+	data-home-scroll-indicator
+	data-home-scroll-to-section-label={scrollIndicator.scrollToSectionLabel}
+>
+	<span
+		class="home-scroll-indicator__current text-[0.6875rem] font-semibold tracking-widest text-gold"
+		aria-hidden="true"
+		data-home-scroll-current
+	>01</span>
+	<div
+		class="home-scroll-indicator__track relative flex flex-col items-center gap-3.5 py-0.5"
+		data-home-scroll-dots
+	>
+		<div
+			class="absolute top-1 bottom-1 left-1/2 w-px -translate-x-1/2 bg-white/14"
+			aria-hidden="true"
+		>
+		</div>
+	</div>
+	<span
+		class="home-scroll-indicator__total text-[0.6875rem] font-semibold tracking-widest text-text-faint"
+		aria-hidden="true"
+		data-home-scroll-total
+	>01</span>
+</nav>
+
+<script>
+	let cleanup: (() => void) | null = null;
+
+	function formatSectionNumber(value: number): string {
+		return String(value).padStart(2, '0');
+	}
+
+	function getScrollBehavior(): ScrollBehavior {
+		return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+	}
+
+	function scrollToSection(section: HTMLElement): void {
+		const sectionRect = section.getBoundingClientRect();
+		const sectionBottom = sectionRect.bottom + window.scrollY;
+		const maxScrollTop = document.documentElement.scrollHeight - window.innerHeight;
+		const scrollTop = Math.min(
+			Math.max(sectionBottom - window.innerHeight, 0),
+			Math.max(maxScrollTop, 0),
+		);
+
+		window.scrollTo({
+			top: scrollTop,
+			behavior: getScrollBehavior(),
+		});
+	}
+
+	function destroyHomeScrollIndicator(): void {
+		cleanup?.();
+		cleanup = null;
+	}
+
+	function setupHomeScrollIndicator(): void {
+		destroyHomeScrollIndicator();
+
+		const indicator = document.querySelector<HTMLElement>('[data-home-scroll-indicator]');
+		const currentEl = document.querySelector<HTMLElement>('[data-home-scroll-current]');
+		const totalEl = document.querySelector<HTMLElement>('[data-home-scroll-total]');
+		const dotsContainer = document.querySelector<HTMLElement>('[data-home-scroll-dots]');
+		const scrollToSectionLabel =
+			indicator?.dataset.homeScrollToSectionLabel ?? 'Scroll to section {number}';
+
+		if (!indicator || !currentEl || !totalEl || !dotsContainer) {
+			return;
+		}
+
+		const sections = Array.from(
+			document.querySelectorAll<HTMLElement>('[data-home-scroll-section]'),
+		);
+
+		if (sections.length < 2) {
+			indicator.classList.remove('is-visible');
+			indicator.classList.add('home-scroll-indicator--hidden');
+			return;
+		}
+
+		indicator.classList.remove('home-scroll-indicator--hidden');
+
+		const existingDots = dotsContainer.querySelectorAll('[data-home-scroll-dot]');
+		existingDots.forEach((dot) => dot.remove());
+
+		const dots = sections.map((section, index) => {
+			const dot = document.createElement('button');
+			const sectionNumber = formatSectionNumber(index + 1);
+
+			dot.type = 'button';
+			dot.className = 'home-scroll-indicator__dot';
+			dot.setAttribute('data-home-scroll-dot', '');
+			dot.setAttribute(
+				'aria-label',
+				scrollToSectionLabel.replace('{number}', sectionNumber),
+			);
+			dot.addEventListener('click', () => scrollToSection(section));
+			dotsContainer.append(dot);
+			return dot;
+		});
+
+		totalEl.textContent = formatSectionNumber(sections.length);
+
+		let activeIndex = 0;
+		let rafId: number | null = null;
+
+		const syncDots = (index: number) => {
+			dots.forEach((dot, dotIndex) => {
+				const isActive = dotIndex === index;
+				dot.toggleAttribute('data-active', isActive);
+
+				if (isActive) {
+					dot.setAttribute('aria-current', 'true');
+				} else {
+					dot.removeAttribute('aria-current');
+				}
+			});
+		};
+
+		const updateActiveSection = () => {
+			rafId = null;
+
+			const viewportHeight = window.innerHeight;
+			let lastFullyVisibleIndex = -1;
+			let lastIntersectingIndex = -1;
+
+			sections.forEach((section, index) => {
+				const rect = section.getBoundingClientRect();
+				const intersectsViewport = rect.top < viewportHeight && rect.bottom > 0;
+				const isFullyVisible = rect.top >= 0 && rect.bottom <= viewportHeight;
+
+				if (intersectsViewport) {
+					lastIntersectingIndex = index;
+				}
+
+				if (isFullyVisible) {
+					lastFullyVisibleIndex = index;
+				}
+			});
+
+			activeIndex =
+				lastFullyVisibleIndex >= 0
+					? lastFullyVisibleIndex
+					: Math.max(lastIntersectingIndex, 0);
+			currentEl.textContent = formatSectionNumber(activeIndex + 1);
+			syncDots(activeIndex);
+			indicator.classList.add('is-visible');
+		};
+
+		const scheduleUpdate = () => {
+			if (rafId !== null) {
+				return;
+			}
+
+			rafId = requestAnimationFrame(updateActiveSection);
+		};
+
+		window.addEventListener('scroll', scheduleUpdate, { passive: true });
+		window.addEventListener('resize', scheduleUpdate, { passive: true });
+		updateActiveSection();
+
+		cleanup = () => {
+			window.removeEventListener('scroll', scheduleUpdate);
+			window.removeEventListener('resize', scheduleUpdate);
+
+			if (rafId !== null) {
+				cancelAnimationFrame(rafId);
+				rafId = null;
+			}
+		};
+	}
+
+	setupHomeScrollIndicator();
+	document.addEventListener('astro:page-load', setupHomeScrollIndicator);
+	document.addEventListener('astro:before-swap', destroyHomeScrollIndicator);
+</script>
+
+<style>
+	.home-scroll-indicator.is-visible {
+		opacity: 1;
+	}
+
+	.home-scroll-indicator--hidden {
+		display: none !important;
+	}
+
+	:global(.home-scroll-indicator__dot) {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		width: 1rem;
+		height: 1rem;
+		align-items: center;
+		justify-content: center;
+		border: 0;
+		border-radius: 999px;
+		background: transparent;
+		color: rgba(255, 255, 255, 0.22);
+		cursor: pointer;
+		padding: 0;
+		pointer-events: auto;
+		transition:
+			color 180ms ease,
+			transform 180ms ease;
+	}
+
+	:global(.home-scroll-indicator__dot::before) {
+		content: '';
+		width: 0.3125rem;
+		height: 0.3125rem;
+		border-radius: 999px;
+		background: currentColor;
+		transition:
+			box-shadow 180ms ease,
+			transform 180ms ease;
+	}
+
+	:global(.home-scroll-indicator__dot:hover) {
+		color: rgba(217, 164, 65, 0.72);
+	}
+
+	:global(.home-scroll-indicator__dot:hover::before),
+	:global(.home-scroll-indicator__dot:focus-visible::before) {
+		transform: scale(1.35);
+	}
+
+	:global(.home-scroll-indicator__dot[data-active]) {
+		color: rgb(217, 164, 65);
+	}
+
+	:global(.home-scroll-indicator__dot[data-active]::before) {
+		box-shadow: 0 0 10px rgba(217, 164, 65, 0.55);
+	}
+
+	:global(.home-scroll-indicator__dot:focus-visible) {
+		outline: 2px solid rgb(217, 164, 65);
+		outline-offset: 3px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.home-scroll-indicator__dot),
+		:global(.home-scroll-indicator__dot::before) {
+			transition: none;
+		}
+	}
+</style>

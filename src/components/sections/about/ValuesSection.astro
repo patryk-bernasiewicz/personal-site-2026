@@ -1,0 +1,35 @@
+---
+import Card from '@/components/ui/Card.astro';
+import Container from '@/components/ui/Container.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { getAboutValues } from '@/config/about-content';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
+const values = getAboutValues(locale);
+---
+
+<Container tag="section" class="pb-16">
+	<SectionHeading
+		title={dictionary.about.valuesTitle}
+		description={dictionary.about.valuesDescription}
+	/>
+	<ul class="grid gap-4 sm:grid-cols-3">
+		{
+			values.map((value) => (
+				<li>
+					<Card>
+						<h3 class="font-medium text-text-main">{value.title}</h3>
+						<p class="mt-2 text-body text-text-muted">{value.description}</p>
+					</Card>
+				</li>
+			))
+		}
+	</ul>
+</Container>

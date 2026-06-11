@@ -1,0 +1,29 @@
+---
+import AboutHero from '@/components/sections/about/AboutHero.astro';
+import ValuesSection from '@/components/sections/about/ValuesSection.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+import { getAlternateRoutes, getLocalizedRoute } from '@/lib/i18n/urls';
+import { buildPageMetadata } from '@/lib/seo';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
+
+const metadata = buildPageMetadata({
+	title: dictionary.meta.about.title,
+	description: dictionary.meta.about.description,
+	locale,
+	canonical: getLocalizedRoute('about', locale),
+	alternatePaths: getAlternateRoutes('about'),
+});
+---
+
+<PageLayout {metadata} routeKey="about">
+	<AboutHero {locale} />
+	<ValuesSection {locale} />
+</PageLayout>

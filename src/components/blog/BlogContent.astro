@@ -1,0 +1,27 @@
+---
+import Prose from '@/components/ui/Prose.astro';
+import type { BlogPost } from '@/lib/contentful/types';
+import { renderRichTextToHtml } from '@/lib/contentful/rich-text-renderer';
+
+interface Props {
+	post: BlogPost;
+}
+
+const { post } = Astro.props;
+const html = renderRichTextToHtml(post.content);
+---
+
+{
+	post.coverImage && (
+		<img
+			src={post.coverImage.src}
+			alt={post.coverImage.alt}
+			class="mb-8 aspect-[16/9] w-full rounded-card object-cover"
+			loading="eager"
+		/>
+	)
+}
+
+<Prose>
+	<article set:html={html} />
+</Prose>

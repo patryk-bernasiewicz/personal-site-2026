@@ -1,0 +1,510 @@
+<div class="tech-stack-flow" data-tech-stack-flow aria-hidden="true">
+	<div class="tech-stack-flow__mist" aria-hidden="true"></div>
+
+	<div class="tech-stack-flow__waves">
+		<svg
+			class="tech-stack-flow__svg"
+			viewBox="0 0 960 72"
+			fill="none"
+			preserveAspectRatio="xMidYMid slice"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<defs>
+				<linearGradient id="ts-wave-far-gradient" x1="0" y1="30" x2="960" y2="30">
+					<stop offset="0%" stop-color="rgba(217,164,65,0)" />
+					<stop offset="8%" stop-color="rgba(217,164,65,0.22)" />
+					<stop offset="50%" stop-color="rgba(217,164,65,0.36)" />
+					<stop offset="94%" stop-color="rgba(217,164,65,0.22)" />
+					<stop offset="100%" stop-color="rgba(217,164,65,0)" />
+				</linearGradient>
+				<linearGradient id="ts-wave-near-gradient" x1="0" y1="36" x2="960" y2="36">
+					<stop offset="0%" stop-color="rgba(217,164,65,0)" />
+					<stop offset="7%" stop-color="rgba(217,164,65,0.28)" />
+					<stop offset="50%" stop-color="rgba(241,198,106,0.52)" />
+					<stop offset="95%" stop-color="rgba(217,164,65,0.28)" />
+					<stop offset="100%" stop-color="rgba(217,164,65,0)" />
+				</linearGradient>
+				<linearGradient id="ts-connector-gradient" x1="0" y1="36" x2="960" y2="36">
+					<stop offset="0%" stop-color="rgba(241,198,106,0)" />
+					<stop offset="50%" stop-color="rgba(241,198,106,0.22)" />
+					<stop offset="100%" stop-color="rgba(241,198,106,0)" />
+				</linearGradient>
+			</defs>
+
+			<path
+				class="tech-stack-flow__wave tech-stack-flow__wave--far"
+				d="M0 37 C64 45, 128 50, 192 47 C256 43, 320 32, 384 23 C448 15, 512 10, 576 13 C640 17, 704 28, 768 37 C832 45, 896 50, 960 47"
+				stroke="url(#ts-wave-far-gradient)"
+				stroke-width="1.15"
+				stroke-linecap="round"></path>
+			<path
+				class="tech-stack-flow__wave-dots tech-stack-flow__wave-dots--far"
+				d="M0 37 C64 45, 128 50, 192 47 C256 43, 320 32, 384 23 C448 15, 512 10, 576 13 C640 17, 704 28, 768 37 C832 45, 896 50, 960 47"
+				stroke="rgba(217,164,65,0.54)"
+				stroke-width="1.65"
+				stroke-linecap="round"
+				stroke-dasharray="1.5 16"></path>
+
+			<path
+				class="tech-stack-flow__wave tech-stack-flow__wave--near"
+				d="M0 35 C64 27, 128 22, 192 25 C256 29, 320 40, 384 49 C448 57, 512 62, 576 59 C640 55, 704 44, 768 35 C832 27, 896 22, 960 25"
+				stroke="url(#ts-wave-near-gradient)"
+				stroke-width="1.35"
+				stroke-linecap="round"></path>
+			<path
+				class="tech-stack-flow__wave-dots tech-stack-flow__wave-dots--near"
+				d="M0 35 C64 27, 128 22, 192 25 C256 29, 320 40, 384 49 C448 57, 512 62, 576 59 C640 55, 704 44, 768 35 C832 27, 896 22, 960 25"
+				stroke="rgba(241,198,106,0.62)"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-dasharray="1.5 13"></path>
+
+			<path
+				class="tech-stack-flow__connector tech-stack-flow__connector--a"
+				d="M168 48 Q214 36 258 24"
+				stroke="url(#ts-connector-gradient)"
+				stroke-width="0.85"
+				stroke-linecap="round"></path>
+			<path
+				class="tech-stack-flow__connector tech-stack-flow__connector--b"
+				d="M392 22 Q438 36 484 50"
+				stroke="url(#ts-connector-gradient)"
+				stroke-width="0.85"
+				stroke-linecap="round"></path>
+			<path
+				class="tech-stack-flow__connector tech-stack-flow__connector--c"
+				d="M612 16 Q658 36 704 56"
+				stroke="url(#ts-connector-gradient)"
+				stroke-width="0.85"
+				stroke-linecap="round"></path>
+			<path
+				class="tech-stack-flow__connector tech-stack-flow__connector--d"
+				d="M804 41 Q850 36 896 31"
+				stroke="url(#ts-connector-gradient)"
+				stroke-width="0.85"
+				stroke-linecap="round"></path>
+		</svg>
+	</div>
+
+	<div
+		class="tech-stack-flow__particles"
+		id="tech-stack-particle-stream"
+		data-tech-stack-particles
+	></div>
+</div>
+
+<style>
+	.tech-stack-flow {
+		--flow-top: 54%;
+		--flow-width: min(calc(100% - 2rem), 1440px);
+		--flow-height: clamp(5rem, 12vw, 7.5rem);
+
+		--flow-far-opacity: 0.5;
+		--flow-near-opacity: 0.68;
+		--flow-far-dots-opacity: 0.46;
+		--flow-near-dots-opacity: 0.52;
+		--flow-connector-opacity: 0.22;
+		--flow-spark-opacity: 0.52;
+
+		--flow-mist-opacity: 0.77;
+		--flow-mist-blur: 22px;
+		--flow-mist-duration: 14s;
+
+		--flow-pulse-duration-base: 22s;
+		--flow-far-pulse-duration: var(--flow-pulse-duration-base);
+		--flow-near-pulse-duration: calc(var(--flow-pulse-duration-base) * 0.8);
+		--flow-drift-duration-base: 32s;
+		--flow-far-drift-duration: var(--flow-drift-duration-base);
+		--flow-near-drift-duration: calc(var(--flow-drift-duration-base) * 0.8);
+		--flow-far-drift-distance: 440;
+		--flow-near-drift-distance: 500;
+		--flow-connector-duration: calc(var(--flow-drift-duration-base) * 0.75);
+
+		--flow-fade-in: 4%;
+		--flow-fade-out: 98%;
+
+		position: absolute;
+		top: var(--flow-top);
+		left: 50%;
+		z-index: 0;
+		width: var(--flow-width);
+		height: var(--flow-height);
+		pointer-events: none;
+		overflow: hidden;
+		transform: translate(-50%, -50%);
+	}
+
+	.tech-stack-flow__mist {
+		position: absolute;
+		inset: 0 -8%;
+		z-index: 1;
+		opacity: var(--flow-mist-opacity);
+		filter: blur(var(--flow-mist-blur));
+		mix-blend-mode: screen;
+		background:
+			radial-gradient(ellipse at 18% 48%, rgb(241 198 106 / 0.24), transparent 34%),
+			radial-gradient(ellipse at 48% 58%, rgb(217 164 65 / 0.22), transparent 38%),
+			radial-gradient(ellipse at 76% 44%, rgb(241 198 106 / 0.1), transparent 32%);
+		animation: tech-stack-mist-flow var(--flow-mist-duration) linear infinite;
+		mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			#000 var(--flow-fade-in),
+			#000 var(--flow-fade-out),
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			#000 var(--flow-fade-in),
+			#000 var(--flow-fade-out),
+			transparent 100%
+		);
+	}
+
+	.tech-stack-flow__waves {
+		position: absolute;
+		inset: 0 -2%;
+		z-index: 0;
+		opacity: 0.92;
+		mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			#000 var(--flow-fade-in),
+			#000 var(--flow-fade-out),
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			#000 var(--flow-fade-in),
+			#000 var(--flow-fade-out),
+			transparent 100%
+		);
+	}
+
+	.tech-stack-flow__svg {
+		width: 100%;
+		height: 100%;
+	}
+
+	.tech-stack-flow__wave--far {
+		opacity: var(--flow-far-opacity);
+		animation: ts-wave-far-pulse var(--flow-far-pulse-duration) ease-in-out infinite alternate;
+	}
+
+	.tech-stack-flow__wave--near {
+		opacity: var(--flow-near-opacity);
+		animation: ts-wave-near-pulse var(--flow-near-pulse-duration) ease-in-out infinite alternate;
+	}
+
+	.tech-stack-flow__wave-dots--far {
+		opacity: var(--flow-far-dots-opacity);
+		animation: ts-wave-drift-far var(--flow-far-drift-duration) linear infinite;
+	}
+
+	.tech-stack-flow__wave-dots--near {
+		opacity: var(--flow-near-dots-opacity);
+		animation: ts-wave-drift-near var(--flow-near-drift-duration) linear infinite;
+	}
+
+	.tech-stack-flow__connector {
+		opacity: var(--flow-connector-opacity);
+		stroke-dasharray: 3 9;
+		animation: ts-connector-flow var(--flow-connector-duration) linear infinite;
+	}
+
+	.tech-stack-flow__connector--b {
+		animation-delay: -2.4s;
+		animation-duration: calc(var(--flow-connector-duration) + 2s);
+	}
+
+	.tech-stack-flow__connector--c {
+		animation-delay: -5.1s;
+		animation-duration: calc(var(--flow-connector-duration) - 1s);
+	}
+
+	.tech-stack-flow__connector--d {
+		animation-delay: -7.6s;
+		animation-duration: calc(var(--flow-connector-duration) + 1s);
+	}
+
+	.tech-stack-flow__particles {
+		position: absolute;
+		inset: 8% -2%;
+		z-index: 2;
+		opacity: var(--flow-spark-opacity);
+		mix-blend-mode: screen;
+		mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			#000 var(--flow-fade-in),
+			#000 var(--flow-fade-out),
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			#000 var(--flow-fade-in),
+			#000 var(--flow-fade-out),
+			transparent 100%
+		);
+	}
+
+	.tech-stack-flow__particles :global(canvas) {
+		pointer-events: none;
+	}
+
+	@keyframes tech-stack-mist-flow {
+		from {
+			transform: translate3d(-4%, 0, 0);
+		}
+
+		to {
+			transform: translate3d(4%, 0, 0);
+		}
+	}
+
+	@keyframes ts-wave-far-pulse {
+		from {
+			opacity: calc(var(--flow-far-opacity) * 0.84);
+		}
+
+		to {
+			opacity: calc(var(--flow-far-opacity) * 1.12);
+		}
+	}
+
+	@keyframes ts-wave-near-pulse {
+		from {
+			opacity: calc(var(--flow-near-opacity) * 0.85);
+		}
+
+		to {
+			opacity: calc(var(--flow-near-opacity) * 1.12);
+		}
+	}
+
+	@keyframes ts-wave-drift-far {
+		to {
+			stroke-dashoffset: calc(var(--flow-far-drift-distance) * -1px);
+		}
+	}
+
+	@keyframes ts-wave-drift-near {
+		to {
+			stroke-dashoffset: calc(var(--flow-near-drift-distance) * -1px);
+		}
+	}
+
+	@keyframes ts-connector-flow {
+		50% {
+			opacity: calc(var(--flow-connector-opacity) * 1.36);
+		}
+
+		to {
+			stroke-dashoffset: -48;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.tech-stack-flow {
+			--flow-top: 56%;
+			--flow-height: clamp(3.5rem, 11vw, 5rem);
+
+			--flow-far-opacity: 0.4;
+			--flow-near-opacity: 0.52;
+			--flow-spark-opacity: 0.38;
+			--flow-mist-opacity: 0.24;
+			--flow-mist-blur: 12px;
+			--flow-mist-duration: 34s;
+		}
+
+		.tech-stack-flow__waves {
+			opacity: 0.78;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.tech-stack-flow {
+			--flow-spark-opacity: 0;
+			--flow-mist-opacity: 0.16;
+		}
+
+		.tech-stack-flow__particles {
+			display: none;
+		}
+
+		.tech-stack-flow__mist,
+		.tech-stack-flow__wave--far,
+		.tech-stack-flow__wave--near,
+		.tech-stack-flow__wave-dots,
+		.tech-stack-flow__connector {
+			animation: none;
+		}
+	}
+</style>
+
+<script>
+	import type { Container, ISourceOptions } from '@tsparticles/engine';
+	import { createParticleStream } from '@/lib/particles/engine';
+
+	const FLOW_SELECTORS = {
+		root: '[data-tech-stack-flow]',
+		particles: '[data-tech-stack-particles]',
+	} as const;
+
+	const FLOW_QUERIES = {
+		mobile: '(max-width: 1023px)',
+		reducedMotion: '(prefers-reduced-motion: reduce)',
+	} as const;
+
+	const OBSERVER_OPTIONS: IntersectionObserverInit = {
+		rootMargin: '120px 0px',
+		threshold: 0.01,
+	};
+
+	const SPARK_COLORS = ['#d9a441', '#f1c66a', '#fff0c8'] as const;
+
+	const SPARK_CONFIG = {
+		fps: { mobile: 20, desktop: 24 },
+		count: { mobile: 28, desktop: 58 },
+		opacity: { min: 0.14, max: 0.52 },
+		size: { min: 0.4, max: 1.65 },
+		speed: {
+			mobile: { min: 0.06, max: 0.18 },
+			desktop: { min: 0.08, max: 0.22 },
+		},
+		drift: {
+			mobile: { min: -0.28, max: 0.28 },
+			desktop: { min: -0.38, max: 0.38 },
+		},
+	} as const;
+
+	let particleContainer: Container | undefined;
+	let viewportObserver: IntersectionObserver | undefined;
+	let loadStarted = false;
+	let setupGeneration = 0;
+
+	function prefersReducedMotion(): boolean {
+		return window.matchMedia(FLOW_QUERIES.reducedMotion).matches;
+	}
+
+	function isMobileViewport(): boolean {
+		return window.matchMedia(FLOW_QUERIES.mobile).matches;
+	}
+
+	function buildSparkOptions(): ISourceOptions {
+		const mobile = isMobileViewport();
+
+		return {
+			background: { color: { value: 'transparent' } },
+			fullScreen: { enable: false },
+			fpsLimit: mobile ? SPARK_CONFIG.fps.mobile : SPARK_CONFIG.fps.desktop,
+			detectRetina: true,
+			pauseOnBlur: true,
+			pauseOnOutsideViewport: true,
+			particles: {
+				number: {
+					value: mobile ? SPARK_CONFIG.count.mobile : SPARK_CONFIG.count.desktop,
+				},
+				paint: { color: { value: [...SPARK_COLORS] } },
+				opacity: { value: SPARK_CONFIG.opacity, animation: { enable: false } },
+				size: { value: SPARK_CONFIG.size, animation: { enable: false } },
+				shape: { type: 'circle' },
+				move: {
+					enable: true,
+					direction: 'right',
+					straight: false,
+					random: false,
+					decay: 0,
+					speed: mobile ? SPARK_CONFIG.speed.mobile : SPARK_CONFIG.speed.desktop,
+					drift: mobile ? SPARK_CONFIG.drift.mobile : SPARK_CONFIG.drift.desktop,
+					gravity: { enable: false },
+					outModes: { default: 'out' },
+				},
+			},
+		};
+	}
+
+	async function initSparks(root: HTMLElement, generation: number): Promise<void> {
+		if (generation !== setupGeneration || loadStarted || particleContainer) {
+			return;
+		}
+
+		loadStarted = true;
+
+		try {
+			particleContainer = await createParticleStream(root, buildSparkOptions());
+		} catch {
+			loadStarted = false;
+			return;
+		}
+
+		if (generation !== setupGeneration) {
+			particleContainer?.destroy();
+			particleContainer = undefined;
+			loadStarted = false;
+		}
+	}
+
+	function pauseFlow(): void {
+		if (particleContainer && !particleContainer.destroyed) {
+			particleContainer.pause();
+		}
+	}
+
+	function resumeFlow(): void {
+		if (particleContainer && !particleContainer.destroyed && !particleContainer.animationStatus) {
+			particleContainer.play();
+		}
+	}
+
+	function destroyFlow(): void {
+		setupGeneration += 1;
+		viewportObserver?.disconnect();
+		viewportObserver = undefined;
+
+		if (particleContainer && !particleContainer.destroyed) {
+			particleContainer.destroy();
+		}
+
+		particleContainer = undefined;
+		loadStarted = false;
+	}
+
+	function setupFlow(): void {
+		destroyFlow();
+
+		if (prefersReducedMotion()) {
+			return;
+		}
+
+		const flowRoot = document.querySelector<HTMLElement>(FLOW_SELECTORS.root);
+		const sparkRoot = flowRoot?.querySelector<HTMLElement>(FLOW_SELECTORS.particles);
+
+		if (!flowRoot || !sparkRoot) {
+			return;
+		}
+
+		const generation = setupGeneration;
+
+		viewportObserver = new IntersectionObserver(([entry]) => {
+			if (entry.isIntersecting) {
+				if (!particleContainer && !loadStarted) {
+					void initSparks(sparkRoot, generation);
+				} else {
+					resumeFlow();
+				}
+			} else {
+				pauseFlow();
+			}
+		}, OBSERVER_OPTIONS);
+
+		viewportObserver.observe(flowRoot);
+	}
+
+	setupFlow();
+	document.addEventListener('astro:page-load', setupFlow);
+	document.addEventListener('astro:before-swap', destroyFlow);
+</script>

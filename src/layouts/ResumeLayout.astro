@@ -1,0 +1,14 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import type { PageMetadata } from '@/lib/seo';
+
+interface Props {
+	metadata: PageMetadata;
+}
+
+const { metadata } = Astro.props;
+---
+
+<PageLayout metadata={metadata} routeKey="resume">
+	<slot />
+</PageLayout>
