@@ -334,8 +334,16 @@ void alternatePaths;
 </style>
 
 <script>
+	type SiteHeaderState = {
+		cleanup?: () => void;
+		setupHandler?: () => void;
+	};
+
 	const FOCUSABLE_SELECTOR =
 		'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
+	const siteHeaderState = ((window as Window & { __siteHeaderState?: SiteHeaderState })
+		.__siteHeaderState ??= {});
 
 	function getFocusableElements(container: HTMLElement): HTMLElement[] {
 		return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
@@ -346,7 +354,10 @@ void alternatePaths;
 		);
 	}
 
-	function initSiteHeader() {
+	function setupSiteHeader() {
+		siteHeaderState.cleanup?.();
+		siteHeaderState.cleanup = undefined;
+
 		const header = document.getElementById('site-header');
 		const menuTrigger = document.getElementById('mobile-nav-trigger');
 		const mobileNav = document.querySelector<HTMLElement>('[data-mobile-nav]');
@@ -359,7 +370,11 @@ void alternatePaths;
 			return;
 		}
 
+		const controller = new AbortController();
+		const { signal } = controller;
 		let restoreFocusTarget: HTMLElement | null = null;
+		let openFrame: number | undefined;
+		let focusTimer: number | undefined;
 
 		const setScrolledState = () => {
 			const scrolled = window.scrollY > 0;
@@ -370,6 +385,24 @@ void alternatePaths;
 			window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 		const isDrawerOpen = () => mobileNav.classList.contains('is-open');
+
+		const cancelOpenFrame = () => {
+			if (openFrame === undefined) {
+				return;
+			}
+
+			window.cancelAnimationFrame(openFrame);
+			openFrame = undefined;
+		};
+
+		const clearFocusTimer = () => {
+			if (focusTimer === undefined) {
+				return;
+			}
+
+			window.clearTimeout(focusTimer);
+			focusTimer = undefined;
+		};
 
 		const trapFocus = (event: KeyboardEvent) => {
 			if (event.key !== 'Tab' || !isDrawerOpen()) {
@@ -403,36 +436,49 @@ void alternatePaths;
 		};
 
 		const openDrawer = () => {
+			if (isDrawerOpen()) {
+				return;
+			}
+
 			restoreFocusTarget = menuTrigger;
 			mobileNav.removeAttribute('inert');
 			mobileNav.setAttribute('aria-hidden', 'false');
 			mobileNav.classList.remove('is-open');
 			void drawer.offsetWidth;
-			requestAnimationFrame(() => mobileNav.classList.add('is-open'));
+			cancelOpenFrame();
+			openFrame = window.requestAnimationFrame(() => {
+				mobileNav.classList.add('is-open');
+				openFrame = undefined;
+			});
 			menuTrigger.setAttribute('aria-expanded', 'true');
 			document.body.style.overflow = 'hidden';
-			document.addEventListener('keydown', trapFocus);
 			const focusDelay = prefersReducedMotion() ? 0 : 260;
-			window.setTimeout(() => closeButton.focus(), focusDelay);
+			clearFocusTimer();
+			focusTimer = window.setTimeout(() => {
+				closeButton.focus();
+				focusTimer = undefined;
+			}, focusDelay);
 		};
 
-		const closeDrawer = () => {
-			if (!isDrawerOpen()) {
-				return;
-			}
+		const closeDrawer = ({ restoreFocus = true } = {}) => {
+			const wasOpen = isDrawerOpen();
 
+			cancelOpenFrame();
+			clearFocusTimer();
 			mobileNav.classList.remove('is-open');
 			menuTrigger.setAttribute('aria-expanded', 'false');
 			document.body.style.overflow = '';
-			document.removeEventListener('keydown', trapFocus);
 
-			(restoreFocusTarget ?? menuTrigger).focus();
+			if (wasOpen && restoreFocus) {
+				(restoreFocusTarget ?? menuTrigger).focus();
+			}
+
 			restoreFocusTarget = null;
 			finishClose();
 		};
 
 		setScrolledState();
-		window.addEventListener('scroll', setScrolledState, { passive: true });
+		window.addEventListener('scroll', setScrolledState, { passive: true, signal });
 
 		menuTrigger.addEventListener('click', () => {
 			if (isDrawerOpen()) {
@@ -440,10 +486,10 @@ void alternatePaths;
 			} else {
 				openDrawer();
 			}
-		});
+		}, { signal });
 
-		closeButton.addEventListener('click', closeDrawer);
-		backdrop.addEventListener('click', closeDrawer);
+		closeButton.addEventListener('click', () => closeDrawer(), { signal });
+		backdrop.addEventListener('click', () => closeDrawer(), { signal });
 
 		navLinks.forEach((link) => {
 			link.addEventListener('click', () => {
@@ -451,15 +497,27 @@ void alternatePaths;
 					return;
 				}
 				closeDrawer();
-			});
+			}, { signal });
 		});
 
+		document.addEventListener('keydown', trapFocus, { signal });
 		document.addEventListener('keydown', (event) => {
 			if (event.key === 'Escape' && isDrawerOpen()) {
 				closeDrawer();
 			}
-		});
+		}, { signal });
+
+		siteHeaderState.cleanup = () => {
+			closeDrawer({ restoreFocus: false });
+			controller.abort();
+		};
 	}
 
-	initSiteHeader();
+	if (siteHeaderState.setupHandler) {
+		document.removeEventListener('astro:page-load', siteHeaderState.setupHandler);
+	}
+
+	siteHeaderState.setupHandler = setupSiteHeader;
+	setupSiteHeader();
+	document.addEventListener('astro:page-load', siteHeaderState.setupHandler);
 </script>
