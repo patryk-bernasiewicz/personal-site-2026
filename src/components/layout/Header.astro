@@ -1,5 +1,6 @@
 ---
 import SiteLogo from '@/components/layout/SiteLogo.astro';
+import { socialLinks } from '@/config/social';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { applyPolishTypography } from '@/lib/typography';
 import type { Locale } from '@/lib/i18n/locales';
@@ -16,12 +17,18 @@ const { locale, routeKey, alternatePaths } = Astro.props;
 
 const dictionary = getDictionary(locale);
 const currentPath = Astro.url.pathname;
+const projectsHref = socialLinks.find((link) => link.icon === 'github')?.href;
 
-const navItems: Array<{ routeKey: StaticRouteKey; label: string }> = [
+type NavItem =
+	| { routeKey: StaticRouteKey; label: string; external?: false }
+	| { href: string; label: string; external: true };
+
+const navItems: NavItem[] = [
 	{ routeKey: 'home', label: dictionary.nav.home },
 	{ routeKey: 'resume', label: dictionary.nav.resume },
 	{ routeKey: 'about', label: dictionary.nav.about },
 	{ routeKey: 'blogIndex', label: dictionary.nav.blog },
+	...(projectsHref ? [{ href: projectsHref, label: dictionary.nav.projects, external: true } as const] : []),
 ];
 
 const aria =
@@ -78,10 +85,16 @@ void alternatePaths;
 				<ul class="flex items-center gap-6">
 					{
 						navItems.map((item) => {
-							const href = getLocalizedRoute(item.routeKey, locale);
+							const href = 'routeKey' in item ? getLocalizedRoute(item.routeKey, locale) : item.href;
+							const isActive = 'routeKey' in item && isNavActive(href);
 							return (
 								<li>
-									<a href={href} class={navLinkClass(isNavActive(href))}>
+									<a
+										href={href}
+										class={navLinkClass(isActive)}
+										target={item.external ? '_blank' : undefined}
+										rel={item.external ? 'noopener noreferrer' : undefined}
+									>
 										{item.label}
 									</a>
 								</li>
@@ -174,17 +187,20 @@ void alternatePaths;
 			<ul class="flex flex-col gap-1">
 				{
 					navItems.map((item) => {
-						const href = getLocalizedRoute(item.routeKey, locale);
+						const href = 'routeKey' in item ? getLocalizedRoute(item.routeKey, locale) : item.href;
+						const isActive = 'routeKey' in item && isNavActive(href);
 						return (
 							<li>
 								<a
 									href={href}
 									class:list={[
 										'block rounded-md px-3 py-3 text-sm font-semibold uppercase tracking-widest transition-colors',
-										isNavActive(href)
+										isActive
 											? 'text-gold-soft'
 											: 'text-text-muted hover:bg-white/5 hover:text-text-main',
 									]}
+									target={item.external ? '_blank' : undefined}
+									rel={item.external ? 'noopener noreferrer' : undefined}
 									data-mobile-nav-link
 								>
 									{item.label}

@@ -1,4 +1,6 @@
 ---
+import { classNames } from '@/lib/classNames';
+
 interface Props {
 	href: string;
 	variant?: 'primary' | 'ghost';
@@ -14,6 +16,6 @@ const variants = {
 };
 ---
 
-<a href={href} class:list={[variants[variant], className]}>
+<a href={href} class={classNames(variants[variant], className)}>
 	<slot />
 </a>

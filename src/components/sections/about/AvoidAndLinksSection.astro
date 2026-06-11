@@ -1,0 +1,107 @@
+---
+import AboutCard from '@/components/sections/about/AboutCard.astro';
+import AboutIcon from '@/components/sections/about/AboutIcon.astro';
+import AboutSectionHeader from '@/components/sections/about/AboutSectionHeader.astro';
+import Container from '@/components/ui/Container.astro';
+import { getAboutPageContent, type AboutLinkTarget } from '@/config/about-content';
+import { socialLinks } from '@/config/social';
+import type { Locale } from '@/lib/i18n/locales';
+import { getLocalizedRoute } from '@/lib/i18n/urls';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { avoid, links } = getAboutPageContent(locale);
+const nextStepsLabel = locale === 'pl' ? 'Następne kroki' : 'Next steps';
+
+function getLink(target: AboutLinkTarget): { href: string; external: boolean } {
+	if (target === 'github') {
+		const github = socialLinks.find((link) => link.icon === 'github');
+		return { href: github?.href ?? getLocalizedRoute('home', locale), external: Boolean(github) };
+	}
+
+	return { href: getLocalizedRoute(target, locale), external: false };
+}
+---
+
+<Container
+	tag="section"
+	class="about-avoid max-w-[1180px] py-12 lg:py-18"
+	aria-labelledby="about-avoid-heading"
+>
+	<AboutSectionHeader id="about-avoid-heading" label={avoid.label} class="mb-8" />
+	<ul class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+		{
+			avoid.items.map((item) => (
+				<li>
+					<AboutCard class="p-6">
+						<div class="relative min-h-[11rem]">
+							<span
+								class="mb-5 block h-px w-14 bg-[linear-gradient(90deg,rgba(217,164,65,0.62),transparent)]"
+								aria-hidden="true"
+							/>
+							<h3 class="font-display text-xl font-semibold leading-tight text-text-main">
+								{item.title}
+							</h3>
+							<p class="mt-3 text-[0.95rem] leading-7 text-text-muted">
+								{item.description}
+							</p>
+						</div>
+					</AboutCard>
+				</li>
+			))
+		}
+	</ul>
+</Container>
+
+<Container
+	tag="section"
+	class="max-w-[1180px] pb-18 pt-2 lg:pb-24"
+	aria-label={nextStepsLabel}
+>
+	<ul class="grid gap-4 md:grid-cols-3">
+		{
+			links.map((link) => {
+				const linkTarget = getLink(link.target);
+
+				return (
+					<li>
+						<AboutCard
+							href={linkTarget.href}
+							external={linkTarget.external}
+							class="about-avoid__link p-6"
+						>
+							<div class="relative flex h-full min-h-[9.5rem] items-start gap-4">
+								<AboutIcon name={link.icon} class="size-8 shrink-0 text-gold" />
+								<div class="min-w-0 flex-1">
+									<h3 class="font-display text-xl font-semibold leading-tight text-text-main">
+										{link.title}
+									</h3>
+									<p class="mt-2 text-[0.95rem] leading-7 text-text-muted">
+										{link.description}
+									</p>
+								</div>
+								<svg
+									class="mt-1 size-5 shrink-0 text-gold"
+									viewBox="0 0 20 20"
+									fill="none"
+									aria-hidden="true"
+								>
+									<path
+										d="M4 10h12M11 5l5 5-5 5"
+										stroke="currentColor"
+										stroke-width="1.4"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</div>
+						</AboutCard>
+					</li>
+				);
+			})
+		}
+	</ul>
+</Container>

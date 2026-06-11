@@ -1,0 +1,45 @@
+---
+import type { AboutIconName } from '@/config/about-content';
+
+interface Props {
+	name: AboutIconName;
+	class?: string;
+}
+
+const { name, class: className = 'size-8' } = Astro.props;
+
+const iconPaths: Record<AboutIconName, readonly string[]> = {
+	code: ['M8 9l-4 3 4 3', 'M16 9l4 3-4 3', 'M14 5l-4 14'],
+	team: [
+		'M16 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2',
+		'M9.5 11a4 4 0 100-8 4 4 0 000 8z',
+		'M22 21v-2a4 4 0 00-3.3-3.94',
+		'M16.5 3.25a4 4 0 010 7.5',
+	],
+	sparkle: ['M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z'],
+	bolt: ['M13 2L4 14h6l-1 8 9-12h-6l1-8z'],
+	list: ['M8 7h12', 'M8 12h12', 'M8 17h12', 'M4 7h.01', 'M4 12h.01', 'M4 17h.01'],
+	pencil: ['M12 20h9', 'M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z'],
+	target: ['M12 21a9 9 0 100-18 9 9 0 000 18z', 'M12 17a5 5 0 100-10 5 5 0 000 10z', 'M12 13a1 1 0 100-2 1 1 0 000 2z'],
+	chat: ['M21 11.5a8.4 8.4 0 01-9 8.4 8.8 8.8 0 01-4-.94L3 20l1.15-4.35A8 8 0 013 11.5a8.4 8.4 0 019-8.4 8.4 8.4 0 019 8.4z'],
+	window: ['M4 5h16v14H4z', 'M4 9h16', 'M8 5v4'],
+	'check-square': ['M4 4h16v16H4z', 'M8 12l2.5 2.5L16 9'],
+	question: ['M9.1 9a3 3 0 115.82 1c-.4 1.2-1.4 1.8-2.25 2.35-.64.42-1.17.76-1.17 1.65', 'M12 18h.01', 'M12 22a10 10 0 100-20 10 10 0 000 20z'],
+	user: ['M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2', 'M12 11a4 4 0 100-8 4 4 0 000 8z'],
+	file: ['M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z', 'M14 2v6h6', 'M8 13h8', 'M8 17h6'],
+	folder: ['M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z'],
+};
+---
+
+<svg
+	class={className}
+	viewBox="0 0 24 24"
+	fill="none"
+	stroke="currentColor"
+	stroke-width="1.55"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+>
+	{iconPaths[name].map((path) => <path d={path} />)}
+</svg>

@@ -1,71 +1,80 @@
 ---
-import type { ImageMetadata } from 'astro';
+import type { ImageMetadata } from "astro";
 
 interface MediaVariant {
-	webp: ImageMetadata;
-	fallback: ImageMetadata;
+  webp: ImageMetadata;
+  fallback: ImageMetadata;
 }
 
 interface Props {
-	desktop: MediaVariant;
-	mobile?: MediaVariant;
-	alt?: string;
-	loading?: 'eager' | 'lazy';
-	fetchpriority?: 'high' | 'low' | 'auto';
-	class?: string;
-	desktopSizes?: string;
-	mobileSizes?: string;
+  desktop: MediaVariant;
+  mobile?: MediaVariant;
+  alt?: string;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+  class?: string;
+  desktopSizes?: string;
+  mobileSizes?: string;
 }
 
-const MOBILE_MEDIA = '(max-width: 1023px)';
-const DESKTOP_MEDIA = '(min-width: 1024px)';
+const MOBILE_MEDIA = "(max-width: 1023px)";
+const DESKTOP_MEDIA = "(min-width: 1024px)";
 
 const {
-	desktop,
-	mobile,
-	alt = '',
-	loading = 'lazy',
-	fetchpriority,
-	class: className,
-	desktopSizes = '(max-width: 1920px) 100vw, 1920px',
-	mobileSizes = '100vw',
+  desktop,
+  mobile,
+  alt = "",
+  loading = "lazy",
+  fetchpriority,
+  class: className,
+  desktopSizes = "(max-width: 1920px) 100vw, 1920px",
+  mobileSizes = "100vw",
 } = Astro.props;
 
 const hasMobileArt =
-	mobile !== undefined &&
-	(mobile.webp.src !== desktop.webp.src || mobile.fallback.src !== desktop.fallback.src);
+  mobile !== undefined &&
+  (mobile.webp.src !== desktop.webp.src ||
+    mobile.fallback.src !== desktop.fallback.src);
 ---
 
 <picture class="block size-full">
-	{
-		hasMobileArt && mobile ? (
-			<>
-				<source
-					media={MOBILE_MEDIA}
-					type="image/webp"
-					srcset={mobile.webp.src}
-					sizes={mobileSizes}
-				/>
-				<source
-					media={DESKTOP_MEDIA}
-					type="image/webp"
-					srcset={desktop.webp.src}
-					sizes={desktopSizes}
-				/>
-				<source media={MOBILE_MEDIA} srcset={mobile.fallback.src} sizes={mobileSizes} />
-			</>
-		) : (
-			<source type="image/webp" srcset={desktop.webp.src} sizes={desktopSizes} />
-		)
-	}
-	<img
-		src={desktop.fallback.src}
-		alt={alt}
-		width={desktop.fallback.width}
-		height={desktop.fallback.height}
-		loading={loading}
-		fetchpriority={fetchpriority}
-		decoding="async"
-		class={className}
-	/>
+  {
+    hasMobileArt && mobile ? (
+      <>
+        <source
+          media={MOBILE_MEDIA}
+          type="image/webp"
+          srcset={mobile.webp.src}
+          sizes={mobileSizes}
+        />
+        <source
+          media={DESKTOP_MEDIA}
+          type="image/webp"
+          srcset={desktop.webp.src}
+          sizes={desktopSizes}
+        />
+        <source
+          media={MOBILE_MEDIA}
+          srcset={mobile.fallback.src}
+          sizes={mobileSizes}
+        />
+      </>
+    ) : (
+      <source
+        type="image/webp"
+        srcset={desktop.webp.src}
+        sizes={desktopSizes}
+      />
+    )
+  }
+  <img
+    src={desktop.fallback.src}
+    alt={alt}
+    width={desktop.fallback.width}
+    height={desktop.fallback.height}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding="async"
+    class={className}
+  />
 </picture>

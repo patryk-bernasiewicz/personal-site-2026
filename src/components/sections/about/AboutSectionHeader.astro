@@ -1,0 +1,26 @@
+---
+import { classNames } from '@/lib/classNames';
+
+interface Props {
+	label: string;
+	id?: string;
+	class?: string;
+}
+
+const { label, id, class: className = '' } = Astro.props;
+---
+
+<div
+	class={classNames(
+		'mb-4 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-5',
+		className,
+	)}
+>
+	<h2 id={id} class="text-caption font-bold uppercase tracking-[0.18em] text-gold">
+		{label}
+	</h2>
+	<span
+		class="h-px bg-[linear-gradient(90deg,rgba(217,164,65,0.48),rgba(217,164,65,0.06))]"
+		aria-hidden="true"
+	></span>
+</div>

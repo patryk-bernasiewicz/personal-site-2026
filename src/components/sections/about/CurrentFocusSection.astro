@@ -1,0 +1,51 @@
+---
+import AboutSectionHeader from '@/components/sections/about/AboutSectionHeader.astro';
+import Container from '@/components/ui/Container.astro';
+import { getAboutPageContent } from '@/config/about-content';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { focus } = getAboutPageContent(locale);
+---
+
+<Container
+	tag="section"
+	class="max-w-[1180px] py-12 lg:py-18"
+	aria-labelledby="about-focus-heading"
+>
+	<AboutSectionHeader id="about-focus-heading" label={focus.label} class="mb-8" />
+	<div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+		<div class="relative">
+			<p class="max-w-2xl text-[clamp(1.35rem,2vw,1.7rem)] leading-relaxed text-text-soft">
+				{focus.description}
+			</p>
+		</div>
+
+		<ul class="grid list-none p-0">
+			{
+				focus.items.map((item) => (
+					<li class="group relative grid grid-cols-[auto_1fr] gap-4 border-b border-white/10 pb-5 pt-5 first:pt-0 last:border-b-0 last:pb-0">
+						<div
+							class="relative flex w-[0.9rem] justify-center pt-[0.55rem] before:absolute before:bottom-[-1.35rem] before:top-5 before:w-px before:bg-[linear-gradient(to_bottom,rgba(217,164,65,0.52),rgba(217,164,65,0.1))] before:content-[''] group-last:before:hidden"
+							aria-hidden="true"
+						>
+							<span class="relative z-[1] size-[0.5rem] rounded-full bg-gold shadow-[0_0_0_4px_rgba(217,164,65,0.08),0_0_18px_rgba(217,164,65,0.55)]" />
+						</div>
+						<div>
+							<h3 class="font-display text-lg font-semibold leading-tight text-text-main">
+								{item.title}
+							</h3>
+							<p class="mt-2 text-[0.95rem] leading-7 text-text-muted">
+								{item.description}
+							</p>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</Container>

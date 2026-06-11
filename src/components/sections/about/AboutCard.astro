@@ -1,0 +1,33 @@
+---
+import { classNames } from '@/lib/classNames';
+
+interface Props {
+	tag?: 'article' | 'div';
+	href?: string;
+	external?: boolean;
+	class?: string;
+}
+
+const { tag = 'article', href, external = false, class: className = '' } = Astro.props;
+const Tag = href ? 'a' : tag;
+const attrs = href
+	? {
+			href,
+			target: external ? '_blank' : undefined,
+			rel: external ? 'noopener noreferrer' : undefined,
+		}
+	: {};
+
+const baseClass =
+	'relative block h-full overflow-hidden rounded-[0.5rem] border border-[rgba(217,164,65,0.25)] bg-[linear-gradient(135deg,rgba(217,164,65,0.075),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.01)),rgba(7,7,7,0.72)] text-inherit no-underline shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_20px_70px_rgba(0,0,0,0.22)] before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_18%_0%,rgba(217,164,65,0.16),transparent_34%)] before:opacity-0 before:transition-opacity before:duration-200 before:content-[\'\'] motion-reduce:transition-none';
+
+const linkClass =
+	'transition duration-200 hover:-translate-y-0.5 hover:border-[rgba(241,198,106,0.68)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_22px_80px_rgba(0,0,0,0.36),0_0_32px_rgba(217,164,65,0.12)] hover:before:opacity-100 focus-visible:-translate-y-0.5 focus-visible:border-[rgba(241,198,106,0.68)] focus-visible:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_22px_80px_rgba(0,0,0,0.36),0_0_32px_rgba(217,164,65,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold focus-visible:before:opacity-100 motion-reduce:hover:translate-y-0 motion-reduce:focus-visible:translate-y-0';
+---
+
+<Tag
+	{...attrs}
+	class={classNames(baseClass, href && linkClass, className)}
+>
+	<slot />
+</Tag>

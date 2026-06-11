@@ -1,6 +1,11 @@
 ---
+import AboutSummarySection from '@/components/sections/about/AboutSummarySection.astro';
 import AboutHero from '@/components/sections/about/AboutHero.astro';
+import AvoidAndLinksSection from '@/components/sections/about/AvoidAndLinksSection.astro';
+import CurrentFocusSection from '@/components/sections/about/CurrentFocusSection.astro';
 import ValuesSection from '@/components/sections/about/ValuesSection.astro';
+import WorkEnvironmentSection from '@/components/sections/about/WorkEnvironmentSection.astro';
+import WorkProcessSection from '@/components/sections/about/WorkProcessSection.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import type { Locale } from '@/lib/i18n/locales';
@@ -25,5 +30,10 @@ const metadata = buildPageMetadata({
 
 <PageLayout {metadata} routeKey="about">
 	<AboutHero {locale} />
+	<AboutSummarySection {locale} />
+	<WorkProcessSection {locale} />
 	<ValuesSection {locale} />
+	<WorkEnvironmentSection {locale} />
+	<CurrentFocusSection {locale} />
+	<AvoidAndLinksSection {locale} />
 </PageLayout>

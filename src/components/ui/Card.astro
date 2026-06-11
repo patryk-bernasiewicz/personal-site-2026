@@ -1,4 +1,6 @@
 ---
+import { classNames } from '@/lib/classNames';
+
 interface Props {
 	class?: string;
 }
@@ -6,6 +8,6 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<div class:list={['card-glass card-gold-hover rounded-card p-6', className]}>
+<div class={classNames('card-glass card-gold-hover rounded-card p-6', className)}>
 	<slot />
 </div>

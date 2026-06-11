@@ -1,0 +1,52 @@
+---
+import AboutSectionHeader from "@/components/sections/about/AboutSectionHeader.astro";
+import Container from "@/components/ui/Container.astro";
+import { getAboutPageContent } from "@/config/about-content";
+import type { Locale } from "@/lib/i18n/locales";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { process } = getAboutPageContent(locale);
+---
+
+<Container
+	tag="section"
+	class="max-w-[1180px] py-12 lg:py-20"
+	aria-labelledby="about-process-heading"
+>
+	<AboutSectionHeader id="about-process-heading" label={process.label} class="mb-8" />
+	<ol
+		class="grid list-none gap-5 border-y border-white/10 py-7 md:grid-cols-3 md:gap-0 md:py-9"
+	>
+		{
+			process.steps.map((step, index) => (
+				<li class="relative min-w-0 md:px-7 md:first:pl-0 md:last:pr-0">
+					{index < process.steps.length - 1 && (
+						<span
+							class="absolute right-0 top-0 hidden h-full w-px bg-[linear-gradient(to_bottom,transparent,rgba(217,164,65,0.34),rgba(255,255,255,0.08),transparent)] md:block"
+							aria-hidden="true"
+						/>
+					)}
+					<div
+						class="flex items-center gap-4 text-gold"
+						aria-hidden="true"
+					>
+						<span class="font-display text-[clamp(2.15rem,4vw,3.2rem)] font-semibold leading-none text-gold-soft">
+							{step.number}
+						</span>
+						<span class="h-px flex-1 bg-[linear-gradient(90deg,rgba(217,164,65,0.58),rgba(217,164,65,0.06))]" />
+					</div>
+					<h3 class="mt-6 max-w-[18rem] font-display text-[1.35rem] font-semibold leading-tight text-text-main">
+						{step.title}
+					</h3>
+					<p class="mt-4 text-[0.98rem] leading-7 text-text-muted">
+						{step.description}
+					</p>
+				</li>
+			))
+		}
+	</ol>
+</Container>

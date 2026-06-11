@@ -1,21 +1,146 @@
 ---
-import Container from '@/components/ui/Container.astro';
-import { siteConfig } from '@/config/site';
-import { getDictionary } from '@/lib/i18n/dictionaries';
-import type { Locale } from '@/lib/i18n/locales';
+import aboutMePhoto from "@/assets/images/about-me-photo.png";
+import aboutMePhotoWebp from "@/assets/images/about-me-photo.webp";
+import aboutMeSignature from "@/assets/images/about-me-signature.png";
+import aboutMeSignatureWebp from "@/assets/images/about-me-signature.webp";
+import HeroMediaPicture from "@/components/sections/home/HeroMediaPicture.astro";
+import Container from "@/components/ui/Container.astro";
+import { getAboutPageContent } from "@/config/about-content";
+import type { Locale } from "@/lib/i18n/locales";
 
 interface Props {
-	locale: Locale;
+  locale: Locale;
 }
 
 const { locale } = Astro.props;
-const dictionary = getDictionary(locale);
+const { hero } = getAboutPageContent(locale);
 ---
 
-<Container tag="section" class="section-gap pt-nav">
-	<p class="eyebrow">{dictionary.about.eyebrow}</p>
-	<h1 class="mt-4 font-display text-section-title text-text-main">
-		{dictionary.about.heading(siteConfig.author.name)}
-	</h1>
-	<p class="mt-6 max-w-2xl text-body-large text-text-soft">{dictionary.about.lead}</p>
+<Container
+  tag="section"
+  class="about-hero relative isolate max-w-[1180px] overflow-x-hidden pt-nav pb-10 before:pointer-events-none before:absolute before:inset-[6rem_0_auto_42%] before:-z-10 before:h-[28rem] before:w-[min(38rem,50vw)] before:bg-[radial-gradient(circle,rgba(217,164,65,0.16),transparent_64%)] before:opacity-[0.7] before:blur-[24px] before:content-[''] lg:pb-16"
+  aria-labelledby="about-heading"
+>
+  <div
+    class="grid gap-9 pt-10 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,0.88fr)] lg:items-center lg:gap-12"
+  >
+    <div>
+      <p class="text-caption font-semibold uppercase text-gold">
+        {hero.breadcrumb}
+      </p>
+      <h1
+        id="about-heading"
+        class="mt-5 max-w-3xl font-display text-[clamp(2.75rem,5vw,4.25rem)] font-semibold leading-[1.02] text-text-main"
+      >
+        {hero.headingPrefix}
+        <span class="text-gradient-gold">{hero.headingHighlight}</span>
+      </h1>
+      <p class="mt-6 max-w-2xl text-body-large text-text-soft">
+        {hero.lead}
+      </p>
+      <p class="mt-6 max-w-xl text-body text-text-muted">
+        {hero.description}
+      </p>
+    </div>
+
+    <figure
+      class="relative min-h-[20rem] rounded-[0.5rem] border border-white/[0.055] bg-[linear-gradient(180deg,rgba(255,255,255,0.008),rgba(255,255,255,0.002)),rgba(0,0,0,0.96)] shadow-[inset_0_1px_0_rgba(255,255,255,0.018),0_24px_100px_rgba(0,0,0,0.62)] backdrop-blur-sm lg:min-h-[clamp(18rem,30vw,23rem)]"
+    >
+      <div
+        class="about-hero__grid absolute inset-0 opacity-[0.16]"
+        aria-hidden="true"
+      >
+      </div>
+      <div
+        class="absolute bottom-0 left-[-5%] top-[7%] w-[58%] opacity-90 lg:left-[clamp(1rem,4vw,3.5rem)] lg:top-5 lg:w-[min(42%,19rem)]"
+        aria-hidden="true"
+      >
+        <HeroMediaPicture
+          desktop={{ webp: aboutMePhotoWebp, fallback: aboutMePhoto }}
+          alt=""
+          loading="eager"
+          fetchpriority="high"
+          desktopSizes="(min-width: 1024px) 48vw, 100vw"
+          class="about-hero__image"
+        />
+      </div>
+      <div
+        class="absolute right-4 top-[clamp(1.25rem,3vw,2rem)] max-w-[52%] font-mono text-[clamp(0.62rem,1vw,0.75rem)] leading-[1.7] text-text-muted [text-shadow:0_0_18px_rgba(0,0,0,0.78)] lg:right-[clamp(1rem,3vw,2.5rem)] lg:max-w-[min(18rem,43%)] [&_p:first-child]:text-text-soft [&_p:last-child]:text-text-soft"
+        aria-label="Developer profile"
+      >
+        {
+          hero.codeLines.map((line) => (
+            <p style={{ marginLeft: `${line.indent}rem` }}>{line.content}</p>
+          ))
+        }
+      </div>
+      <figcaption
+        class="absolute bottom-[clamp(1rem,2.4vw,1.6rem)] right-[clamp(1rem,2.8vw,2.25rem)]"
+      >
+        <picture class="block w-[clamp(11.5rem,20vw,18rem)]">
+          <source
+            type="image/webp"
+            srcset={aboutMeSignatureWebp.src}
+            sizes="18rem"
+          />
+          <img
+            src={aboutMeSignature.src}
+            alt={hero.signature}
+            width={aboutMeSignature.width}
+            height={aboutMeSignature.height}
+            loading="eager"
+            decoding="async"
+            class="about-hero__signature"
+          />
+        </picture>
+      </figcaption>
+      <div
+        class="absolute bottom-0 left-0 right-0 h-px bg-[linear-gradient(90deg,transparent,var(--color-gold),transparent)] shadow-[0_0_18px_rgba(217,164,65,0.55),0_0_42px_rgba(217,164,65,0.28)] before:absolute before:left-1/2 before:top-1/2 before:h-8 before:w-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-[radial-gradient(ellipse_at_center,rgba(217,164,65,0.36),transparent_68%)] before:blur-md before:content-[''] before:isolate before:z-100"
+        aria-hidden="true"
+      >
+      </div>
+    </figure>
+  </div>
 </Container>
+
+<style>
+  .about-hero__grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255, 255, 255, 0.14) 1px, transparent 1.5px);
+    background-position:
+      0 0,
+      0 0,
+      0.4rem 0.4rem;
+    background-size:
+      2rem 2rem,
+      2rem 2rem,
+      1.7rem 1.7rem;
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      black 18%,
+      black 86%,
+      transparent
+    );
+  }
+
+  :global(.about-hero__image) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: left bottom;
+    filter: saturate(0.9) contrast(1.06)
+      drop-shadow(0 24px 50px rgba(0, 0, 0, 0.8));
+  }
+
+  :global(.about-hero__signature) {
+    width: 100%;
+    height: auto;
+    display: block;
+    opacity: 0.96;
+    filter: brightness(1.22) contrast(1.08) saturate(1.1)
+      drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+  }
+</style>

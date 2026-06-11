@@ -1,0 +1,40 @@
+---
+import AboutCard from '@/components/sections/about/AboutCard.astro';
+import AboutIcon from '@/components/sections/about/AboutIcon.astro';
+import AboutSectionHeader from '@/components/sections/about/AboutSectionHeader.astro';
+import Container from '@/components/ui/Container.astro';
+import { getAboutPageContent } from '@/config/about-content';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { summary } = getAboutPageContent(locale);
+---
+
+<Container
+	tag="section"
+	class="about-summary max-w-[1180px] py-10 lg:py-14"
+	aria-labelledby="about-summary-heading"
+>
+	<AboutSectionHeader id="about-summary-heading" label={summary.label} />
+	<ul class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+		{
+			summary.items.map((item) => (
+				<li>
+					<AboutCard class="p-6 lg:p-7">
+						<div class="relative flex h-full min-h-[13rem] flex-col">
+							<AboutIcon name={item.icon} class="size-7 text-gold" />
+							<h3 class="mt-6 font-display text-xl font-semibold leading-tight text-text-main">
+								{item.title}
+							</h3>
+							<p class="mt-3 text-[0.95rem] leading-7 text-text-muted">{item.description}</p>
+						</div>
+					</AboutCard>
+				</li>
+			))
+		}
+	</ul>
+</Container>
