@@ -45,6 +45,30 @@ npm run dev
 npm run content:check   # requires .env
 ```
 
+### Floating music player
+
+The player fetches a public playlist directly from MinIO/S3:
+
+```bash
+MUSIC_PLAYLIST_URL=https://s3.patrykb.pl/patrykbpl/audio/playlist.json
+```
+
+Credentials are not required. The playlist should contain absolute MP3 URLs
+readable by the browser:
+
+```json
+[
+  {
+    "title": "Atmospheric Track 01",
+    "artist": "Patryk",
+    "src": "https://s3.patrykb.pl/patrykbpl/audio/01-night-interface.mp3"
+  }
+]
+```
+
+The MinIO bucket needs CORS `GET` access for the deployed site origin. Without
+CORS, playback may work, but the Web Audio visualizer may not receive analyser data.
+
 ## Scripts
 
 | Command | Description |

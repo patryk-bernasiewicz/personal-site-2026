@@ -76,6 +76,11 @@ export default defineConfig({
 				access: 'secret',
 				optional: true,
 			}),
+			MUSIC_PLAYLIST_URL: envField.string({
+				context: 'server',
+				access: 'public',
+				default: 'https://s3.patrykb.pl/patrykbpl/audio/playlist.json',
+			}),
 		},
 	},
 });

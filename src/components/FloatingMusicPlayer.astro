@@ -1,0 +1,1007 @@
+﻿---
+interface Props {
+	playlistUrl?: string;
+}
+
+const { playlistUrl = '/audio/playlist.json' } = Astro.props;
+---
+
+<div
+	class="floating-music"
+	data-floating-music-player
+	data-playlist-url={playlistUrl}
+>
+	<div class="music-hint" data-music-hint>
+		kliknij, aby posĹ‚uchaÄ‡ klimatycznych kawaĹ‚kĂłw
+	</div>
+
+	<div class="music-shell" data-music-shell>
+		<button
+			type="button"
+			class="music-skip"
+			data-music-prev
+			aria-label="Poprzedni utwĂłr"
+		>
+			<svg viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M7 6h2v12H7V6Zm3.5 6 8-5.5v11l-8-5.5Z" fill="currentColor"></path>
+			</svg>
+		</button>
+
+		<button
+			type="button"
+			class="music-toggle"
+			data-music-toggle
+			aria-label="OdtwĂłrz muzykÄ™"
+		>
+			<span class="music-icon" data-play-icon>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M8 5.5v13l10-6.5-10-6.5Z" fill="currentColor"></path>
+				</svg>
+			</span>
+			<span class="music-icon" data-pause-icon hidden>
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M8 5h3v14H8V5Zm5 0h3v14h-3V5Z" fill="currentColor"></path>
+				</svg>
+			</span>
+		</button>
+
+		<button
+			type="button"
+			class="music-skip"
+			data-music-next
+			aria-label="NastÄ™pny utwĂłr"
+		>
+			<svg viewBox="0 0 24 24" aria-hidden="true">
+				<path d="m5.5 6.5 8 5.5-8 5.5v-11ZM15 6h2v12h-2V6Z" fill="currentColor"></path>
+			</svg>
+		</button>
+
+		<div class="music-visualizer" aria-hidden="true" data-music-visualizer>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+			<i></i>
+		</div>
+
+		<p class="music-status" aria-live="polite" data-music-status>
+			Odtwarzacz muzyki gotowy
+		</p>
+	</div>
+
+	<p class="music-track-title" data-music-track-title hidden>
+		<span class="music-track-title__text" data-music-track-title-text></span>
+	</p>
+</div>
+
+<style>
+	.floating-music {
+		--player-accent: var(--color-gold, #d9a441);
+		--player-accent-soft: var(--color-gold-soft, #f1c66a);
+		--player-accent-muted: var(--color-gold-muted, #8f6826);
+		--player-accent-dark: var(--color-gold-dark, #3d2a0d);
+		--player-bg: color-mix(in srgb, var(--player-accent-muted) 68%, var(--color-ink, #050505) 32%);
+		--player-surface: color-mix(in srgb, var(--color-ink, #050505) 82%, var(--player-accent-dark) 18%);
+		--player-text: var(--color-text-main, #f7f4ee);
+		--player-muted: var(--color-text-muted, #9a948b);
+
+		position: fixed;
+		top: calc(var(--spacing-nav-h, 6rem) + 0.35rem);
+		right: clamp(1rem, 4vw, 4rem);
+		z-index: 55;
+		display: grid;
+		justify-items: center;
+		gap: 0.32rem;
+		width: max-content;
+		max-width: calc(100vw - 1.5rem);
+		pointer-events: auto;
+	}
+
+	.music-shell {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.32rem;
+		min-height: 2.125rem;
+		padding: 0.25rem 0.58rem 0.25rem 0.25rem;
+		border: 1px solid color-mix(in srgb, white 18%, var(--player-accent) 82%);
+		border-radius: 999px;
+		background:
+			linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.03)),
+			var(--player-bg);
+		color: var(--player-text);
+		box-shadow:
+			0 0.75rem 2rem rgba(0, 0, 0, 0.24),
+			0 0 1.5rem color-mix(in srgb, var(--player-accent) 36%, transparent);
+		backdrop-filter: blur(16px);
+		opacity: 0.72;
+		pointer-events: auto;
+		transform: scale(0.86);
+		transition:
+			border-color 180ms ease,
+			box-shadow 180ms ease,
+			opacity 260ms ease 650ms,
+			transform 180ms ease;
+	}
+
+	.floating-music:hover .music-shell {
+		border-color: var(--player-accent-soft);
+		box-shadow:
+			0 0.9rem 2.25rem rgba(0, 0, 0, 0.28),
+			0 0 1.85rem color-mix(in srgb, var(--player-accent-soft) 44%, transparent);
+		opacity: 1;
+		transition:
+			border-color 180ms ease,
+			box-shadow 180ms ease,
+			opacity 0ms linear,
+			transform 180ms ease;
+		transform: translateY(-1px) scale(1);
+	}
+
+	.music-toggle {
+		display: grid;
+		width: 1.625rem;
+		height: 1.625rem;
+		place-items: center;
+		border: 1px solid rgba(255, 255, 255, 0.28);
+		border-radius: 999px;
+		background: color-mix(in srgb, var(--color-ink, #050505) 88%, white 12%);
+		color: var(--color-text-main, #f7f4ee);
+		cursor: pointer;
+		transition:
+			border-color 180ms ease,
+			background 180ms ease,
+			color 180ms ease,
+			box-shadow 180ms ease,
+			transform 180ms ease;
+	}
+
+	.music-toggle:hover {
+		border-color: rgba(255, 255, 255, 0.58);
+		background: color-mix(in srgb, var(--color-ink, #050505) 74%, white 26%);
+		color: white;
+		box-shadow: 0 0 0.75rem rgba(255, 255, 255, 0.16);
+		transform: scale(1.04);
+	}
+
+	.music-skip {
+		display: grid;
+		width: 1.25rem;
+		height: 1.25rem;
+		place-items: center;
+		border: 1px solid rgba(255, 255, 255, 0.22);
+		border-radius: 999px;
+		background: color-mix(in srgb, var(--color-ink, #050505) 86%, white 14%);
+		color: var(--color-text-main, #f7f4ee);
+		cursor: pointer;
+		transition:
+			border-color 180ms ease,
+			background 180ms ease,
+			color 180ms ease,
+			box-shadow 180ms ease,
+			transform 180ms ease;
+	}
+
+	.music-skip:hover {
+		border-color: rgba(255, 255, 255, 0.5);
+		background: color-mix(in srgb, var(--color-ink, #050505) 72%, white 28%);
+		box-shadow: 0 0 0.65rem rgba(255, 255, 255, 0.13);
+		transform: scale(1.08);
+	}
+
+	.music-skip:focus-visible {
+		outline: 2px solid var(--color-text-main, #f7f4ee);
+		outline-offset: 3px;
+	}
+
+	.music-skip:disabled {
+		cursor: not-allowed;
+		opacity: 0.45;
+		transform: none;
+	}
+
+	.music-toggle:focus-visible {
+		outline: 2px solid var(--color-text-main, #f7f4ee);
+		outline-offset: 3px;
+	}
+
+	.music-toggle:disabled {
+		cursor: not-allowed;
+		opacity: 0.58;
+		transform: none;
+	}
+
+	.music-icon,
+	.music-icon svg {
+		display: block;
+	}
+
+	.music-icon svg {
+		width: 0.82rem;
+		height: 0.82rem;
+	}
+
+	.music-skip svg {
+		width: 0.72rem;
+		height: 0.72rem;
+	}
+
+	.music-visualizer {
+		display: inline-flex;
+		align-items: end;
+		gap: 0.14rem;
+		height: 1rem;
+		min-width: 2.15rem;
+	}
+
+	.music-visualizer i {
+		width: 0.16rem;
+		height: 0.9rem;
+		border-radius: 999px;
+		background: currentColor;
+		opacity: 0.86;
+		transform: scaleY(0.18);
+		transform-origin: bottom;
+		transition: transform 80ms linear;
+	}
+
+	.floating-music[data-playing='true'] .music-visualizer i {
+		opacity: 0.94;
+	}
+
+	.music-hint {
+		max-width: min(16rem, calc(100vw - 2rem));
+		padding: 0.28rem 0.55rem;
+		border: 1px solid color-mix(in srgb, var(--player-accent) 34%, transparent);
+		border-radius: 999px;
+		background:
+			linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+			var(--player-surface);
+		color: var(--color-text-main, #f7f4ee);
+		font-size: 0.68rem;
+		font-weight: 600;
+		line-height: 1.2;
+		text-align: center;
+		box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
+		animation: music-hint-in 420ms ease both;
+		pointer-events: auto;
+	}
+
+	.music-hint[hidden] {
+		display: none;
+	}
+
+	.music-hint.is-dismissing {
+		animation: music-hint-out 160ms ease both;
+	}
+
+	.music-status {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		clip-path: inset(50%);
+		border: 0;
+		white-space: nowrap;
+	}
+
+	.music-track-title {
+		width: var(--music-shell-width, 8rem);
+		max-width: calc(100vw - 2rem);
+		margin: -0.12rem 0 0;
+		color: var(--color-text-soft, #d8d2c8);
+		font-size: 0.625rem;
+		font-weight: 600;
+		line-height: 1.2;
+		overflow: hidden;
+		text-align: left;
+		text-shadow: 0 0.375rem 1rem rgba(0, 0, 0, 0.48);
+		white-space: nowrap;
+		opacity: 0;
+		pointer-events: none;
+		transform: translateY(-0.18rem);
+		transition:
+			opacity 140ms ease,
+			transform 140ms ease;
+		mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+		-webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+	}
+
+	.floating-music:hover .music-track-title {
+		opacity: 0.78;
+		transform: translateY(0);
+	}
+
+	.music-track-title__text {
+		display: inline-block;
+		max-width: none;
+		padding-inline: 0.35rem;
+		white-space: nowrap;
+		transform: translateX(0);
+	}
+
+	.music-track-title[data-scroll='true'] .music-track-title__text {
+		animation: music-track-marquee var(--music-title-duration, 8s) ease-in-out 360ms infinite alternate;
+	}
+
+	.music-track-title[hidden] {
+		display: none;
+	}
+
+	@keyframes music-hint-in {
+		from {
+			opacity: 0;
+			transform: translateY(-0.25rem);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes music-hint-out {
+		to {
+			opacity: 0;
+			transform: translateY(-0.2rem);
+		}
+	}
+
+	@keyframes music-track-marquee {
+		from {
+			transform: translateX(0);
+		}
+
+		to {
+			transform: translateX(var(--music-title-shift, 0));
+		}
+	}
+
+	@media (max-width: 640px) {
+		.floating-music {
+			top: calc(var(--spacing-nav-h, 6rem) + 0.2rem);
+			right: 1rem;
+			gap: 0.28rem;
+		}
+
+		.music-shell {
+			gap: 0.28rem;
+			min-height: 2rem;
+			padding-right: 0.54rem;
+		}
+
+		.floating-music:hover .music-shell {
+			transform: translateY(-1px) scale(0.98);
+		}
+
+		.music-hint {
+			font-size: 0.66rem;
+		}
+
+		.music-track-title {
+			max-width: calc(100vw - 2rem);
+			font-size: 0.6rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.music-hint,
+		.music-hint.is-dismissing,
+		.music-shell,
+		.music-track-title,
+		.music-track-title__text,
+		.music-toggle,
+		.music-skip,
+		.music-visualizer i {
+			animation: none;
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	type FloatingMusicTrack = {
+		src: string;
+		title?: string;
+		artist?: string;
+	};
+
+	type FloatingMusicBinding = {
+		animationFrame?: number;
+		bars: HTMLElement[];
+		controller: AbortController;
+		hint?: HTMLElement | null;
+		nextButton: HTMLButtonElement;
+		pauseIcon: HTMLElement;
+		playIcon: HTMLElement;
+		player: HTMLElement;
+		prevButton: HTMLButtonElement;
+		resizeObserver?: ResizeObserver;
+		shell: HTMLElement;
+		status: HTMLElement;
+		toggle: HTMLButtonElement;
+		trackTitle: HTMLElement;
+		trackTitleText: HTMLElement;
+	};
+
+	type FloatingMusicEngine = {
+		analyser?: AnalyserNode;
+		audio?: HTMLAudioElement;
+		audioContext?: AudioContext;
+		bindings: Set<FloatingMusicBinding>;
+		currentIndex: number;
+		frequencyData?: Uint8Array<ArrayBuffer>;
+		hasFatalError: boolean;
+		isLoading: boolean;
+		isPlaying: boolean;
+		isPlaylistLoaded: boolean;
+		playlistUrl: string;
+		source?: MediaElementAudioSourceNode;
+		statusMessage: string;
+		tracks: FloatingMusicTrack[];
+	};
+
+	type FloatingMusicState = {
+		cancelScheduledSetup?: () => void;
+		cleanup?: () => void;
+		engine?: FloatingMusicEngine;
+		setupHandler?: () => void;
+	};
+
+	const PLAYER_SELECTOR = '[data-floating-music-player]';
+	const HINT_STORAGE_KEY = 'floatingMusicPlayerHintDismissed';
+	const globalWindow = window as Window & {
+		__floatingMusicState?: FloatingMusicState;
+		webkitAudioContext?: typeof AudioContext;
+	};
+	const AudioContextConstructor = window.AudioContext ?? globalWindow.webkitAudioContext;
+	const floatingMusicState = (globalWindow.__floatingMusicState ??= {});
+
+	function getEngine(playlistUrl: string): FloatingMusicEngine {
+		if (!floatingMusicState.engine) {
+			floatingMusicState.engine = {
+				bindings: new Set<FloatingMusicBinding>(),
+				currentIndex: 0,
+				hasFatalError: false,
+				isLoading: false,
+				isPlaying: false,
+				isPlaylistLoaded: false,
+				playlistUrl,
+				statusMessage: 'Odtwarzacz muzyki gotowy',
+				tracks: [],
+			};
+			return floatingMusicState.engine;
+		}
+
+		if (!floatingMusicState.engine.isPlaylistLoaded) {
+			floatingMusicState.engine.playlistUrl = playlistUrl;
+		}
+
+		return floatingMusicState.engine;
+	}
+
+	function setupFloatingMusicPlayers() {
+		floatingMusicState.cleanup?.();
+		floatingMusicState.cleanup = undefined;
+
+		const players = Array.from(document.querySelectorAll<HTMLElement>(PLAYER_SELECTOR));
+		const cleanupTasks = players.map((player) => setupFloatingMusicPlayer(player));
+
+		floatingMusicState.cleanup = () => {
+			cleanupTasks.forEach((cleanup) => cleanup());
+		};
+	}
+
+	function scheduleFloatingMusicPlayersSetup() {
+		floatingMusicState.cancelScheduledSetup?.();
+		floatingMusicState.cancelScheduledSetup = undefined;
+
+		const idleWindow = window as Window & {
+			cancelIdleCallback?: (handle: number) => void;
+			requestIdleCallback?: (
+				callback: IdleRequestCallback,
+				options?: IdleRequestOptions,
+			) => number;
+		};
+		let didRun = false;
+
+		const runSetup = () => {
+			if (didRun) {
+				return;
+			}
+
+			didRun = true;
+			floatingMusicState.cancelScheduledSetup = undefined;
+			setupFloatingMusicPlayers();
+		};
+
+		if (idleWindow.requestIdleCallback && idleWindow.cancelIdleCallback) {
+			const handle = idleWindow.requestIdleCallback(runSetup, { timeout: 1200 });
+			floatingMusicState.cancelScheduledSetup = () => idleWindow.cancelIdleCallback?.(handle);
+			return;
+		}
+
+		const handle = window.setTimeout(runSetup, 120);
+		floatingMusicState.cancelScheduledSetup = () => window.clearTimeout(handle);
+	}
+
+	function setupFloatingMusicPlayer(player: HTMLElement) {
+		const playlistUrl = player.dataset.playlistUrl ?? '/audio/playlist.json';
+		const hint = player.querySelector<HTMLElement>('[data-music-hint]');
+		const shell = player.querySelector<HTMLElement>('[data-music-shell]');
+		const toggle = player.querySelector<HTMLButtonElement>('[data-music-toggle]');
+		const prevButton = player.querySelector<HTMLButtonElement>('[data-music-prev]');
+		const nextButton = player.querySelector<HTMLButtonElement>('[data-music-next]');
+		const playIcon = player.querySelector<HTMLElement>('[data-play-icon]');
+		const pauseIcon = player.querySelector<HTMLElement>('[data-pause-icon]');
+		const status = player.querySelector<HTMLElement>('[data-music-status]');
+		const trackTitle = player.querySelector<HTMLElement>('[data-music-track-title]');
+		const trackTitleText = player.querySelector<HTMLElement>('[data-music-track-title-text]');
+		const bars = Array.from(player.querySelectorAll<HTMLElement>('[data-music-visualizer] i'));
+
+		if (!shell || !toggle || !prevButton || !nextButton || !playIcon || !pauseIcon || !status || !trackTitle || !trackTitleText || bars.length === 0) {
+			return () => undefined;
+		}
+
+		const engine = getEngine(playlistUrl);
+		const controller = new AbortController();
+		const binding: FloatingMusicBinding = {
+			bars,
+			controller,
+			hint,
+			nextButton,
+			pauseIcon,
+			playIcon,
+			player,
+			prevButton,
+			shell,
+			status,
+			toggle,
+			trackTitle,
+			trackTitleText,
+		};
+
+		engine.bindings.add(binding);
+		syncTrackTitleMetrics(binding);
+
+		if ('ResizeObserver' in window) {
+			binding.resizeObserver = new ResizeObserver(() => syncTrackTitleMetrics(binding));
+			binding.resizeObserver.observe(binding.shell);
+		}
+
+		if (hint && sessionStorage.getItem(HINT_STORAGE_KEY)) {
+			hint.hidden = true;
+		}
+
+		binding.toggle.addEventListener(
+			'click',
+			() => {
+				dismissHint(binding);
+
+				if (engine.isPlaying) {
+					engine.audio?.pause();
+					setPlayingState(engine, false);
+					return;
+				}
+
+				void startPlayback(engine);
+			},
+			{ signal: controller.signal },
+		);
+
+		binding.prevButton.addEventListener(
+			'click',
+			() => {
+				dismissHint(binding);
+				void changeTrack(engine, -1, engine.isPlaying);
+			},
+			{ signal: controller.signal },
+		);
+
+		binding.nextButton.addEventListener(
+			'click',
+			() => {
+				dismissHint(binding);
+				void changeTrack(engine, 1, engine.isPlaying);
+			},
+			{ signal: controller.signal },
+		);
+
+		setBarsIdle(binding);
+		syncBinding(binding, engine);
+
+		if (engine.isPlaying) {
+			startVisualizer(binding, engine);
+		}
+
+		return () => {
+			controller.abort();
+			binding.resizeObserver?.disconnect();
+			stopVisualizer(binding);
+			engine.bindings.delete(binding);
+		};
+	}
+
+	function dismissHint(binding: FloatingMusicBinding) {
+		const { hint } = binding;
+
+		if (!hint || hint.hidden) {
+			return;
+		}
+
+		sessionStorage.setItem(HINT_STORAGE_KEY, 'true');
+		hint.classList.add('is-dismissing');
+		window.setTimeout(() => {
+			hint.hidden = true;
+			hint.classList.remove('is-dismissing');
+		}, 170);
+	}
+
+	function getAudio(engine: FloatingMusicEngine) {
+		if (engine.audio) {
+			return engine.audio;
+		}
+
+		engine.audio = new Audio();
+		engine.audio.crossOrigin = 'anonymous';
+		engine.audio.preload = 'none';
+		engine.audio.addEventListener('ended', () => void changeTrack(engine, 1, true));
+		engine.audio.addEventListener('error', () => {
+			if (engine.audio?.error) {
+				handleError(engine, 'Nie udalo sie odtworzyc utworu.', engine.audio.error);
+			}
+		});
+
+		return engine.audio;
+	}
+
+	function getTrackLabel(track: FloatingMusicTrack | undefined) {
+		if (!track) {
+			return '';
+		}
+
+		const title = track.title?.trim() || 'Nieznany utwor';
+		const artist = track.artist?.trim();
+
+		return artist ? `${title} - ${artist}` : title;
+	}
+
+	function syncAllBindings(engine: FloatingMusicEngine) {
+		engine.bindings.forEach((binding) => syncBinding(binding, engine));
+	}
+
+	function syncBinding(binding: FloatingMusicBinding, engine: FloatingMusicEngine) {
+		const isDisabled = engine.isLoading || engine.hasFatalError;
+		const trackLabel = getTrackLabel(engine.tracks[engine.currentIndex]);
+
+		binding.toggle.disabled = isDisabled;
+		binding.prevButton.disabled = isDisabled;
+		binding.nextButton.disabled = isDisabled;
+		binding.player.dataset.playing = String(engine.isPlaying);
+		binding.toggle.setAttribute(
+			'aria-label',
+			engine.isPlaying ? 'Zatrzymaj muzyke' : 'Odtworz muzyke',
+		);
+		binding.playIcon.hidden = engine.isPlaying;
+		binding.pauseIcon.hidden = !engine.isPlaying;
+		binding.status.textContent = engine.statusMessage;
+
+		if (trackLabel) {
+			binding.trackTitle.hidden = false;
+			binding.trackTitleText.textContent = trackLabel;
+			binding.player.dataset.hasTrack = 'true';
+			window.requestAnimationFrame(() => syncTrackTitleMetrics(binding));
+		} else {
+			binding.trackTitle.hidden = true;
+			binding.trackTitleText.textContent = '';
+			binding.trackTitle.removeAttribute('data-scroll');
+			binding.trackTitle.style.removeProperty('--music-title-shift');
+			binding.trackTitle.style.removeProperty('--music-title-duration');
+			binding.player.removeAttribute('data-has-track');
+		}
+	}
+
+	function syncTrackTitleMetrics(binding: FloatingMusicBinding) {
+		const shellWidth = Math.ceil(binding.shell.offsetWidth);
+
+		if (shellWidth > 0) {
+			binding.player.style.setProperty('--music-shell-width', `${shellWidth}px`);
+		}
+
+		if (binding.trackTitle.hidden) {
+			return;
+		}
+
+		const titleWidth = binding.trackTitle.clientWidth;
+		const textWidth = binding.trackTitleText.scrollWidth;
+		const overflowDistance = Math.max(0, textWidth - titleWidth);
+
+		if (overflowDistance > 4) {
+			const shift = overflowDistance + 8;
+			const duration = Math.min(14, Math.max(6, shift / 10));
+
+			binding.trackTitle.dataset.scroll = 'true';
+			binding.trackTitle.style.setProperty('--music-title-shift', `-${shift}px`);
+			binding.trackTitle.style.setProperty('--music-title-duration', `${duration}s`);
+			return;
+		}
+
+		binding.trackTitle.removeAttribute('data-scroll');
+		binding.trackTitle.style.removeProperty('--music-title-shift');
+		binding.trackTitle.style.removeProperty('--music-title-duration');
+	}
+
+	function setStatus(engine: FloatingMusicEngine, message: string) {
+		engine.statusMessage = message;
+		syncAllBindings(engine);
+	}
+
+	function setLoading(engine: FloatingMusicEngine, isLoading: boolean) {
+		engine.isLoading = isLoading;
+		syncAllBindings(engine);
+	}
+
+	function setBarsIdle(binding: FloatingMusicBinding) {
+		binding.bars.forEach((bar, index) => {
+			const baseScale = 0.16 + (index % 3) * 0.04;
+			bar.style.transform = `scaleY(${baseScale})`;
+		});
+	}
+
+	function stopVisualizer(binding: FloatingMusicBinding) {
+		if (binding.animationFrame !== undefined) {
+			window.cancelAnimationFrame(binding.animationFrame);
+			binding.animationFrame = undefined;
+		}
+
+		setBarsIdle(binding);
+	}
+
+	function stopAllVisualizers(engine: FloatingMusicEngine) {
+		engine.bindings.forEach(stopVisualizer);
+	}
+
+	function drawVisualizer(binding: FloatingMusicBinding, engine: FloatingMusicEngine) {
+		const activeAnalyser = engine.analyser;
+		const activeFrequencyData = engine.frequencyData;
+
+		if (!activeAnalyser || !activeFrequencyData || !engine.isPlaying || !engine.bindings.has(binding)) {
+			return;
+		}
+
+		activeAnalyser.getByteFrequencyData(activeFrequencyData);
+		binding.bars.forEach((bar, index) => {
+			const value = activeFrequencyData[index * 2] ?? 0;
+			const scale = Math.max(0.16, Math.min(1, value / 228));
+			bar.style.transform = `scaleY(${scale})`;
+		});
+
+		binding.animationFrame = window.requestAnimationFrame(() => drawVisualizer(binding, engine));
+	}
+
+	function startVisualizer(binding: FloatingMusicBinding, engine: FloatingMusicEngine) {
+		stopVisualizer(binding);
+
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			binding.bars.forEach((bar, index) => {
+				bar.style.transform = `scaleY(${index % 2 === 0 ? 0.48 : 0.28})`;
+			});
+			return;
+		}
+
+		drawVisualizer(binding, engine);
+	}
+
+	function startAllVisualizers(engine: FloatingMusicEngine) {
+		engine.bindings.forEach((binding) => startVisualizer(binding, engine));
+	}
+
+	function setPlayingState(engine: FloatingMusicEngine, nextIsPlaying: boolean) {
+		engine.isPlaying = nextIsPlaying;
+		syncAllBindings(engine);
+
+		if (nextIsPlaying) {
+			setStatus(engine, `Odtwarzanie: ${getTrackLabel(engine.tracks[engine.currentIndex]) || 'utwor'}`);
+			startAllVisualizers(engine);
+			return;
+		}
+
+		setStatus(engine, 'Muzyka zatrzymana');
+		stopAllVisualizers(engine);
+	}
+
+	function handleError(engine: FloatingMusicEngine, message: string, error: unknown, fatal = false) {
+		console.warn(`[FloatingMusicPlayer] ${message}`, error);
+		setPlayingState(engine, false);
+		setStatus(engine, message);
+
+		if (fatal) {
+			engine.hasFatalError = true;
+			syncAllBindings(engine);
+			engine.bindings.forEach((binding) => {
+				binding.player.dataset.state = 'error';
+			});
+		}
+	}
+
+	async function loadPlaylist(engine: FloatingMusicEngine) {
+		if (engine.isPlaylistLoaded) {
+			return;
+		}
+
+		const response = await fetch(engine.playlistUrl, {
+			headers: { Accept: 'application/json' },
+		});
+
+		if (!response.ok) {
+			throw new Error(`Playlist request failed with ${response.status}`);
+		}
+
+		const playlist = (await response.json()) as unknown;
+
+		if (!Array.isArray(playlist)) {
+			throw new Error('Playlist JSON must be an array.');
+		}
+
+		engine.tracks = playlist
+			.map((track): FloatingMusicTrack | undefined => {
+				if (!track || typeof track !== 'object') {
+					return undefined;
+				}
+
+				const rawTrack = track as Record<string, unknown>;
+				const src = typeof rawTrack.src === 'string' ? rawTrack.src.trim() : '';
+
+				if (!src) {
+					return undefined;
+				}
+
+				const validTrack: FloatingMusicTrack = { src };
+
+				if (typeof rawTrack.title === 'string') {
+					validTrack.title = rawTrack.title;
+				}
+
+				if (typeof rawTrack.artist === 'string') {
+					validTrack.artist = rawTrack.artist;
+				}
+
+				return validTrack;
+			})
+			.filter((track): track is FloatingMusicTrack => Boolean(track));
+
+		if (engine.tracks.length === 0) {
+			throw new Error('Playlist is empty or has no valid src fields.');
+		}
+
+		engine.isPlaylistLoaded = true;
+		syncAllBindings(engine);
+	}
+
+	async function ensureAudioGraph(engine: FloatingMusicEngine) {
+		if (!AudioContextConstructor) {
+			throw new Error('Web Audio API is unavailable.');
+		}
+
+		if (!engine.audioContext) {
+			engine.audioContext = new AudioContextConstructor();
+		}
+
+		if (!engine.source) {
+			engine.analyser = engine.audioContext.createAnalyser();
+			engine.analyser.fftSize = 64;
+			engine.frequencyData = new Uint8Array(engine.analyser.frequencyBinCount) as Uint8Array<ArrayBuffer>;
+
+			// Important: remote audio files need proper CORS headers.
+			// Without CORS, playback may work, but Web Audio analyser data may be unavailable.
+			engine.source = engine.audioContext.createMediaElementSource(getAudio(engine));
+			engine.source.connect(engine.analyser);
+			engine.analyser.connect(engine.audioContext.destination);
+		}
+
+		if (engine.audioContext.state === 'suspended') {
+			await engine.audioContext.resume();
+		}
+	}
+
+	function setTrack(engine: FloatingMusicEngine, index: number) {
+		const track = engine.tracks[index];
+
+		if (!track) {
+			return;
+		}
+
+		engine.currentIndex = index;
+		getAudio(engine).src = track.src;
+		syncAllBindings(engine);
+	}
+
+	function getLoopedTrackIndex(engine: FloatingMusicEngine, index: number) {
+		if (engine.tracks.length === 0) {
+			return 0;
+		}
+
+		return (index + engine.tracks.length) % engine.tracks.length;
+	}
+
+	async function playCurrentTrack(engine: FloatingMusicEngine) {
+		const activeAudio = getAudio(engine);
+
+		if (!activeAudio.src) {
+			setTrack(engine, engine.currentIndex);
+		}
+
+		await activeAudio.play();
+		setPlayingState(engine, true);
+	}
+
+	async function startPlayback(engine: FloatingMusicEngine) {
+		if (engine.isLoading || engine.hasFatalError) {
+			return;
+		}
+
+		setLoading(engine, true);
+		setStatus(engine, 'Ladowanie playlisty');
+
+		try {
+			await loadPlaylist(engine);
+			await ensureAudioGraph(engine);
+			await playCurrentTrack(engine);
+		} catch (error) {
+			const message =
+				error instanceof SyntaxError
+					? 'Nie udalo sie zaladowac playlisty.'
+					: error instanceof Error && error.message.includes('Web Audio API')
+						? 'Twoja przegladarka nie obsluguje Web Audio API.'
+						: engine.isPlaylistLoaded
+							? 'Nie udalo sie odtworzyc utworu.'
+							: 'Nie udalo sie zaladowac playlisty.';
+			handleError(engine, message, error, message !== 'Nie udalo sie odtworzyc utworu.');
+		} finally {
+			setLoading(engine, false);
+		}
+	}
+
+	async function changeTrack(engine: FloatingMusicEngine, delta: number, playAfterChange: boolean) {
+		if (engine.isLoading || engine.hasFatalError) {
+			return;
+		}
+
+		setLoading(engine, true);
+
+		try {
+			await loadPlaylist(engine);
+			setTrack(engine, getLoopedTrackIndex(engine, engine.currentIndex + delta));
+
+			if (playAfterChange) {
+				await ensureAudioGraph(engine);
+				await playCurrentTrack(engine);
+				return;
+			}
+
+			setStatus(engine, `Wybrano: ${getTrackLabel(engine.tracks[engine.currentIndex]) || 'utwor'}`);
+		} catch (error) {
+			const message =
+				error instanceof SyntaxError
+					? 'Nie udalo sie zaladowac playlisty.'
+					: engine.isPlaylistLoaded
+						? 'Nie udalo sie odtworzyc utworu.'
+						: 'Nie udalo sie zaladowac playlisty.';
+			handleError(engine, message, error, message !== 'Nie udalo sie odtworzyc utworu.');
+		} finally {
+			setLoading(engine, false);
+		}
+	}
+
+	if (floatingMusicState.setupHandler) {
+		document.removeEventListener('astro:page-load', floatingMusicState.setupHandler);
+	}
+
+	floatingMusicState.setupHandler = scheduleFloatingMusicPlayersSetup;
+	scheduleFloatingMusicPlayersSetup();
+	document.addEventListener('astro:page-load', floatingMusicState.setupHandler);
+</script>
