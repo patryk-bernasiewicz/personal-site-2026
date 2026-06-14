@@ -1,4 +1,4 @@
-import type { Locale } from '@/lib/i18n/locales';
+﻿import type { Locale } from '@/lib/i18n/locales';
 
 const NBSP = '\u00A0';
 

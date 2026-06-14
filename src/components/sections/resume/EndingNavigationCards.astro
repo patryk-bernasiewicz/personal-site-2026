@@ -1,0 +1,135 @@
+---
+import Container from '@/components/ui/Container.astro';
+import { getLocalizedRoute } from '@/lib/i18n/urls';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+type EndingCard = {
+	description: string;
+	external?: boolean;
+	href: string;
+	title: string;
+};
+
+const { locale } = Astro.props;
+
+const aboutHref = getLocalizedRoute('about', locale);
+const blogHref = getLocalizedRoute('blogIndex', locale);
+
+const cards: EndingCard[] = [
+	{
+		href: aboutHref,
+		title: locale === 'pl' ? 'O mnie' : 'About',
+		description:
+			locale === 'pl'
+				? 'Myślenie produktowe, podejście do pracy i codzienne nawyki wdrożeniowe.'
+				: 'Product thinking, work habits, and implementation discipline.',
+	},
+	{
+		href: blogHref,
+		title: locale === 'pl' ? 'Blog' : 'Articles',
+		description:
+			locale === 'pl'
+				? 'Notatki i wpisy z obszaru frontendu i delivery.'
+				: 'Notes on frontend and delivery work.',
+	},
+] as const;
+---
+
+<section class="dcv-ending section-gap">
+	<Container class="page-content-shell">
+		<div class="dcv-ending__cards">
+			{
+				cards.map((card, index) => (
+					<a
+						href={card.href}
+						class="dcv-ending-card"
+						target={card.external ? '_blank' : undefined}
+						rel={card.external ? 'noopener noreferrer' : undefined}
+					>
+						<span class="dcv-ending-card__index">0{index + 1}</span>
+						<p class="dcv-ending-card__title">{card.title}</p>
+						<p class="dcv-ending-card__desc">{card.description}</p>
+						<span class="dcv-ending-card__arrow" aria-hidden="true">→</span>
+					</a>
+				))
+			}
+		</div>
+	</Container>
+</section>
+
+<style>
+	.dcv-ending {
+		position: relative;
+		overflow: hidden;
+		padding-block: 5.5rem 5.5rem;
+	}
+
+	.dcv-ending__cards {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+	}
+
+	.dcv-ending-card {
+		position: relative;
+		display: grid;
+		gap: 0.65rem;
+		padding: 1.35rem 1.3rem;
+		min-height: 8.4rem;
+		border: 1px solid rgba(217, 164, 65, 0.42);
+		border-radius: 0.9rem;
+		background: linear-gradient(155deg, rgba(217, 164, 65, 0.08), rgba(10, 10, 10, 0.78));
+		transition:
+			border-color 180ms ease,
+			transform 180ms ease,
+			box-shadow 180ms ease;
+	}
+
+	.dcv-ending-card:hover {
+		transform: translateY(-2px);
+		border-color: var(--color-gold);
+		box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.4), 0 0 1.4rem rgba(217, 164, 65, 0.2);
+	}
+
+	.dcv-ending-card__index {
+		color: var(--color-gold);
+		font-size: 0.72rem;
+		line-height: 1;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.dcv-ending-card__title {
+		margin: 0.1rem 0 0;
+		color: var(--color-text-main);
+		font-family: var(--font-display);
+		font-size: 1.1rem;
+		line-height: 1.2;
+	}
+
+	.dcv-ending-card__desc {
+		margin: 0;
+		color: var(--color-text-muted);
+		font-size: 0.84rem;
+		line-height: 1.55;
+	}
+
+	.dcv-ending-card__arrow {
+		position: absolute;
+		right: 1.1rem;
+		bottom: 1rem;
+		color: var(--color-gold-soft);
+		font-size: 1.15rem;
+		line-height: 1;
+	}
+
+	@media (max-width: 980px) {
+		.dcv-ending__cards {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

@@ -10,7 +10,6 @@ export const dictionaries = {
 			about: 'O mnie',
 			resume: 'Cyfrowe CV',
 			blog: 'Blog',
-			projects: 'Projekty',
 		},
 		skipLink: 'Przejdź do treści',
 		meta: {
@@ -144,7 +143,6 @@ export const dictionaries = {
 			about: 'About',
 			resume: 'Digital Resume',
 			blog: 'Articles',
-			projects: 'Projects',
 		},
 		skipLink: 'Skip to content',
 		meta: {

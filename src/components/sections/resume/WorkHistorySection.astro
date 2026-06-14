@@ -1,9 +1,6 @@
 ---
-import Card from '@/components/ui/Card.astro';
 import Container from '@/components/ui/Container.astro';
-import SectionHeading from '@/components/ui/SectionHeading.astro';
-import { getWorkHistory } from '@/config/resume-content';
-import { getDictionary } from '@/lib/i18n/dictionaries';
+import { getResumeCopy, getWorkHistory, type WorkRole } from '@/config/resume-content';
 import type { Locale } from '@/lib/i18n/locales';
 
 interface Props {
@@ -11,27 +8,386 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const dictionary = getDictionary(locale);
 const roles = getWorkHistory(locale);
+const label = getResumeCopy(locale).experience;
+
+const metaByCompany: Record<string, { period: string; duration: string; impacts: string[] }> = {
+	'Japan Tobacco International': {
+		period: locale === 'pl' ? '08.2025 — obecnie' : '08.2025 — present',
+		duration: locale === 'pl' ? '10 miesięcy' : '10 months',
+		impacts: ['30+ rynków', 'CMS', 'global components'],
+	},
+	'Roboverse Reply DE': {
+		period: '11.2024 — 08.2025',
+		duration: locale === 'pl' ? '10 miesięcy' : '10 months',
+		impacts: ['7 modułów', '15–20% cleanup', '2–3 fixes / week'],
+	},
+	NapoleonCat: {
+		period: '03.2023 — 10.2024',
+		duration: locale === 'pl' ? '1 rok 8 miesięcy' : '1 year 8 months',
+		impacts: ['24 releasy', '~75 komponentów', 'micro frontends'],
+	},
+	Merixstudio: {
+		period: '10.2021 — 09.2022',
+		duration: locale === 'pl' ? 'około 1 rok' : 'about 1 year',
+		impacts: ['~50 testów', '~250 kampanii', '18 operatorów'],
+	},
+	Netguru: {
+		period: '04.2020 — 09.2021',
+		duration: locale === 'pl' ? '1 rok 6 miesięcy' : '1 year 6 months',
+		impacts: ['Salesforce', 'Hero5', 'tests'],
+	},
+	'Trol Intermedia sp. z o.o. sp.k.': {
+		period: '04.2018 — 03.2020',
+		duration: locale === 'pl' ? 'prawie 2 lata' : 'almost 2 years',
+		impacts: ['2ClickShop', 'e-commerce', 'PHP/MySQL'],
+	},
+	'LEOCODE / 314 Apps': {
+		period: '03.2017 — 11.2017',
+		duration: locale === 'pl' ? '9 miesięcy' : '9 months',
+		impacts: ['Rails', 'Angular', 'tracking'],
+	},
+	'LEOCODE (at the time known as: 314 Apps)': {
+		period: '03.2017 — 11.2017',
+		duration: locale === 'pl' ? '9 miesięcy' : '9 months',
+		impacts: ['Rails', 'Angular', 'tracking'],
+	},
+};
+
+function getRoleMeta(role: WorkRole) {
+	return metaByCompany[role.company] ?? { period: role.period, duration: '', impacts: [] };
+}
 ---
 
-<Container tag="section" class="pb-16">
-	<SectionHeading title={dictionary.resume.experienceTitle} />
-	<ul class="space-y-4">
+<Container tag="section" class="resume-experience page-content-shell">
+	<div class="resume-section-heading">
+		<p class="eyebrow">{label.title}</p>
+		<span aria-hidden="true"></span>
+	</div>
+	<p class="resume-section-intro">{label.intro}</p>
+
+	<div class="resume-timeline" role="list">
 		{
-			roles.map((role) => (
-				<li>
-					<Card>
-						<div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-							<h3 class="font-medium text-text-main">
-								{role.title} · {role.company}
-							</h3>
-							<p class="text-caption text-text-faint">{role.period}</p>
+			roles.map((role, index) => {
+				const meta = getRoleMeta(role);
+				return (
+					<article class="resume-timeline__entry" role="listitem">
+						<div class="resume-timeline__rail">
+							<span class="resume-timeline__dot" aria-hidden="true" />
+							<p>{meta.period}</p>
+							<small>{meta.duration}</small>
 						</div>
-						<p class="mt-3 text-body text-text-muted">{role.summary}</p>
-					</Card>
-				</li>
-			))
+
+						<div class="resume-role-card">
+							<div class="resume-role-card__top">
+								<div>
+									<p class="resume-role-card__company">
+										{role.company}
+										<span aria-hidden="true">•</span>
+										{role.context}
+									</p>
+									<h3>{role.title}</h3>
+								</div>
+								<div class="resume-role-card__period">{meta.period}</div>
+							</div>
+
+							<p class="resume-role-card__summary">{role.summary}</p>
+
+							{meta.impacts.length > 0 && (
+								<ul class="resume-role-card__impact" aria-label="Impact">
+									{meta.impacts.map((impact) => (
+										<li>{impact}</li>
+									))}
+								</ul>
+							)}
+
+							<div class="resume-role-card__body">
+								<ul class="resume-role-card__points">
+									{role.points.slice(0, index < 4 ? 5 : 4).map((point) => (
+										<li>
+											<span aria-hidden="true" />
+											<p>{point}</p>
+										</li>
+									))}
+								</ul>
+								<ul class="resume-role-card__tags">
+									{role.tags.map((tag) => (
+										<li>{tag}</li>
+									))}
+								</ul>
+							</div>
+						</div>
+					</article>
+				);
+			})
 		}
-	</ul>
+	</div>
 </Container>
+
+<style>
+	.resume-experience {
+		padding-block: clamp(5rem, 8vw, 7rem);
+	}
+
+	.resume-section-heading {
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+		border-bottom: 1px solid rgba(217, 164, 65, 0.34);
+		padding-bottom: 0.9rem;
+	}
+
+	.resume-section-heading span {
+		height: 1px;
+		flex: 1;
+		background: linear-gradient(90deg, rgba(217, 164, 65, 0.32), transparent);
+	}
+
+	.resume-section-intro {
+		max-width: 48rem;
+		margin-top: 1.35rem;
+		color: var(--color-text-muted);
+		font-size: 1rem;
+		line-height: 1.75;
+	}
+
+	.resume-timeline {
+		position: relative;
+		display: grid;
+		gap: 2rem;
+		margin-top: 3.25rem;
+	}
+
+	.resume-timeline::before {
+		content: "";
+		position: absolute;
+		left: 8.6rem;
+		top: 1.3rem;
+		bottom: 1.3rem;
+		width: 1px;
+		background: linear-gradient(180deg, rgba(217, 164, 65, 0.1), rgba(217, 164, 65, 0.72), rgba(217, 164, 65, 0.12));
+	}
+
+	.resume-timeline__entry {
+		position: relative;
+		display: grid;
+		grid-template-columns: 10.75rem minmax(0, 1fr);
+		gap: 2.2rem;
+		align-items: start;
+	}
+
+	.resume-timeline__rail {
+		position: relative;
+		padding-top: 1.25rem;
+		color: var(--color-text-soft);
+		font-size: 0.88rem;
+		line-height: 1.55;
+	}
+
+	.resume-timeline__rail p,
+	.resume-timeline__rail small {
+		display: block;
+		margin-left: 0;
+	}
+
+	.resume-timeline__rail small {
+		margin-top: 0.28rem;
+		color: var(--color-text-faint);
+		font-size: 0.76rem;
+	}
+
+	.resume-timeline__dot {
+		position: absolute;
+		right: 1.45rem;
+		top: 1.44rem;
+		z-index: 1;
+		width: 0.82rem;
+		height: 0.82rem;
+		border: 2px solid var(--color-gold);
+		border-radius: 999px;
+		background: var(--color-ink);
+		box-shadow:
+			0 0 0 0.34rem rgba(217, 164, 65, 0.08),
+			0 0 1.2rem rgba(217, 164, 65, 0.7);
+	}
+
+	.resume-role-card {
+		position: relative;
+		border: 1px solid rgba(217, 164, 65, 0.42);
+		border-radius: 0.5rem;
+		background:
+			linear-gradient(135deg, rgba(217, 164, 65, 0.09), transparent 34%),
+			linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.006)),
+			rgba(7, 7, 7, 0.94);
+		padding: clamp(1.65rem, 2.8vw, 2.25rem);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.04),
+			0 1.8rem 4.5rem rgba(0, 0, 0, 0.55);
+	}
+
+	.resume-role-card::before {
+		content: "";
+		position: absolute;
+		left: -0.48rem;
+		top: 1.55rem;
+		width: 0.62rem;
+		height: 0.62rem;
+		border-left: 1px solid rgba(217, 164, 65, 0.42);
+		border-bottom: 1px solid rgba(217, 164, 65, 0.42);
+		background: rgba(7, 7, 7, 0.96);
+		transform: rotate(45deg);
+	}
+
+	.resume-role-card__top {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 1.5rem;
+		align-items: start;
+	}
+
+	.resume-role-card__company {
+		color: var(--color-text-muted);
+		font-size: 0.84rem;
+		line-height: 1.6;
+	}
+
+	.resume-role-card__company span {
+		margin-inline: 0.65rem;
+		color: var(--color-gold);
+	}
+
+	.resume-role-card h3 {
+		margin-top: 0.35rem;
+		color: var(--color-text-main);
+		font-family: var(--font-display);
+		font-size: clamp(1.35rem, 2vw, 1.7rem);
+		font-weight: 500;
+		line-height: 1.18;
+	}
+
+	.resume-role-card__period {
+		border: 1px solid rgba(217, 164, 65, 0.28);
+		border-radius: 999px;
+		padding: 0.45rem 0.75rem;
+		color: var(--color-gold-soft);
+		font-size: 0.72rem;
+		line-height: 1;
+		white-space: nowrap;
+	}
+
+	.resume-role-card__summary {
+		max-width: 48rem;
+		margin-top: 1.25rem;
+		color: var(--color-text-soft);
+		font-size: 1rem;
+		line-height: 1.75;
+	}
+
+	.resume-role-card__impact {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.55rem;
+		margin: 1.15rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.resume-role-card__impact li {
+		border: 1px solid rgba(217, 164, 65, 0.38);
+		border-radius: 999px;
+		background: rgba(217, 164, 65, 0.08);
+		padding: 0.42rem 0.72rem;
+		color: var(--color-gold-soft);
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.resume-role-card__body {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem);
+		gap: 2rem;
+		margin-top: 1.35rem;
+		align-items: start;
+	}
+
+	.resume-role-card__points,
+	.resume-role-card__tags {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.resume-role-card__points {
+		display: grid;
+		gap: 0.55rem;
+		color: var(--color-text-muted);
+		font-size: 0.94rem;
+		line-height: 1.65;
+	}
+
+	.resume-role-card__points li {
+		display: grid;
+		grid-template-columns: 0.72rem 1fr;
+		gap: 0.55rem;
+	}
+
+	.resume-role-card__points span {
+		width: 0.28rem;
+		height: 0.28rem;
+		margin-top: 0.67rem;
+		border-radius: 999px;
+		background: var(--color-gold);
+		box-shadow: 0 0 0.6rem rgba(217, 164, 65, 0.8);
+	}
+
+	.resume-role-card__tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.55rem;
+		align-content: start;
+	}
+
+	.resume-role-card__tags li {
+		border: 1px solid rgba(217, 164, 65, 0.28);
+		border-radius: 0.32rem;
+		background: rgba(255, 255, 255, 0.025);
+		padding: 0.5rem 0.72rem;
+		color: var(--color-text-soft);
+		font-size: 0.75rem;
+		line-height: 1;
+	}
+
+	@media (max-width: 900px) {
+		.resume-timeline::before {
+			left: 0.42rem;
+		}
+
+		.resume-timeline__entry {
+			grid-template-columns: 1fr;
+			gap: 0.8rem;
+			padding-left: 2rem;
+		}
+
+		.resume-timeline__rail {
+			padding-top: 0;
+		}
+
+		.resume-timeline__dot {
+			left: -2rem;
+			right: auto;
+			top: 0.35rem;
+		}
+
+		.resume-role-card::before,
+		.resume-role-card__period {
+			display: none;
+		}
+
+		.resume-role-card__body,
+		.resume-role-card__top {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

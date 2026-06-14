@@ -1,0 +1,218 @@
+---
+import type { Locale } from '@/lib/i18n/locales';
+import ImpactBadge from './ImpactBadge.astro';
+import TechPillRow from './TechPillRow.astro';
+
+interface ExperienceItem {
+	company: string;
+	role: string;
+	period: string;
+	duration: string;
+	domain: string;
+	summary: string;
+	points: readonly string[];
+	impactBadges: readonly string[];
+	technologies: readonly string[];
+}
+
+interface Props {
+	locale: Locale;
+	item: ExperienceItem;
+	tone?: 'featured' | 'regular' | 'quiet';
+}
+
+const { locale, item, tone = 'regular' } = Astro.props;
+---
+
+<article class:list={['dcv-exp-card', `dcv-exp-card--${tone}`]}>
+	<div class="dcv-exp-card__top">
+		<div>
+			<p class="dcv-exp-card__role">{item.role}</p>
+			<p class="dcv-exp-card__meta">
+				{item.company} <span>•</span> {item.domain}
+			</p>
+		</div>
+	</div>
+
+	<p class="dcv-exp-card__summary">{item.summary}</p>
+
+	<ul class="dcv-exp-card__points">
+		{item.points.map((point) => <li><span aria-hidden="true" /><p>{point}</p></li>)}
+	</ul>
+
+	{
+		item.impactBadges.length > 0 && (
+			<div class="dcv-exp-card__badges">
+				<p>{locale === 'pl' ? 'Wpływ' : 'Impact'}</p>
+				<div>
+					{item.impactBadges.map((badge) => <ImpactBadge label={badge} />)}
+				</div>
+			</div>
+		)
+	}
+
+	<div class="dcv-exp-card__tech-wrap">
+		<p>{locale === 'pl' ? 'Technologie:' : 'Technologies:'}</p>
+		<TechPillRow
+			items={item.technologies}
+			label={locale === 'pl' ? 'Technologie w tej roli' : 'Technologies in this role'}
+		/>
+	</div>
+</article>
+
+<style>
+	.dcv-exp-card {
+		border: 1px solid rgba(217, 164, 65, 0.38);
+		border-radius: 0.9rem;
+		background:
+			linear-gradient(140deg, rgba(217, 164, 65, 0.08), transparent 56%),
+			rgba(7, 7, 7, 0.94);
+		padding: 1.9rem;
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.04),
+			0 1.35rem 3.4rem rgba(0, 0, 0, 0.5);
+	}
+
+	.dcv-exp-card--featured {
+		border-color: rgba(241, 198, 106, 0.5);
+		background:
+			linear-gradient(140deg, rgba(217, 164, 65, 0.12), transparent 58%),
+			linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent),
+			rgba(7, 7, 7, 0.96);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.05),
+			0 1.6rem 4rem rgba(0, 0, 0, 0.56),
+			0 0 2rem rgba(217, 164, 65, 0.08);
+	}
+
+	.dcv-exp-card--quiet {
+		border-color: rgba(217, 164, 65, 0.24);
+		background:
+			linear-gradient(140deg, rgba(217, 164, 65, 0.055), transparent 56%),
+			rgba(7, 7, 7, 0.88);
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.03),
+			0 1rem 2.8rem rgba(0, 0, 0, 0.42);
+	}
+
+	.dcv-exp-card__top {
+		display: grid;
+		gap: 1rem;
+		align-items: start;
+	}
+
+	.dcv-exp-card__role {
+		margin: 0;
+		color: var(--color-text-main);
+		font-family: var(--font-display);
+		font-size: 1.35rem;
+		line-height: 1.2;
+	}
+
+	.dcv-exp-card--featured .dcv-exp-card__role {
+		font-size: 1.5rem;
+	}
+
+	.dcv-exp-card--quiet .dcv-exp-card__role {
+		font-size: 1.22rem;
+	}
+
+	.dcv-exp-card__meta {
+		margin-top: 0.42rem;
+		color: var(--color-text-muted);
+		font-size: 0.95rem;
+		line-height: 1.4;
+	}
+
+	.dcv-exp-card__meta span {
+		color: var(--color-gold);
+	}
+
+	.dcv-exp-card__summary {
+		margin: 1.2rem 0 0;
+		max-width: 70rem;
+		color: var(--color-text-muted);
+		font-size: 1rem;
+		line-height: 1.72;
+	}
+
+	.dcv-exp-card__points {
+		margin: 1.05rem 0 0;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		gap: 0.55rem;
+	}
+
+	.dcv-exp-card__points li {
+		display: grid;
+		grid-template-columns: 0.6rem 1fr;
+		gap: 0.62rem;
+		color: var(--color-text-soft);
+		font-size: 0.95rem;
+		line-height: 1.62;
+	}
+
+	.dcv-exp-card__points p {
+		margin: 0;
+	}
+
+	.dcv-exp-card__points span {
+		width: 0.33rem;
+		height: 0.33rem;
+		border-radius: 999px;
+		margin-top: 0.53rem;
+		background: var(--color-gold);
+		box-shadow: 0 0 0.55rem rgba(217, 164, 65, 0.85);
+	}
+
+	.dcv-exp-card__badges {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		gap: 0.7rem 0.85rem;
+		align-items: center;
+		margin: 1.18rem 0 0;
+		border-top: 1px solid rgba(217, 164, 65, 0.18);
+		border-bottom: 1px solid rgba(217, 164, 65, 0.14);
+		padding-block: 0.9rem;
+	}
+
+	.dcv-exp-card__badges > p {
+		margin: 0;
+		color: var(--color-gold);
+		font-size: 0.72rem;
+		font-weight: 800;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.dcv-exp-card__badges > div {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.55rem;
+	}
+
+	.dcv-exp-card__tech-wrap {
+		margin-top: 1.1rem;
+	}
+
+	.dcv-exp-card__tech-wrap > p {
+		margin: 0;
+		color: var(--color-text-soft);
+		font-size: 0.82rem;
+	}
+
+	.dcv-exp-card__tech-wrap :global(.dcv-pill-row) {
+		margin-top: 0.5rem;
+	}
+
+	@media (max-width: 640px) {
+		.dcv-exp-card {
+			padding: 1.55rem;
+		}
+
+		.dcv-exp-card__badges {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

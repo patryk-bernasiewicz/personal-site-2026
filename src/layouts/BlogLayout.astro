@@ -25,7 +25,7 @@ const metadata = buildPageMetadata({
 ---
 
 <BaseLayout {metadata} routeKey="blogPost">
-	<Container tag="article" class="section-gap pt-nav">
+	<Container tag="article" class="page-content-shell section-gap pt-nav">
 		<BlogMeta {post} />
 		<h1 class="mt-4 font-display text-section-title text-balance text-text-main">{post.title}</h1>
 		<p class="mt-4 text-body-large text-text-soft">{post.description}</p>

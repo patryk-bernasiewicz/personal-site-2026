@@ -1,0 +1,108 @@
+---
+import Container from '@/components/ui/Container.astro';
+import { getResumeCopy } from '@/config/resume-content';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const narrative = getResumeCopy(locale).narrative;
+---
+
+<Container tag="section" class="resume-arc page-content-shell">
+	<div class="resume-arc__inner">
+		<div>
+			<p class="eyebrow">{narrative.title}</p>
+		</div>
+		<div class="resume-arc__copy">
+			{narrative.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+		</div>
+	</div>
+
+	<div class="resume-arc__blocks">
+		{
+			narrative.blocks.map((block, index) => (
+				<article class="resume-arc__block">
+					<span>{String(index + 1).padStart(2, '0')}</span>
+					<h3>{block.title}</h3>
+					<p>{block.description}</p>
+				</article>
+			))
+		}
+	</div>
+</Container>
+
+<style>
+	.resume-arc {
+		position: relative;
+		overflow: hidden;
+		border-block: 1px solid rgba(217, 164, 65, 0.18);
+		padding-block: clamp(4.25rem, 7vw, 6rem);
+		background:
+			radial-gradient(circle at 16% 20%, rgba(217, 164, 65, 0.09), transparent 20rem),
+			linear-gradient(90deg, rgba(217, 164, 65, 0.055), transparent 46%),
+			#050505;
+	}
+
+	.resume-arc__inner {
+		display: grid;
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.25fr);
+		gap: 2.5rem;
+		align-items: start;
+	}
+
+	.resume-arc__copy {
+		max-width: 50rem;
+		color: var(--color-text-soft);
+		font-size: 1.08rem;
+		line-height: 1.85;
+	}
+
+	.resume-arc__blocks {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+
+	.resume-arc__block {
+		border: 1px solid rgba(217, 164, 65, 0.28);
+		border-radius: 0.5rem;
+		background:
+			linear-gradient(135deg, rgba(217, 164, 65, 0.08), transparent 40%),
+			rgba(8, 8, 8, 0.72);
+		padding: 1.35rem;
+	}
+
+	.resume-arc__block span {
+		color: var(--color-gold);
+		font-size: 0.72rem;
+		font-weight: 800;
+		letter-spacing: 0.16em;
+	}
+
+	.resume-arc__block h3 {
+		margin-top: 0.85rem;
+		color: var(--color-text-main);
+		font-family: var(--font-display);
+		font-size: 1.15rem;
+		font-weight: 500;
+		line-height: 1.25;
+	}
+
+	.resume-arc__block p {
+		margin-top: 0.7rem;
+		color: var(--color-text-muted);
+		font-size: 0.94rem;
+		line-height: 1.7;
+	}
+
+	@media (max-width: 800px) {
+		.resume-arc__inner,
+		.resume-arc__blocks {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

@@ -1,6 +1,5 @@
 ---
 import SiteLogo from '@/components/layout/SiteLogo.astro';
-import { socialLinks } from '@/config/social';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { applyPolishTypography } from '@/lib/typography';
 import type { Locale } from '@/lib/i18n/locales';
@@ -17,7 +16,6 @@ const { locale, routeKey, alternatePaths } = Astro.props;
 
 const dictionary = getDictionary(locale);
 const currentPath = Astro.url.pathname;
-const projectsHref = socialLinks.find((link) => link.icon === 'github')?.href;
 
 type NavItem =
 	| { routeKey: StaticRouteKey; label: string; external?: false }
@@ -28,7 +26,6 @@ const navItems: NavItem[] = [
 	{ routeKey: 'resume', label: dictionary.nav.resume },
 	{ routeKey: 'about', label: dictionary.nav.about },
 	{ routeKey: 'blogIndex', label: dictionary.nav.blog },
-	...(projectsHref ? [{ href: projectsHref, label: dictionary.nav.projects, external: true } as const] : []),
 ];
 
 const aria =
@@ -147,6 +144,7 @@ void alternatePaths;
 	data-mobile-nav
 	aria-hidden="true"
 	inert
+	hidden
 >
 	<div class="site-mobile-nav__backdrop" data-mobile-backdrop></div>
 	<aside
@@ -220,7 +218,7 @@ void alternatePaths;
 				aria-label={aria.langPlaceholder}
 				title={aria.langPlaceholder}
 			>
-				{locale === 'pl' ? 'PL / EN' : 'EN / PL'}
+				{locale === 'pl' ? 'PL' : 'EN'}
 			</span>
 			<button type="button" class="site-header__theme-toggle" aria-label={aria.themeToggle}>
 				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -241,13 +239,19 @@ void alternatePaths;
 	.site-mobile-nav {
 		position: fixed;
 		inset: 0;
+		display: none;
 		z-index: 60;
 		visibility: hidden;
 		pointer-events: none;
 		transition: visibility 0s linear 240ms;
 	}
 
+	.site-mobile-nav[hidden] {
+		display: none !important;
+	}
+
 	.site-mobile-nav.is-open {
+		display: block;
 		visibility: visible;
 		pointer-events: auto;
 		transition-delay: 0s;
@@ -346,6 +350,18 @@ void alternatePaths;
 
 	.site-mobile-nav__nav {
 		flex: 1;
+	}
+
+	@media (min-width: 1024px) {
+		.site-mobile-nav {
+			display: none;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.site-mobile-nav {
+			display: block;
+		}
 	}
 </style>
 
@@ -449,6 +465,7 @@ void alternatePaths;
 		const finishClose = () => {
 			mobileNav.setAttribute('aria-hidden', 'true');
 			mobileNav.setAttribute('inert', '');
+			mobileNav.hidden = true;
 		};
 
 		const openDrawer = () => {
@@ -457,6 +474,7 @@ void alternatePaths;
 			}
 
 			restoreFocusTarget = menuTrigger;
+			mobileNav.hidden = false;
 			mobileNav.removeAttribute('inert');
 			mobileNav.setAttribute('aria-hidden', 'false');
 			mobileNav.classList.remove('is-open');

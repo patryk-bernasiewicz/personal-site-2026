@@ -1,0 +1,240 @@
+---
+import Container from '@/components/ui/Container.astro';
+import { getResumeCopy } from '@/config/resume-content';
+import resumeBottomBackgroundJpg from '@/assets/images/resume-bottom-background.jpg';
+import resumeBottomBackgroundWebp from '@/assets/images/resume-bottom-background.webp';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const technologies = getResumeCopy(locale).technologies;
+const groups =
+	locale === 'pl'
+		? [
+				{
+					title: 'Frontend',
+					description: 'Główna specjalizacja i codzienna warstwa pracy produktowej.',
+					items: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'HTML5', 'CSS / SCSS', 'Tailwind CSS', 'Styled Components', 'Preact', 'Angular'],
+				},
+				{
+					title: 'State & Data',
+					description: 'Stan aplikacji, formularze, zapytania i kontrakty danych.',
+					items: ['Redux', 'Redux Toolkit', 'RTK Query', 'React Query', 'MobX', 'Jotai', 'Recoil', 'React Hook Form', 'REST API', 'GraphQL'],
+				},
+				{
+					title: 'Testing & Quality',
+					description: 'Bezpieczne wydania, regresje, komponenty i dostępność.',
+					items: ['Jest', 'Cypress', 'React Testing Library', 'Integration Testing', 'Storybook', 'Accessibility', 'Performance Optimization'],
+				},
+				{
+					title: 'Architecture & Delivery',
+					description: 'Modernizacje platform, migracje i stabilne utrzymanie.',
+					items: ['SSR', 'Micro frontends', 'Module Federation', 'Turborepo', 'Platform migrations', 'CI/CD', 'Legacy refactoring'],
+				},
+				{
+					title: 'CMS / e-commerce',
+					description: 'Content, kampanie, konfiguracje i integracje platformowe.',
+					items: ['AEM', 'Builder.io', '2ClickShop', 'Salesforce LWC', 'Firebase', 'Apple / Google Play integrations'],
+				},
+				{
+					title: 'Backend / Supporting',
+					description: 'Kontekst wspierający frontend i wcześniejsze role fullstackowe.',
+					items: ['.NET', 'C#', 'Ruby on Rails', 'PHP', 'PostgreSQL', 'MySQL', 'WebRTC', 'Gamepad API'],
+				},
+			]
+		: [
+				{
+					title: 'Frontend',
+					description: 'Core specialty and daily product work.',
+					items: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'HTML5', 'CSS / SCSS', 'Tailwind CSS', 'Styled Components', 'Preact', 'Angular'],
+				},
+				{
+					title: 'State & Data',
+					description: 'Application state, forms, data fetching, and contracts.',
+					items: ['Redux', 'Redux Toolkit', 'RTK Query', 'React Query', 'MobX', 'Jotai', 'Recoil', 'React Hook Form', 'REST API', 'GraphQL'],
+				},
+				{
+					title: 'Testing & Quality',
+					description: 'Safer releases, regressions, components, and accessibility.',
+					items: ['Jest', 'Cypress', 'React Testing Library', 'Integration Testing', 'Storybook', 'Accessibility', 'Performance Optimization'],
+				},
+				{
+					title: 'Architecture & Delivery',
+					description: 'Platform modernization, migrations, and stable maintenance.',
+					items: ['SSR', 'Micro frontends', 'Module Federation', 'Turborepo', 'Platform migrations', 'CI/CD', 'Legacy refactoring'],
+				},
+				{
+					title: 'CMS / e-commerce',
+					description: 'Content, campaigns, configuration, and platform integrations.',
+					items: ['AEM', 'Builder.io', '2ClickShop', 'Salesforce LWC', 'Firebase', 'Apple / Google Play integrations'],
+				},
+				{
+					title: 'Backend / Supporting',
+					description: 'Supporting context from frontend-adjacent and earlier fullstack work.',
+					items: ['.NET', 'C#', 'Ruby on Rails', 'PHP', 'PostgreSQL', 'MySQL', 'WebRTC', 'Gamepad API'],
+				},
+			];
+---
+
+<section class="resume-tech">
+	<picture class="resume-tech__background" aria-hidden="true">
+		<source type="image/webp" srcset={resumeBottomBackgroundWebp.src} sizes="100vw" />
+		<img
+			src={resumeBottomBackgroundJpg.src}
+			alt=""
+			width={resumeBottomBackgroundJpg.width}
+			height={resumeBottomBackgroundJpg.height}
+			decoding="async"
+			loading="lazy"
+		/>
+	</picture>
+	<div class="resume-tech__veil" aria-hidden="true"></div>
+
+	<Container tag="div" class="resume-tech__content page-content-shell">
+		<div class="resume-section-heading">
+			<p class="eyebrow">{technologies.title}</p>
+			<span aria-hidden="true"></span>
+		</div>
+		<p class="resume-section-intro">{technologies.intro}</p>
+
+		<div class="resume-tech__grid">
+			{
+				groups.map((group) => (
+					<article class="resume-tech__card">
+						<h3>{group.title}</h3>
+						<p>{group.description}</p>
+						<ul>
+							{group.items.map((item) => (
+								<li>{item}</li>
+							))}
+						</ul>
+					</article>
+				))
+			}
+		</div>
+	</Container>
+</section>
+
+<style>
+	.resume-tech {
+		position: relative;
+		isolation: isolate;
+		overflow: hidden;
+		padding-block: clamp(5rem, 8vw, 7rem) clamp(3.5rem, 6vw, 5rem);
+		background: #050505;
+	}
+
+	.resume-tech__background {
+		position: absolute;
+		inset: auto 0 -7rem;
+		z-index: -2;
+		height: min(34rem, 48vw);
+		pointer-events: none;
+		opacity: 0.38;
+		mask-image: linear-gradient(180deg, transparent, black 24%, black 76%, transparent);
+	}
+
+	.resume-tech__background img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: bottom center;
+	}
+
+	.resume-tech__veil {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background:
+			linear-gradient(180deg, #050505 0%, rgba(5, 5, 5, 0.82) 45%, rgba(5, 5, 5, 0.94) 100%),
+			radial-gradient(circle at 80% 55%, rgba(217, 164, 65, 0.08), transparent 24rem);
+	}
+
+	.resume-section-heading {
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+		border-bottom: 1px solid rgba(217, 164, 65, 0.34);
+		padding-bottom: 0.9rem;
+	}
+
+	.resume-section-heading span {
+		height: 1px;
+		flex: 1;
+		background: linear-gradient(90deg, rgba(217, 164, 65, 0.32), transparent);
+	}
+
+	.resume-section-intro {
+		max-width: 49rem;
+		margin-top: 1.35rem;
+		color: var(--color-text-muted);
+		font-size: 1rem;
+		line-height: 1.75;
+	}
+
+	.resume-tech__grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+		margin-top: 2.25rem;
+	}
+
+	.resume-tech__card {
+		border: 1px solid rgba(217, 164, 65, 0.28);
+		border-radius: 0.5rem;
+		background:
+			linear-gradient(135deg, rgba(217, 164, 65, 0.08), transparent 44%),
+			rgba(8, 8, 8, 0.82);
+		padding: 1.35rem;
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+	}
+
+	.resume-tech__card h3 {
+		color: var(--color-gold);
+		font-family: var(--font-display);
+		font-size: 1.12rem;
+		font-weight: 600;
+		line-height: 1.25;
+	}
+
+	.resume-tech__card p {
+		margin-top: 0.55rem;
+		color: var(--color-text-muted);
+		font-size: 0.9rem;
+		line-height: 1.6;
+	}
+
+	.resume-tech__card ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 1.05rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.resume-tech__card li {
+		border: 1px solid rgba(255, 255, 255, 0.14);
+		border-radius: 0.32rem;
+		background: rgba(255, 255, 255, 0.024);
+		padding: 0.48rem 0.66rem;
+		color: var(--color-text-soft);
+		font-size: 0.74rem;
+		line-height: 1;
+	}
+
+	@media (max-width: 1023px) {
+		.resume-tech__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 640px) {
+		.resume-tech__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

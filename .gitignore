@@ -25,3 +25,5 @@ docker/.env
 .idea/
 
 tmp/
+
+.tmp-astro*

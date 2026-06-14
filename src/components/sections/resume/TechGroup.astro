@@ -1,0 +1,53 @@
+---
+import TechPillRow from './TechPillRow.astro';
+
+interface TechGroupProps {
+	title: string;
+	description: string;
+	items: readonly string[];
+}
+
+const { title, description, items } = Astro.props as TechGroupProps;
+---
+
+<article class="dcv-tech-group">
+	<div>
+		<h3>{title}</h3>
+		<p>{description}</p>
+	</div>
+	<TechPillRow items={items} label={title} />
+</article>
+
+<style>
+	.dcv-tech-group {
+		display: grid;
+		grid-template-rows: auto 1fr;
+		gap: 1rem;
+		border: 1px solid rgba(217, 164, 65, 0.3);
+		border-radius: 0.9rem;
+		background:
+			linear-gradient(145deg, rgba(217, 164, 65, 0.08), rgba(9, 9, 9, 0.82)),
+			rgba(0, 0, 0, 0.68);
+		min-height: 15.25rem;
+		padding: 1.35rem;
+	}
+
+	.dcv-tech-group h3 {
+		margin: 0;
+		color: var(--color-gold);
+		font-family: var(--font-display);
+		font-size: 1.1rem;
+		line-height: 1.25;
+	}
+
+	.dcv-tech-group p {
+		margin: 0.55rem 0 0;
+		color: var(--color-text-muted);
+		font-size: 0.92rem;
+		line-height: 1.55;
+	}
+
+	.dcv-tech-group :global(.dcv-pill-row) {
+		align-content: start;
+	}
+</style>

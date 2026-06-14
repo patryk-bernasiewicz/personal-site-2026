@@ -1,8 +1,9 @@
 ---
-import Button from '@/components/ui/Button.astro';
+import aboutMePhoto from '@/assets/images/about-me-photo.png';
+import aboutMePhotoWebp from '@/assets/images/about-me-photo.webp';
+import HeroMediaPicture from '@/components/sections/home/HeroMediaPicture.astro';
 import Container from '@/components/ui/Container.astro';
-import { siteConfig } from '@/config/site';
-import { getDictionary } from '@/lib/i18n/dictionaries';
+import { getResumeCopy } from '@/config/resume-content';
 import type { Locale } from '@/lib/i18n/locales';
 
 interface Props {
@@ -10,14 +11,377 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const dictionary = getDictionary(locale);
+const hero = getResumeCopy(locale).hero;
+const headingParts = hero.heading.split(' ');
+const headingAccent = headingParts.pop();
+const headingStart = headingParts.join(' ');
+const metricDetails =
+	locale === 'pl'
+		? [
+				{ value: '9+ lat', label: 'doświadczenia zawodowego' },
+				{ value: '30+', label: 'rynków e-commerce / Ploom' },
+				{ value: '24+', label: 'releasy w jednym produkcie SaaS' },
+				{ value: '75', label: 'komponentów w Storybooku' },
+			]
+		: [
+				{ value: '9+ years', label: 'of professional experience' },
+				{ value: '30+', label: 'e-commerce markets' },
+				{ value: '24+', label: 'releases in one SaaS product' },
+				{ value: '75', label: 'Storybook components maintained' },
+			];
+
+const codeLines = [
+	'const developer = {',
+	"  name: 'Patryk',",
+	"  role: 'Frontend',",
+	"  focus: ['Product',",
+	"          'Implementation',",
+	"          'Quality',",
+	"          'Teamwork'],",
+	"  mindset: 'Ship with care'",
+	'};',
+];
 ---
 
-<Container tag="section" class="section-gap pt-nav">
-	<p class="eyebrow">{dictionary.resume.eyebrow}</p>
-	<h1 class="mt-4 font-display text-section-title text-text-main">{siteConfig.author.name}</h1>
-	<p class="mt-4 max-w-2xl text-body-large text-text-soft">{dictionary.resume.lead}</p>
-	<div class="mt-8">
-		<Button href="/files/cv.pdf">{dictionary.resume.downloadCv}</Button>
+<Container
+	tag="section"
+	class="resume-hero page-content-shell pt-nav"
+	aria-labelledby="digital-resume-hero-title"
+>
+	<div class="resume-hero__inner">
+		<div class="resume-hero__copy">
+			<p class="eyebrow">{hero.eyebrow}</p>
+			<h1 id="digital-resume-hero-title">
+				<span>{headingStart}</span>
+				<strong>{headingAccent}</strong>
+			</h1>
+			<p class="resume-hero__lead">{hero.lead}</p>
+			<p class="resume-hero__description">{hero.description}</p>
+		</div>
+
+		<div class="resume-hero__visual" aria-hidden="true">
+			<div class="resume-hero__grid"></div>
+			<div class="resume-hero__arc resume-hero__arc--large"></div>
+			<div class="resume-hero__arc resume-hero__arc--small"></div>
+			<figure class="resume-hero__portrait">
+				<HeroMediaPicture
+					desktop={{ webp: aboutMePhotoWebp, fallback: aboutMePhoto }}
+					alt=""
+					loading="eager"
+					fetchpriority="high"
+					desktopSizes="(min-width: 1024px) 34rem, 100vw"
+					class="resume-hero__portrait-image"
+				/>
+			</figure>
+			<pre class="resume-hero__code"><code>{codeLines.map((line) => `${line}\n`).join('')}</code></pre>
+			<div class="resume-hero__plate">
+				<span>Frontend</span>
+				<strong>Product frontend · delivery · quality</strong>
+			</div>
+		</div>
+
+		<ul class="resume-hero__metrics">
+			{
+				metricDetails.map((metric) => (
+					<li>
+						<span aria-hidden="true"></span>
+						<strong>{metric.value}</strong>
+						<small>{metric.label}</small>
+					</li>
+				))
+			}
+		</ul>
 	</div>
 </Container>
+
+<style>
+	.resume-hero {
+		position: relative;
+		isolation: isolate;
+		overflow: hidden;
+		border-bottom: 1px solid rgba(217, 164, 65, 0.26);
+		background:
+			radial-gradient(circle at 70% 30%, rgba(217, 164, 65, 0.12), transparent 34rem),
+			linear-gradient(90deg, #050505 0%, #050505 47%, rgba(5, 5, 5, 0.88) 68%, #050505 100%);
+	}
+
+	.resume-hero::before {
+		content: "";
+		position: absolute;
+		inset: auto 0 0;
+		z-index: -1;
+		height: 11rem;
+		background: linear-gradient(180deg, transparent, rgba(217, 164, 65, 0.08), transparent);
+		opacity: 0.55;
+	}
+
+	.resume-hero__inner {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(0, 0.92fr) minmax(25rem, 0.78fr);
+		grid-template-areas:
+			"copy visual"
+			"metrics visual";
+		gap: 2.5rem 4rem;
+		align-items: center;
+		min-height: clamp(42rem, 78vh, 48rem);
+		margin-inline: auto;
+		padding-block: clamp(4.5rem, 7vw, 6.75rem) clamp(4.25rem, 6vw, 5.75rem);
+	}
+
+	.resume-hero__copy {
+		grid-area: copy;
+		align-self: end;
+	}
+
+	.resume-hero__copy h1 {
+		margin-top: 1.05rem;
+		max-width: 46rem;
+		color: var(--color-text-main);
+		font-family: var(--font-display);
+		font-size: clamp(4.6rem, 7vw, 6.65rem);
+		font-weight: 400;
+		line-height: 0.92;
+	}
+
+	.resume-hero__copy h1 span,
+	.resume-hero__copy h1 strong {
+		display: block;
+	}
+
+	.resume-hero__copy h1 strong {
+		color: var(--color-gold);
+		font-weight: 500;
+	}
+
+	.resume-hero__lead,
+	.resume-hero__description {
+		max-width: 43rem;
+		font-size: 1rem;
+		line-height: 1.8;
+	}
+
+	.resume-hero__lead {
+		margin-top: 1.55rem;
+		color: var(--color-text-main);
+	}
+
+	.resume-hero__description {
+		margin-top: 0.75rem;
+		color: var(--color-text-muted);
+	}
+
+	.resume-hero__visual {
+		grid-area: visual;
+		position: relative;
+		align-self: stretch;
+		min-height: 35rem;
+		overflow: hidden;
+	}
+
+	.resume-hero__grid {
+		position: absolute;
+		inset: 0;
+		background-image:
+			linear-gradient(rgba(217, 164, 65, 0.06) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(217, 164, 65, 0.05) 1px, transparent 1px),
+			radial-gradient(circle, rgba(241, 198, 106, 0.5) 1px, transparent 1.7px);
+		background-size:
+			3.1rem 3.1rem,
+			3.1rem 3.1rem,
+			2.15rem 2.15rem;
+		mask-image: linear-gradient(90deg, transparent, black 18%, black 82%, transparent);
+		opacity: 0.45;
+	}
+
+	.resume-hero__arc {
+		position: absolute;
+		border: 1px solid rgba(217, 164, 65, 0.42);
+		border-radius: 999px;
+		transform: rotate(-18deg);
+	}
+
+	.resume-hero__arc--large {
+		right: 1.5rem;
+		top: 2rem;
+		width: 29rem;
+		height: 29rem;
+		border-left-color: var(--color-gold);
+		border-top-color: var(--color-gold-soft);
+		box-shadow: 0 0 1.4rem rgba(217, 164, 65, 0.18);
+	}
+
+	.resume-hero__arc--small {
+		right: 6.6rem;
+		top: 5.6rem;
+		width: 20rem;
+		height: 20rem;
+		opacity: 0.48;
+	}
+
+	.resume-hero__portrait {
+		position: absolute;
+		left: 1.4rem;
+		right: 5.5rem;
+		bottom: -0.8rem;
+		height: 34rem;
+		margin: 0;
+		opacity: 0.94;
+		filter: drop-shadow(0 2.2rem 3.8rem rgba(0, 0, 0, 0.82));
+	}
+
+	:global(.resume-hero__portrait-image) {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		object-position: center bottom;
+		filter: saturate(0.86) contrast(1.08) brightness(0.82);
+	}
+
+	.resume-hero__code {
+		position: absolute;
+		right: 0.3rem;
+		top: 4.6rem;
+		width: 17rem;
+		margin: 0;
+		padding: 1.05rem 1.1rem;
+		border: 1px solid rgba(217, 164, 65, 0.22);
+		border-radius: 0.45rem;
+		background: rgba(5, 5, 5, 0.62);
+		color: rgba(241, 198, 106, 0.82);
+		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+		font-size: 0.78rem;
+		line-height: 1.75;
+		box-shadow:
+			inset 0 1px 0 rgba(255, 255, 255, 0.035),
+			0 1rem 2.8rem rgba(0, 0, 0, 0.45);
+		backdrop-filter: blur(10px);
+	}
+
+	.resume-hero__plate {
+		position: absolute;
+		left: 0;
+		bottom: 4.4rem;
+		width: min(16rem, 44%);
+		border-left: 1px solid var(--color-gold);
+		padding: 0.75rem 0 0.75rem 1rem;
+		background: linear-gradient(90deg, rgba(5, 5, 5, 0.78), transparent);
+	}
+
+	.resume-hero__plate span,
+	.resume-hero__plate strong {
+		display: block;
+	}
+
+	.resume-hero__plate span {
+		color: var(--color-gold);
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.resume-hero__plate strong {
+		margin-top: 0.25rem;
+		color: var(--color-text-main);
+		font-size: 1rem;
+		font-weight: 500;
+	}
+
+	.resume-hero__metrics {
+		grid-area: metrics;
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1.35rem;
+		align-self: start;
+		border-top: 1px solid rgba(217, 164, 65, 0.34);
+		margin: 0;
+		padding: 1.35rem 0 0;
+		list-style: none;
+	}
+
+	.resume-hero__metrics li {
+		display: grid;
+		grid-template-columns: 1.5rem 1fr;
+		gap: 0.65rem;
+		align-items: start;
+	}
+
+	.resume-hero__metrics li > span {
+		width: 1.15rem;
+		height: 1.15rem;
+		margin-top: 0.1rem;
+		border: 1px solid var(--color-gold);
+		border-radius: 0.18rem;
+		box-shadow: inset 0 0 0.8rem rgba(217, 164, 65, 0.08);
+	}
+
+	.resume-hero__metrics strong,
+	.resume-hero__metrics small {
+		display: block;
+	}
+
+	.resume-hero__metrics strong {
+		color: var(--color-text-main);
+		font-size: 1.22rem;
+		line-height: 1.15;
+	}
+
+	.resume-hero__metrics small {
+		margin-top: 0.32rem;
+		color: var(--color-text-muted);
+		font-size: 0.78rem;
+		line-height: 1.45;
+	}
+
+	@media (max-width: 1023px) {
+		.resume-hero__inner {
+			grid-template-columns: 1fr;
+			grid-template-areas:
+				"copy"
+				"visual"
+				"metrics";
+			min-height: auto;
+		}
+
+		.resume-hero__visual {
+			min-height: 26rem;
+		}
+
+		.resume-hero__portrait {
+			left: 8%;
+			right: 10%;
+			height: 26rem;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.resume-hero__inner {
+			gap: 2rem;
+			padding-block: 3.5rem 3rem;
+		}
+
+		.resume-hero__copy h1 {
+			font-size: clamp(3.3rem, 16vw, 4.2rem);
+		}
+
+		.resume-hero__visual {
+			min-height: 18rem;
+			opacity: 0.42;
+			margin-top: -1rem;
+		}
+
+		.resume-hero__portrait,
+		.resume-hero__plate {
+			display: none;
+		}
+
+		.resume-hero__code {
+			display: none;
+		}
+
+		.resume-hero__metrics {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+</style>

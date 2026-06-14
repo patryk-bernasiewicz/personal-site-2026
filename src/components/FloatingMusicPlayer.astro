@@ -11,16 +11,16 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 	data-floating-music-player
 	data-playlist-url={playlistUrl}
 >
-	<div class="music-hint" data-music-hint>
-		kliknij, aby posĹ‚uchaÄ‡ klimatycznych kawaĹ‚kĂłw
-	</div>
+	<p class="sr-only music-hint" data-music-hint hidden>
+		kliknij, aby posłuchać klimatycznych kawałków
+	</p>
 
 	<div class="music-shell" data-music-shell>
 		<button
 			type="button"
 			class="music-skip"
 			data-music-prev
-			aria-label="Poprzedni utwĂłr"
+			aria-label="Poprzedni utwór"
 		>
 			<svg viewBox="0 0 24 24" aria-hidden="true">
 				<path d="M7 6h2v12H7V6Zm3.5 6 8-5.5v11l-8-5.5Z" fill="currentColor"></path>
@@ -31,7 +31,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 			type="button"
 			class="music-toggle"
 			data-music-toggle
-			aria-label="OdtwĂłrz muzykÄ™"
+			aria-label="Odtwórz muzykę"
 		>
 			<span class="music-icon" data-play-icon>
 				<svg viewBox="0 0 24 24" aria-hidden="true">
@@ -49,7 +49,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 			type="button"
 			class="music-skip"
 			data-music-next
-			aria-label="NastÄ™pny utwĂłr"
+			aria-label="Następny utwór"
 		>
 			<svg viewBox="0 0 24 24" aria-hidden="true">
 				<path d="m5.5 6.5 8 5.5-8 5.5v-11ZM15 6h2v12h-2V6Z" fill="currentColor"></path>
@@ -67,9 +67,9 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 			<i></i>
 		</div>
 
-		<p class="music-status" aria-live="polite" data-music-status>
-			Odtwarzacz muzyki gotowy
-		</p>
+	<p class="sr-only music-status" aria-live="polite" hidden data-music-status>
+		Odtwarzacz muzyki gotowy
+	</p>
 	</div>
 
 	<p class="music-track-title" data-music-track-title hidden>

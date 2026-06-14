@@ -16,7 +16,8 @@
     "content:check": "tsx src/scripts/check-contentful.ts",
     "playwright:install": "playwright install chromium",
     "docker:up": "docker compose -f docker/compose.yaml --env-file docker/.env up -d --build",
-    "docker:down": "docker compose -f docker/compose.yaml --env-file docker/.env down"
+    "docker:down": "docker compose -f docker/compose.yaml --env-file docker/.env down",
+    "tunnel": "cloudflared tunnel --url http://localhost:4321"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

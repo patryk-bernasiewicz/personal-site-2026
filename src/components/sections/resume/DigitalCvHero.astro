@@ -1,0 +1,363 @@
+---
+import type { Locale } from '@/lib/i18n/locales';
+import Container from '@/components/ui/Container.astro';
+import HeroMetric from './HeroMetric.astro';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const metricsPl = [
+	{ value: '9+ lat', label: 'praktyki zawodowej' },
+	{ value: '30+ rynków', label: 'e-commerce / Ploom' },
+	{ value: '24 releasy', label: 'w jednym produkcie SaaS' },
+	{ value: '75 komponentów', label: 'utrzymywane w Storybooku' },
+];
+
+const metricsEn = [
+	{ value: '9+ years', label: 'professional practice' },
+	{ value: '30+ markets', label: 'e-commerce / Ploom' },
+	{ value: '24 releases', label: 'in one SaaS product' },
+	{ value: '75 components', label: 'maintained in Storybook' },
+];
+
+const metrics = locale === 'pl' ? metricsPl : metricsEn;
+---
+
+<section class="dcv-hero section-gap">
+	<Container class="page-content-shell">
+		<div class="dcv-hero__content">
+			<div class="dcv-hero__copy">
+				<p class="eyebrow">CYFROWE PORTFOLIO</p>
+				<h1>
+					<span>Moja ścieżka</span>
+					<strong>zawodowa.</strong>
+				</h1>
+				<p class="dcv-hero__lead">
+					{
+						locale === 'pl'
+							? 'Ponad 9 lat praktyki w produktowych projektach webowych. Pracuję tam, gdzie frontend spotyka realne potrzeby produktu: architekturę, CMS, migracje, testy, dostępność i codzienne delivery.'
+							: 'Over 9 years of product web delivery experience. I work where frontend meets real product needs: architecture, CMS, migrations, testing, accessibility, and daily shipping.'
+					}
+				</p>
+			</div>
+
+			<div class="dcv-hero__visual" aria-hidden="true">
+				<div class="dcv-hero__grid" />
+				<div class="dcv-hero__arc dcv-hero__arc--outer" />
+				<div class="dcv-hero__arc dcv-hero__arc--inner" />
+				<div class="dcv-hero__particles" aria-hidden="true"></div>
+
+				<div class="dcv-hero__portrait">
+					<p>Portrait placeholder</p>
+				</div>
+
+				<div class="dcv-hero__plate">
+					<span>Frontend</span>
+					<strong>Product frontend · delivery · quality</strong>
+				</div>
+
+				<pre class="dcv-hero__code">
+					<code>{`const developer = {\n  name: 'Patryk',\n  role: 'Frontend',\n  focus: [\n    'Product',\n    'Implementation',\n    'Quality',\n    'Teamwork'\n  ],\n  mindset: 'Ship with care'\n};`}</code>
+				</pre>
+			</div>
+
+			<ul class="dcv-hero__metrics">
+				{
+					metrics.map((metric) => (
+						<HeroMetric value={metric.value} label={metric.label} />
+					))
+				}
+			</ul>
+		</div>
+	</Container>
+</section>
+
+<style>
+	.dcv-hero {
+		padding-top: 6.5rem;
+		padding-bottom: 7rem;
+	}
+
+	.dcv-hero__content {
+		margin: 0 auto;
+		width: 100%;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+		gap: 2rem 3.5rem;
+		align-items: stretch;
+	}
+
+	.dcv-hero__copy {
+		display: grid;
+		grid-template-rows: auto auto auto;
+		gap: 1.2rem;
+		align-content: start;
+	}
+
+	.dcv-hero__copy h1 {
+		margin: 0.4rem 0 0;
+		color: var(--color-text-main);
+		font-family: var(--font-display);
+		font-size: clamp(3.7rem, 6.4vw, 6rem);
+		line-height: 0.95;
+		letter-spacing: 0;
+	}
+
+	.dcv-hero__copy h1 span,
+	.dcv-hero__copy h1 strong {
+		display: block;
+	}
+
+	.dcv-hero__copy h1 strong {
+		color: var(--color-gold);
+		font-weight: 500;
+	}
+
+	.dcv-hero__lead {
+		margin: 0;
+		max-width: 42rem;
+		color: var(--color-text-muted);
+		font-size: 1rem;
+		line-height: 1.75;
+	}
+
+	.dcv-hero__metrics {
+		grid-column: 1 / -1;
+		justify-self: stretch;
+		width: 100%;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 0.9rem;
+	}
+
+	.dcv-hero__metrics li {
+		position: relative;
+		min-height: 7.15rem;
+		border: 1px solid rgba(217, 164, 65, 0.24);
+		border-radius: 0.58rem;
+		padding: 1rem 0.9rem 0.95rem;
+		background:
+			linear-gradient(145deg, rgba(217, 164, 65, 0.105), transparent 52%),
+			rgba(255, 255, 255, 0.018);
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+	}
+
+	.dcv-hero__metrics li::before {
+		content: "";
+		position: absolute;
+		top: -1px;
+		left: 0.9rem;
+		width: min(4.8rem, calc(100% - 1.8rem));
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+		box-shadow:
+			0 0 10px rgba(217, 164, 65, 0.3),
+			0 0 24px rgba(217, 164, 65, 0.14);
+	}
+
+	.dcv-hero__metrics li::after {
+		content: "";
+		position: absolute;
+		top: -1rem;
+		left: 0.35rem;
+		width: min(5.9rem, calc(100% - 0.7rem));
+		height: 1.65rem;
+		background: radial-gradient(ellipse at center, rgba(217, 164, 65, 0.18), transparent 70%);
+		filter: blur(0.55rem);
+		pointer-events: none;
+	}
+
+	.dcv-hero-metric__value {
+		margin: 0;
+		color: var(--color-text-main);
+		font-size: 1.15rem;
+		font-weight: 600;
+		line-height: 1.2;
+	}
+
+	.dcv-hero-metric__label {
+		margin-top: 0.35rem;
+		color: var(--color-text-muted);
+		font-size: 0.8rem;
+		line-height: 1.45;
+	}
+
+	.dcv-hero__visual {
+		position: relative;
+		min-height: 26.5rem;
+		border: 1px solid rgba(217, 164, 65, 0.22);
+		border-radius: 0.9rem;
+		background:
+			linear-gradient(150deg, rgba(5, 5, 5, 0.82), rgba(10, 10, 10, 0.92)),
+			radial-gradient(circle at 18% 18%, rgba(217, 164, 65, 0.2), transparent 38%);
+		overflow: hidden;
+	}
+
+	.dcv-hero__grid {
+		position: absolute;
+		inset: 0;
+		background:
+			linear-gradient(rgba(217, 164, 65, 0.08) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(217, 164, 65, 0.06) 1px, transparent 1px),
+			radial-gradient(circle, rgba(241, 198, 106, 0.5) 1px, transparent 2px);
+		background-size: 36px 36px, 36px 36px, 14px 14px;
+		opacity: 0.55;
+		mask-image: linear-gradient(90deg, transparent, black 16%, black 84%, transparent);
+	}
+
+	.dcv-hero__arc {
+		position: absolute;
+		border: 1px solid rgba(217, 164, 65, 0.42);
+		border-radius: 999px;
+		transform: rotate(-14deg);
+	}
+
+	.dcv-hero__arc--outer {
+		width: min(26rem, 92%);
+		height: 20rem;
+		right: -3.5rem;
+		top: 1.8rem;
+		border-left-color: var(--color-gold);
+		border-top-color: var(--color-gold-soft);
+	}
+
+	.dcv-hero__arc--inner {
+		width: 16rem;
+		height: 16rem;
+		right: 2.6rem;
+		top: 10rem;
+		opacity: 0.45;
+	}
+
+	.dcv-hero__particles {
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(circle, rgba(255, 255, 255, 0.35) 1px, transparent 1px);
+		background-size: 8px 8px;
+		opacity: 0.24;
+		mix-blend-mode: screen;
+		pointer-events: none;
+	}
+
+	.dcv-hero__portrait {
+		position: absolute;
+		z-index: 1;
+		left: 1.15rem;
+		right: 9rem;
+		bottom: 0;
+		display: grid;
+		place-items: center;
+		height: min(86%, 18rem);
+		background: linear-gradient(180deg, rgba(22, 22, 22, 0.86), rgba(6, 6, 6, 0.99));
+		border-top: 1px solid rgba(217, 164, 65, 0.28);
+	}
+
+	.dcv-hero__portrait p {
+		margin: 0;
+		padding: 0.6rem 1rem;
+		font-size: 0.74rem;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--color-text-faint);
+		border: 1px solid rgba(255, 255, 255, 0.14);
+		border-radius: 999px;
+	}
+
+	.dcv-hero__plate {
+		position: absolute;
+		z-index: 2;
+		left: 1.25rem;
+		bottom: 1.25rem;
+		width: min(17rem, calc(100% - 2.5rem));
+		border-left: 1px solid var(--color-gold);
+		padding: 0.75rem 0 0.75rem 0.95rem;
+		background: linear-gradient(90deg, rgba(5, 5, 5, 0.84), rgba(5, 5, 5, 0));
+	}
+
+	.dcv-hero__plate span,
+	.dcv-hero__plate strong {
+		display: block;
+	}
+
+	.dcv-hero__plate span {
+		color: var(--color-gold);
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.dcv-hero__plate strong {
+		margin-top: 0.25rem;
+		color: var(--color-text-main);
+		font-size: 0.95rem;
+		font-weight: 500;
+		line-height: 1.35;
+	}
+
+	.dcv-hero__code {
+		position: absolute;
+		z-index: 3;
+		top: 3.4rem;
+		right: 1rem;
+		width: min(18rem, 58%);
+		margin: 0;
+		padding: 0.95rem 1rem;
+		font-family:
+			ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+		font-size: 0.74rem;
+		line-height: 1.7;
+		white-space: pre-wrap;
+		color: color-mix(in srgb, var(--color-gold-soft) 78%, var(--color-text-main) 22%);
+		border: 1px solid rgba(217, 164, 65, 0.28);
+		border-radius: 0.45rem;
+		background: linear-gradient(130deg, rgba(5, 5, 5, 0.92), rgba(5, 5, 5, 0.78));
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 1rem 2rem rgba(0, 0, 0, 0.45);
+	}
+
+	@media (max-width: 1080px) {
+		.dcv-hero {
+			padding-top: 5.4rem;
+			padding-bottom: 5.6rem;
+		}
+
+		.dcv-hero__content {
+			grid-template-columns: 1fr;
+		}
+
+		.dcv-hero__metrics {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.dcv-hero__visual {
+			min-height: 23rem;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.dcv-hero__metrics {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.dcv-hero__code {
+			top: 1.2rem;
+			right: 0.8rem;
+			width: calc(100% - 1.6rem);
+			font-size: 0.7rem;
+		}
+
+		.dcv-hero__portrait p {
+			display: none;
+		}
+
+		.dcv-hero__plate {
+			display: none;
+		}
+	}
+</style>

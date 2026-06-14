@@ -1,0 +1,147 @@
+---
+import type { Locale } from '@/lib/i18n/locales';
+import Container from '@/components/ui/Container.astro';
+import TechGroup from './TechGroup.astro';
+import BottomWaveBackground from './BottomWaveBackground.astro';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const groupsByLocale = {
+	pl: [
+		{
+			title: 'Frontend',
+			description: 'Warstwa interfejsu, komponenty, widoki i codzienne budowanie doświadczeń użytkownika.',
+			items: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'HTML5', 'CSS / SCSS', 'Tailwind CSS', 'Styled Components', 'Preact', 'Angular'],
+		},
+		{
+			title: 'State & Data',
+			description: 'Modele stanu, formularze, cache, integracje API i przepływy danych w aplikacjach.',
+			items: ['Redux', 'Redux Toolkit', 'RTK Query', 'React Query', 'MobX', 'Jotai', 'Recoil', 'React Hook Form', 'REST API', 'GraphQL'],
+		},
+		{
+			title: 'Testing & Quality',
+			description: 'Testy, dostępność, dokumentacja komponentów i stabilność zmian przed releasem.',
+			items: ['Jest', 'Cypress', 'React Testing Library', 'Integration Testing', 'Storybook', 'Accessibility', 'Performance Optimization'],
+		},
+		{
+			title: 'Architecture & Delivery',
+			description: 'Migracje, architektura frontendowa i praktyki, które ułatwiają utrzymanie produktu.',
+			items: ['SSR', 'Micro frontends', 'Module Federation', 'Turborepo', 'Platform migrations', 'CI/CD', 'Legacy refactoring'],
+		},
+		{
+			title: 'CMS / e-commerce',
+			description: 'Platformy contentowe, commerce, konfiguracje i integracje wokół realnych procesów biznesowych.',
+			items: ['AEM', 'Builder.io', '2ClickShop', 'Salesforce LWC', 'Firebase', 'Apple / Google Play integrations'],
+		},
+		{
+			title: 'Backend / Supporting',
+			description: 'Technologie wspierające modernizacje, integracje oraz wcześniejsze fullstackowe doświadczenia.',
+			items: ['.NET', 'C#', 'Ruby on Rails', 'PHP', 'PostgreSQL', 'MySQL', 'WebRTC', 'Gamepad API'],
+		},
+	],
+	en: [
+		{
+			title: 'Frontend',
+			description: 'Interface layer, components, views, and day-to-day user experience delivery.',
+			items: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'HTML5', 'CSS / SCSS', 'Tailwind CSS', 'Styled Components', 'Preact', 'Angular'],
+		},
+		{
+			title: 'State & Data',
+			description: 'State models, forms, cache, API integrations, and product data flows.',
+			items: ['Redux', 'Redux Toolkit', 'RTK Query', 'React Query', 'MobX', 'Jotai', 'Recoil', 'React Hook Form', 'REST API', 'GraphQL'],
+		},
+		{
+			title: 'Testing & Quality',
+			description: 'Testing, accessibility, component documentation, and release confidence.',
+			items: ['Jest', 'Cypress', 'React Testing Library', 'Integration Testing', 'Storybook', 'Accessibility', 'Performance Optimization'],
+		},
+		{
+			title: 'Architecture & Delivery',
+			description: 'Migrations, frontend architecture, and practices that make products easier to maintain.',
+			items: ['SSR', 'Micro frontends', 'Module Federation', 'Turborepo', 'Platform migrations', 'CI/CD', 'Legacy refactoring'],
+		},
+		{
+			title: 'CMS / e-commerce',
+			description: 'Content, commerce, configuration, and integrations around real business workflows.',
+			items: ['AEM', 'Builder.io', '2ClickShop', 'Salesforce LWC', 'Firebase', 'Apple / Google Play integrations'],
+		},
+		{
+			title: 'Backend / Supporting',
+			description: 'Supporting technologies from modernization, integrations, and earlier fullstack work.',
+			items: ['.NET', 'C#', 'Ruby on Rails', 'PHP', 'PostgreSQL', 'MySQL', 'WebRTC', 'Gamepad API'],
+		},
+	],
+} as const;
+
+const groups = groupsByLocale[locale];
+---
+
+<section class="dcv-tech section-gap">
+	<div class="dcv-tech__bg" aria-hidden="true">
+		<BottomWaveBackground />
+	</div>
+	<Container class="page-content-shell">
+		<p class="eyebrow">{locale === 'pl' ? 'Technologie i narzędzia' : 'Technologies and tools'}</p>
+		<p class="dcv-tech__intro">
+			{locale === 'pl'
+				? 'Narzędzia, z których pracowałem komercyjnie przy frontendzie, migracjach, testach, CMS-ach, e-commerce i integracjach produktowych.'
+				: 'Technologies and tools used in commercial frontend work: migration, testing, CMS, e-commerce and product integrations.'}
+		</p>
+
+		<div class="dcv-tech__grid">
+			{
+				groups.map((group) => (
+					<TechGroup title={group.title} description={group.description} items={group.items} />
+				))
+			}
+		</div>
+	</Container>
+</section>
+
+<style>
+	.dcv-tech {
+		position: relative;
+		padding-block: 5.5rem;
+		overflow: hidden;
+	}
+
+	.dcv-tech__bg {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	.dcv-tech__intro {
+		margin-top: 1rem;
+		max-width: 58rem;
+		color: var(--color-text-muted);
+		font-size: 1rem;
+		line-height: 1.72;
+	}
+
+	.dcv-tech__grid {
+		margin-top: 2rem;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+		position: relative;
+		z-index: 2;
+	}
+
+	@media (max-width: 1024px) {
+		.dcv-tech__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 720px) {
+		.dcv-tech__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

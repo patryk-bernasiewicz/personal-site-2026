@@ -1,0 +1,102 @@
+---
+import ExperienceCard from './ExperienceCard.astro';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface ExperienceItem {
+	company: string;
+	role: string;
+	period: string;
+	duration: string;
+	domain: string;
+	summary: string;
+	points: readonly string[];
+	impactBadges: readonly string[];
+	technologies: readonly string[];
+}
+
+interface Props {
+	locale: Locale;
+	item: ExperienceItem;
+	tone?: 'featured' | 'regular' | 'quiet';
+}
+
+const { item, locale, tone = 'regular' } = Astro.props;
+---
+
+<article class="dcv-timeline-item">
+	<div class="dcv-timeline-item__rail">
+		<span class="dcv-timeline-item__dot" aria-hidden="true" />
+		<p class="dcv-timeline-item__period">{item.period}</p>
+		<p class="dcv-timeline-item__duration">{item.duration}</p>
+		<p class="dcv-timeline-item__company">{item.company}</p>
+	</div>
+
+	<div>
+		<ExperienceCard item={item} {locale} {tone} />
+	</div>
+</article>
+
+<style>
+	.dcv-timeline-item {
+		position: relative;
+		display: grid;
+		grid-template-columns: var(--timeline-rail-width, 9rem) minmax(0, 1fr);
+		gap: 1.6rem;
+		align-items: start;
+	}
+
+	.dcv-timeline-item + .dcv-timeline-item {
+		margin-top: 2.45rem;
+	}
+
+	.dcv-timeline-item__rail {
+		padding-top: 0.1rem;
+		position: relative;
+		color: var(--color-text-muted);
+		font-size: 0.84rem;
+		line-height: 1.45;
+	}
+
+	.dcv-timeline-item__period {
+		margin: 0;
+		color: var(--color-text-main);
+		font-weight: 600;
+	}
+
+	.dcv-timeline-item__duration {
+		margin: 0.28rem 0 0;
+		color: var(--color-text-faint);
+		font-size: 0.72rem;
+		line-height: 1;
+	}
+
+	.dcv-timeline-item__company {
+		margin: 0.85rem 0 0;
+	}
+
+	.dcv-timeline-item__dot {
+		position: absolute;
+		top: 0.45rem;
+		right: var(--timeline-dot-right, -0.54rem);
+		width: var(--timeline-dot-size, 0.82rem);
+		height: var(--timeline-dot-size, 0.82rem);
+		border: 2px solid var(--color-gold);
+		border-radius: 999px;
+		background: var(--color-ink);
+		box-shadow:
+			0 0 0 0.32rem rgba(217, 164, 65, 0.08),
+			0 0 1rem rgba(217, 164, 65, 0.7);
+	}
+
+	@media (max-width: 980px) {
+		.dcv-timeline-item {
+			grid-template-columns: 1fr;
+			padding-left: var(--timeline-item-padding-left, 1.1rem);
+		}
+
+		.dcv-timeline-item__dot {
+			left: var(--timeline-dot-left, -0.64rem);
+			right: auto;
+		}
+	}
+</style>

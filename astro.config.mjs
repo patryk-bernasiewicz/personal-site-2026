@@ -15,6 +15,45 @@ const devAllowedHosts = [
 		.filter(Boolean) ?? []),
 ];
 
+/** @type {import('vite').Plugin} */
+const noStoreInDev = {
+	name: 'no-store-in-dev',
+	configureServer(server) {
+		server.middlewares.use((req, res, next) => {
+			const noStoreValue = 'no-store, no-cache, max-age=0, must-revalidate';
+			const shouldClearBrowserCache = req.headers.accept?.includes('text/html') ?? false;
+			const applyNoStoreHeaders = () => {
+				res.setHeader('Cache-Control', noStoreValue);
+				res.setHeader('Pragma', 'no-cache');
+				res.setHeader('Expires', '0');
+				if (shouldClearBrowserCache) {
+					res.setHeader('Clear-Site-Data', '"cache"');
+				}
+				res.removeHeader('ETag');
+				res.removeHeader('Last-Modified');
+			};
+			const setHeader = res.setHeader.bind(res);
+
+			res.setHeader = (name, value) => {
+				const headerName = name.toLowerCase();
+
+				if (headerName === 'cache-control') {
+					return setHeader(name, noStoreValue);
+				}
+
+				if (headerName === 'etag' || headerName === 'last-modified') {
+					return res;
+				}
+
+				return setHeader(name, value);
+			};
+
+			applyNoStoreHeaders();
+			next();
+		});
+	},
+};
+
 // https://astro.build/config
 export default defineConfig({
 	site: siteUrl,
@@ -44,7 +83,7 @@ export default defineConfig({
 		},
 	}),
 	vite: {
-		plugins: [tailwindcss()],
+		plugins: [tailwindcss(), ...(isDev ? [noStoreInDev] : [])],
 		optimizeDeps: {
 			include: ['embla-carousel', '@tsparticles/engine', '@tsparticles/basic'],
 		},

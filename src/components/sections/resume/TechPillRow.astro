@@ -1,0 +1,39 @@
+---
+interface Props {
+	items: readonly string[];
+	label?: string;
+}
+
+const { items, label = 'Technologies' } = Astro.props;
+---
+
+<ul class="dcv-pill-row" aria-label={label}>
+	{items.map((item) => <li>{item}</li>)}
+</ul>
+
+<style>
+	.dcv-pill-row {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.52rem;
+	}
+
+	.dcv-pill-row li {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2rem;
+		border: 1px solid rgba(217, 164, 65, 0.32);
+		border-radius: 999px;
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent),
+			rgba(255, 255, 255, 0.02);
+		padding: 0.44rem 0.72rem;
+		color: var(--color-text-soft);
+		font-size: 0.78rem;
+		line-height: 1;
+		white-space: nowrap;
+	}
+</style>

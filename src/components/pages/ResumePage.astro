@@ -1,7 +1,10 @@
 ---
-import ResumeHeader from '@/components/sections/resume/ResumeHeader.astro';
+import DigitalCvHero from '@/components/sections/resume/DigitalCvHero.astro';
 import SkillsSection from '@/components/sections/resume/SkillsSection.astro';
-import WorkHistorySection from '@/components/sections/resume/WorkHistorySection.astro';
+import ResumeProjectsSection from '@/components/sections/resume/ResumeProjectsSection.astro';
+import ExperienceTimeline from '@/components/sections/resume/ExperienceTimeline.astro';
+import TechCompetenceMap from '@/components/sections/resume/TechCompetenceMap.astro';
+import EndingNavigationCards from '@/components/sections/resume/EndingNavigationCards.astro';
 import ResumeLayout from '@/layouts/ResumeLayout.astro';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import type { Locale } from '@/lib/i18n/locales';
@@ -25,7 +28,10 @@ const metadata = buildPageMetadata({
 ---
 
 <ResumeLayout {metadata}>
-	<ResumeHeader {locale} />
+	<DigitalCvHero {locale} />
 	<SkillsSection {locale} />
-	<WorkHistorySection {locale} />
+	<ResumeProjectsSection {locale} />
+	<ExperienceTimeline {locale} />
+	<TechCompetenceMap {locale} />
+	<EndingNavigationCards {locale} />
 </ResumeLayout>
