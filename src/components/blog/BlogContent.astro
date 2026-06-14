@@ -8,17 +8,24 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const html = renderRichTextToHtml(post.content);
+const html = await renderRichTextToHtml(post.content);
 ---
 
 {
 	post.coverImage && (
-		<img
-			src={post.coverImage.src}
-			alt={post.coverImage.alt}
-			class="mb-8 aspect-[16/9] w-full rounded-card object-cover"
-			loading="eager"
-		/>
+		<figure class="mb-8">
+			<img
+				src={post.coverImage.src}
+				alt={post.coverImage.alt}
+				class="aspect-[16/9] w-full rounded-card object-cover"
+				loading="eager"
+			/>
+			{post.coverImage.caption && (
+				<figcaption class="mt-3 overflow-wrap-anywhere text-caption leading-relaxed text-text-faint">
+					{post.coverImage.caption}
+				</figcaption>
+			)}
+		</figure>
 	)
 }
 

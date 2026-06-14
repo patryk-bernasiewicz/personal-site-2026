@@ -1,5 +1,13 @@
-import { CONTENTFUL_ENABLED } from 'astro:env/server';
+import {
+	CONTENTFUL_DELIVERY_TOKEN,
+	CONTENTFUL_ENABLED,
+	CONTENTFUL_PREVIEW_TOKEN,
+	CONTENTFUL_SPACE_ID,
+} from 'astro:env/server';
 
 export function isContentfulEnabled(): boolean {
-	return CONTENTFUL_ENABLED;
+	return (
+		CONTENTFUL_ENABLED ||
+		Boolean(CONTENTFUL_SPACE_ID && (CONTENTFUL_DELIVERY_TOKEN || CONTENTFUL_PREVIEW_TOKEN))
+	);
 }

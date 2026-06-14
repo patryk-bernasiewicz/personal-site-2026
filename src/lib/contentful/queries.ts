@@ -31,11 +31,12 @@ export async function getAllBlogPosts(locale: Locale): Promise<BlogPost[]> {
 		const response = await contentfulClient.getEntries<ContentfulBlogPostEntry>({
 			content_type: 'blogPost',
 			locale: toContentfulLocale(locale),
-			order: ['-fields.publishedAt'],
 			include: 2,
 		});
 
-		return response.items.map((item) => mapBlogPostEntry(item, locale));
+		return response.items
+			.map((item) => mapBlogPostEntry(item, locale))
+			.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 	}, []);
 }
 

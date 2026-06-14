@@ -75,5 +75,36 @@ const hrefLangAlternates = getHrefLangAlternates(metadata);
 			<slot />
 		</main>
 		<Footer locale={metadata.locale} />
+		<script>
+			const scheduleBlogCodeBlocks = () => {
+				if (!document.querySelector('.code-block')) {
+					return;
+				}
+
+				const load = () => {
+					import('@/scripts/blog-code-blocks').then(({ setupBlogCodeBlocks }) => {
+						setupBlogCodeBlocks();
+					});
+				};
+
+				if ('requestIdleCallback' in window) {
+					window.requestIdleCallback(load, { timeout: 1200 });
+					return;
+				}
+
+				setTimeout(load, 0);
+			};
+
+			const codeBlockWindow = window as Window & {
+				blogCodeBlocksListenerReady?: boolean;
+			};
+
+			if (!codeBlockWindow.blogCodeBlocksListenerReady) {
+				codeBlockWindow.blogCodeBlocksListenerReady = true;
+				document.addEventListener('astro:page-load', scheduleBlogCodeBlocks);
+			}
+
+			scheduleBlogCodeBlocks();
+		</script>
 	</body>
 </html>

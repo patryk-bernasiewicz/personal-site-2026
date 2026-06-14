@@ -7,12 +7,10 @@ export type ContentfulBlogPostEntry = {
 	fields: {
 		title: EntryFieldTypes.Text;
 		slug: EntryFieldTypes.Text;
-		description: EntryFieldTypes.Text;
-		publishedAt: EntryFieldTypes.Date;
-		updatedAt?: EntryFieldTypes.Date;
-		tags?: EntryFieldTypes.Array<EntryFieldTypes.Symbol>;
-		content: EntryFieldTypes.RichText;
-		coverImage?: EntryFieldTypes.AssetLink;
+		excerpt: EntryFieldTypes.Text;
+		body: EntryFieldTypes.RichText;
+		coverImage?: unknown;
+		tag?: unknown;
 	};
 };
 
@@ -29,5 +27,6 @@ export type BlogPost = {
 	coverImage?: {
 		src: string;
 		alt: string;
+		caption?: string;
 	};
 };

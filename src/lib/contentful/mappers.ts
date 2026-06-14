@@ -12,11 +12,31 @@ function asOptionalString(value: unknown): string | undefined {
 }
 
 function asStringArray(value: unknown): string[] {
-	return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : [];
+	return Array.isArray(value)
+		? value.filter((item): item is string => typeof item === 'string')
+		: [];
+}
+
+function asArray(value: unknown): unknown[] {
+	return Array.isArray(value) ? value : [];
 }
 
 function asDocument(value: unknown): Document {
 	return value as Document;
+}
+
+function asEntryTitle(value: unknown): string | null {
+	if (
+		typeof value === 'object' &&
+		value !== null &&
+		'fields' in value &&
+		typeof (value as { fields?: { title?: unknown; name?: unknown } }).fields === 'object'
+	) {
+		const fields = (value as { fields: { title?: unknown; name?: unknown } }).fields;
+		return asOptionalString(fields.title) ?? asOptionalString(fields.name) ?? null;
+	}
+
+	return null;
 }
 
 function isResolvedAsset(asset: unknown): asset is Asset {
@@ -29,8 +49,10 @@ function isResolvedAsset(asset: unknown): asset is Asset {
 	);
 }
 
-function mapCoverImage(entry: Entry<ContentfulBlogPostEntry>): BlogPost['coverImage'] | undefined {
-	const asset = entry.fields.coverImage;
+function mapCoverImage(
+	entry: Entry<ContentfulBlogPostEntry>,
+): BlogPost['coverImage'] | undefined {
+	const asset = asArray(entry.fields.coverImage).find(isResolvedAsset);
 	if (!isResolvedAsset(asset) || !asset.fields?.file?.url) {
 		return undefined;
 	}
@@ -42,7 +64,11 @@ function mapCoverImage(entry: Entry<ContentfulBlogPostEntry>): BlogPost['coverIm
 
 	return {
 		src: fileUrl.startsWith('//') ? `https:${fileUrl}` : fileUrl,
-		alt: asString(asset.fields.title, asString(entry.fields.title, 'Cover image')),
+		alt: asString(
+			asset.fields.title,
+			asString(entry.fields.title, 'Cover image'),
+		),
+		caption: asOptionalString(asset.fields.description),
 	};
 }
 
@@ -57,11 +83,11 @@ export function mapBlogPostEntry(
 		locale,
 		title: asString(fields.title),
 		slug: asString(fields.slug),
-		description: asString(fields.description),
-		publishedAt: asString(fields.publishedAt),
-		updatedAt: asOptionalString(fields.updatedAt),
-		tags: asStringArray(fields.tags),
-		content: asDocument(fields.content),
+		description: asString(fields.excerpt),
+		publishedAt: entry.sys.createdAt,
+		updatedAt: entry.sys.updatedAt,
+		tags: asStringArray(asArray(fields.tag).map(asEntryTitle)),
+		content: asDocument(fields.body),
 		coverImage: mapCoverImage(entry),
 	};
 }
