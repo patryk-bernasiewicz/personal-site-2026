@@ -308,5 +308,5 @@
 
 	setupHeroParticles();
 	document.addEventListener('astro:page-load', setupHeroParticles);
-	document.addEventListener('astro:before-swap', destroyParticles);
+	document.addEventListener('astro:after-swap', destroyParticles);
 </script>

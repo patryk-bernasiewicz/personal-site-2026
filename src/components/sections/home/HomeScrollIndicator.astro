@@ -188,7 +188,7 @@ const scrollIndicator = getDictionary(locale).home.scrollIndicator;
 
 	setupHomeScrollIndicator();
 	document.addEventListener('astro:page-load', setupHomeScrollIndicator);
-	document.addEventListener('astro:before-swap', destroyHomeScrollIndicator);
+	document.addEventListener('astro:after-swap', destroyHomeScrollIndicator);
 </script>
 
 <style>

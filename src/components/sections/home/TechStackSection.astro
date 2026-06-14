@@ -285,7 +285,7 @@ function getIconPaths(icon: TechIcon): string[] {
 
 	setupCarousels();
 	document.addEventListener('astro:page-load', setupCarousels);
-	document.addEventListener('astro:before-swap', destroyCarousels);
+	document.addEventListener('astro:after-swap', destroyCarousels);
 </script>
 
 <style>

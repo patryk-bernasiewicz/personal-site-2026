@@ -506,5 +506,5 @@
 
 	setupFlow();
 	document.addEventListener('astro:page-load', setupFlow);
-	document.addEventListener('astro:before-swap', destroyFlow);
+	document.addEventListener('astro:after-swap', destroyFlow);
 </script>
