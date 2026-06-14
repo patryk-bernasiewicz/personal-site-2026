@@ -1,4 +1,5 @@
 ---
+import LanguageSwitcher from '@/components/layout/LanguageSwitcher.astro';
 import SiteLogo from '@/components/layout/SiteLogo.astro';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { applyPolishTypography } from '@/lib/typography';
@@ -36,7 +37,6 @@ const aria =
 				closeMenu: 'Zamknij menu',
 				mobileMenu: 'Menu nawigacji',
 				themeToggle: 'Przełącz motyw (wkrótce)',
-				langPlaceholder: 'Przełącznik języka (wkrótce)',
 			})
 		: {
 				mainNav: 'Main',
@@ -44,7 +44,6 @@ const aria =
 				closeMenu: 'Close menu',
 				mobileMenu: 'Navigation menu',
 				themeToggle: 'Toggle theme (coming soon)',
-				langPlaceholder: 'Language switcher (coming soon)',
 			};
 
 function isNavActive(href: string): boolean {
@@ -58,9 +57,6 @@ function navLinkClass(isActive: boolean): string {
 	].join(' ');
 }
 
-// Reserved for future LanguageSwitcher (BaseLayout still passes these props).
-void routeKey;
-void alternatePaths;
 ---
 
 <header
@@ -101,14 +97,8 @@ void alternatePaths;
 				</ul>
 			</nav>
 
-			<div class="flex items-center gap-4 border-l border-white/10 pl-4">
-				<span
-					class="text-caption font-semibold uppercase tracking-widest text-text-faint"
-					aria-label={aria.langPlaceholder}
-					title={aria.langPlaceholder}
-				>
-					{locale === 'pl' ? 'PL' : 'EN'}
-				</span>
+			<div class="flex items-center gap-4">
+				<LanguageSwitcher {locale} {routeKey} {alternatePaths} />
 				<button type="button" class="site-header__theme-toggle" aria-label={aria.themeToggle}>
 					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
 						<circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5" />
@@ -213,13 +203,7 @@ void alternatePaths;
 		<div
 			class="site-mobile-nav__footer mt-auto flex items-center justify-between gap-4 border-t border-white/10 pt-6"
 		>
-			<span
-				class="text-caption font-semibold uppercase tracking-widest text-text-faint"
-				aria-label={aria.langPlaceholder}
-				title={aria.langPlaceholder}
-			>
-				{locale === 'pl' ? 'PL' : 'EN'}
-			</span>
+			<LanguageSwitcher {locale} {routeKey} {alternatePaths} />
 			<button type="button" class="site-header__theme-toggle" aria-label={aria.themeToggle}>
 				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
 					<circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5" />

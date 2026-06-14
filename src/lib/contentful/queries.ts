@@ -24,6 +24,10 @@ async function withContentfulFallback<T>(
 	}
 }
 
+function hasPublicBlogRoute(post: BlogPost): boolean {
+	return Boolean(post.title.trim() && post.slug.trim());
+}
+
 export async function getAllBlogPosts(locale: Locale): Promise<BlogPost[]> {
 	return withContentfulFallback(async () => {
 		const { contentfulClient } = await import('@/lib/contentful/client');
@@ -36,6 +40,7 @@ export async function getAllBlogPosts(locale: Locale): Promise<BlogPost[]> {
 
 		return response.items
 			.map((item) => mapBlogPostEntry(item, locale))
+			.filter(hasPublicBlogRoute)
 			.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 	}, []);
 }
@@ -56,7 +61,12 @@ export async function getBlogPostBySlug(
 		});
 
 		const entry = response.items[0];
-		return entry ? mapBlogPostEntry(entry, locale) : null;
+		if (!entry) {
+			return null;
+		}
+
+		const post = mapBlogPostEntry(entry, locale);
+		return hasPublicBlogRoute(post) ? post : null;
 	}, null);
 }
 
@@ -80,7 +90,9 @@ export async function getBlogPostAlternatePaths(
 					});
 
 					const post = mapBlogPostEntry(entry, locale);
-					paths[locale] = getLocalizedBlogPostUrl(post.slug, locale);
+					if (hasPublicBlogRoute(post)) {
+						paths[locale] = getLocalizedBlogPostUrl(post.slug, locale);
+					}
 				} catch {
 					// Translation missing for this locale — omit from alternates.
 				}

@@ -7,9 +7,14 @@ export type ContentfulBlogPostEntry = {
 	fields: {
 		title: EntryFieldTypes.Text;
 		slug: EntryFieldTypes.Text;
-		excerpt: EntryFieldTypes.Text;
-		body: EntryFieldTypes.RichText;
+		description?: EntryFieldTypes.Text;
+		excerpt?: EntryFieldTypes.Text;
+		publishedAt?: EntryFieldTypes.Date;
+		updatedAt?: EntryFieldTypes.Date;
+		content?: EntryFieldTypes.RichText;
+		body?: EntryFieldTypes.RichText;
 		coverImage?: unknown;
+		tags?: unknown;
 		tag?: unknown;
 	};
 };

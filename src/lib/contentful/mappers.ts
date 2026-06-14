@@ -1,4 +1,4 @@
-import type { Document } from '@contentful/rich-text-types';
+import { BLOCKS, type Document } from '@contentful/rich-text-types';
 import type { Asset, Entry } from 'contentful';
 import type { Locale } from '@/lib/i18n/locales';
 import type { BlogPost, ContentfulBlogPostEntry } from '@/lib/contentful/types';
@@ -11,18 +11,31 @@ function asOptionalString(value: unknown): string | undefined {
 	return typeof value === 'string' ? value : undefined;
 }
 
-function asStringArray(value: unknown): string[] {
-	return Array.isArray(value)
-		? value.filter((item): item is string => typeof item === 'string')
-		: [];
-}
-
 function asArray(value: unknown): unknown[] {
 	return Array.isArray(value) ? value : [];
 }
 
 function asDocument(value: unknown): Document {
 	return value as Document;
+}
+
+const emptyDocument: Document = {
+	nodeType: BLOCKS.DOCUMENT,
+	data: {},
+	content: [],
+};
+
+function asOptionalDocument(value: unknown): Document | undefined {
+	if (
+		typeof value === 'object' &&
+		value !== null &&
+		'nodeType' in value &&
+		(value as { nodeType?: unknown }).nodeType === 'document'
+	) {
+		return asDocument(value);
+	}
+
+	return undefined;
 }
 
 function asEntryTitle(value: unknown): string | null {
@@ -52,7 +65,9 @@ function isResolvedAsset(asset: unknown): asset is Asset {
 function mapCoverImage(
 	entry: Entry<ContentfulBlogPostEntry>,
 ): BlogPost['coverImage'] | undefined {
-	const asset = asArray(entry.fields.coverImage).find(isResolvedAsset);
+	const asset = isResolvedAsset(entry.fields.coverImage)
+		? entry.fields.coverImage
+		: asArray(entry.fields.coverImage).find(isResolvedAsset);
 	if (!isResolvedAsset(asset) || !asset.fields?.file?.url) {
 		return undefined;
 	}
@@ -72,22 +87,30 @@ function mapCoverImage(
 	};
 }
 
+function mapTags(rawTags: unknown): string[] {
+	return asArray(rawTags)
+		.map((tag) => (typeof tag === 'string' ? tag : asEntryTitle(tag)))
+		.filter((tag): tag is string => Boolean(tag));
+}
+
 export function mapBlogPostEntry(
 	entry: Entry<ContentfulBlogPostEntry>,
 	locale: Locale,
 ): BlogPost {
 	const { fields } = entry;
+	const publishedAt = asString(fields.publishedAt, entry.sys.createdAt);
+	const updatedAt = asOptionalString(fields.updatedAt);
 
 	return {
 		entryId: entry.sys.id,
 		locale,
 		title: asString(fields.title),
 		slug: asString(fields.slug),
-		description: asString(fields.excerpt),
-		publishedAt: entry.sys.createdAt,
-		updatedAt: entry.sys.updatedAt,
-		tags: asStringArray(asArray(fields.tag).map(asEntryTitle)),
-		content: asDocument(fields.body),
+		description: asString(fields.description, asString(fields.excerpt)),
+		publishedAt,
+		updatedAt,
+		tags: mapTags(fields.tags ?? fields.tag),
+		content: asOptionalDocument(fields.content) ?? asOptionalDocument(fields.body) ?? emptyDocument,
 		coverImage: mapCoverImage(entry),
 	};
 }
