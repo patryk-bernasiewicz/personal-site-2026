@@ -14,21 +14,41 @@ export const dictionaries = {
 		skipLink: 'Przejdź do treści',
 		meta: {
 			home: {
-				title: 'Strona główna',
-				description: 'Osobista strona — portfolio, cyfrowe CV i blog.',
+				title: 'Patryk Bernasiewicz — Frontend Developer',
+				description:
+					'Frontend developer specjalizujący się w React, Next.js, TypeScript, dostępności, CMS-ach i stabilnym delivery produktów webowych.',
 			},
 			about: {
-				title: 'O mnie',
-				description: 'Kim jestem i nad czym pracuję.',
+				title: 'O mnie — Patryk Bernasiewicz',
+				description:
+					'Kim jestem, jak pracuję i jak podchodzę do frontendu, produktu, UX oraz technicznego delivery.',
 			},
 			resume: {
-				title: 'Cyfrowe CV',
-				description: 'Doświadczenie, umiejętności i pobranie CV.',
+				title: 'Cyfrowe CV — Patryk Bernasiewicz',
+				description:
+					'Doświadczenie frontendowe, technologie, obszary pracy i role komercyjne Patryka Bernasiewicza.',
 			},
 			blogIndex: {
-				title: 'Blog',
-				description: 'Artykuły i notatki.',
+				title: 'Blog — Patryk Bernasiewicz',
+				description:
+					'Artykuły o frontendzie, JavaScript, wydajności, dostępności i praktycznym delivery produktów webowych.',
 			},
+		},
+		audioPlayer: {
+			hint: 'kliknij, aby posłuchać klimatycznych kawałków',
+			previous: 'Poprzedni utwór',
+			play: 'Odtwórz muzykę',
+			pause: 'Zatrzymaj muzykę',
+			next: 'Następny utwór',
+			ready: 'Odtwarzacz muzyki gotowy',
+			unknownTrack: 'Nieznany utwór',
+			playing: 'Odtwarzanie: {track}',
+			stopped: 'Muzyka zatrzymana',
+			loadingPlaylist: 'Ładowanie playlisty',
+			selected: 'Wybrano: {track}',
+			playlistLoadError: 'Nie udało się załadować playlisty.',
+			trackPlayError: 'Nie udało się odtworzyć utworu.',
+			webAudioError: 'Twoja przeglądarka nie obsługuje Web Audio API.',
 		},
 		home: {
 			eyebrow: 'Strona osobista',
@@ -48,8 +68,8 @@ export const dictionaries = {
 					line2: 'produkty, które robią',
 					line3: 'różnicę.',
 				},
-				lead: 'Tworzę szybkie, skalowalne i dostępne doświadczenia webowe, oparte na czystym kodzie i przemyślanym designie.',
-				viewWork: 'Zobacz moje prace',
+				lead: 'Tworzę szybkie, skalowalne i dostępne doświadczenia webowe, oparte na czystym kodzie, przemyślanej implementacji i dobrym UX.',
+				viewWork: 'Zobacz cyfrowe CV',
 				letsTalk: 'Porozmawiajmy',
 				followMe: 'Obserwuj',
 				scroll: 'Przewiń',
@@ -61,7 +81,7 @@ export const dictionaries = {
 					line1: 'Najpierw sens.',
 					line2: 'Potem interfejs.',
 				},
-				lead: 'Pracuję blisko frontendu, produktu i designu. Lubię zamieniać złożone procesy w widoki, które prowadzą użytkownika bez tłumaczenia.',
+				lead: 'Pracuję blisko frontendu, produktu i gotowych projektów UI. Lubię zamieniać złożone procesy w widoki, które prowadzą użytkownika bez tłumaczenia.',
 				cta: 'Więcej o mnie',
 				closing:
 					'Po godzinach rozwijam własne projekty internetowe — z tej samej potrzeby łączenia technologii, treści i sensownego doświadczenia.',
@@ -147,21 +167,41 @@ export const dictionaries = {
 		skipLink: 'Skip to content',
 		meta: {
 			home: {
-				title: 'Home',
-				description: 'Personal site — portfolio, digital resume, and blog.',
+				title: 'Patryk Bernasiewicz — Frontend Developer',
+				description:
+					'Frontend developer focused on React, Next.js, TypeScript, accessibility, CMS-driven platforms, and reliable web product delivery.',
 			},
 			about: {
-				title: 'About',
-				description: 'Background and what I work on.',
+				title: 'About — Patryk Bernasiewicz',
+				description:
+					'Background, working style, and approach to frontend, product, UX, and technical delivery.',
 			},
 			resume: {
-				title: 'Digital Resume',
-				description: 'Experience, skills, and CV download.',
+				title: 'Digital Resume — Patryk Bernasiewicz',
+				description:
+					'Frontend experience, technologies, work areas, and commercial roles of Patryk Bernasiewicz.',
 			},
 			blogIndex: {
-				title: 'Articles',
-				description: 'Writing and notes.',
+				title: 'Blog — Patryk Bernasiewicz',
+				description:
+					'Articles about frontend, JavaScript, performance, accessibility, and practical web product delivery.',
 			},
+		},
+		audioPlayer: {
+			hint: 'click to play atmospheric tracks',
+			previous: 'Previous track',
+			play: 'Play music',
+			pause: 'Pause music',
+			next: 'Next track',
+			ready: 'Music player ready',
+			unknownTrack: 'Unknown track',
+			playing: 'Playing: {track}',
+			stopped: 'Music stopped',
+			loadingPlaylist: 'Loading playlist',
+			selected: 'Selected: {track}',
+			playlistLoadError: 'Could not load the playlist.',
+			trackPlayError: 'Could not play this track.',
+			webAudioError: 'Your browser does not support the Web Audio API.',
 		},
 		home: {
 			eyebrow: 'Personal site',
@@ -181,8 +221,8 @@ export const dictionaries = {
 					line2: 'products that make an',
 					line3: 'impact.',
 				},
-				lead: 'I craft fast, scalable and accessible web experiences with clean code and thoughtful design.',
-				viewWork: 'View my work',
+				lead: 'I build fast, scalable, and accessible web experiences with clean code, thoughtful implementation, and good UX.',
+				viewWork: 'View digital resume',
 				letsTalk: "Let's talk",
 				followMe: 'Follow me',
 				scroll: 'Scroll',
@@ -194,7 +234,7 @@ export const dictionaries = {
 					line1: 'I care more about why something exists',
 					line2: 'than what it was built with.',
 				},
-				lead: 'I work mainly on the frontend, close to product requirements and ready UI designs. I like the moment when a complex problem starts turning into a working view that feels logical and obvious to the user.',
+				lead: 'I work close to frontend, product, and ready UI designs. I like turning complex flows into interfaces that guide users without extra explanation.',
 				cta: 'More about me',
 				closing:
 					'I build my own web projects after hours because the same thing still fascinates me: how to connect technology, content, and useful structure into something people actually want to use.',

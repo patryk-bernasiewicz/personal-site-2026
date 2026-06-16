@@ -16,6 +16,7 @@ interface Props {
 const { locale } = Astro.props;
 const dictionary = getDictionary(locale);
 const posts = await getAllBlogPosts(locale);
+const pageHeading = locale === 'pl' ? 'Blog' : 'Articles';
 
 const metadata = buildPageMetadata({
 	title: dictionary.meta.blogIndex.title,
@@ -30,7 +31,7 @@ const metadata = buildPageMetadata({
 	<Container tag="section" class="page-content-shell section-gap pt-nav">
 		<SectionHeading
 			eyebrow={dictionary.blog.eyebrow}
-			title={dictionary.meta.blogIndex.title}
+			title={pageHeading}
 			description={dictionary.meta.blogIndex.description}
 			headingLevel="h1"
 		/>

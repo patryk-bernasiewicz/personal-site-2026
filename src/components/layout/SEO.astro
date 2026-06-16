@@ -1,0 +1,78 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import {
+	formatDocumentTitle,
+	getHrefLangAlternates,
+	getOpenGraphTags,
+	type PageMetadata,
+} from '@/lib/seo';
+
+interface Props {
+	metadata: PageMetadata;
+	generator: string;
+}
+
+const { metadata, generator } = Astro.props;
+const documentTitle = formatDocumentTitle(metadata.title);
+const og = getOpenGraphTags(metadata);
+const hrefLangAlternates = getHrefLangAlternates(metadata);
+const robotsContent = metadata.noIndex ? 'noindex,nofollow' : undefined;
+---
+
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+	rel="stylesheet"
+/>
+<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+<link rel="icon" href="/favicon.ico" />
+<meta name="viewport" content="width=device-width" />
+<meta name="generator" content={generator} />
+<title>{documentTitle}</title>
+<meta name="description" content={metadata.description} />
+{metadata.canonical && <link rel="canonical" href={og.url} />}
+{
+	hrefLangAlternates.map((alternate) => (
+		<link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
+	))
+}
+{robotsContent && <meta name="robots" content={robotsContent} />}
+
+<meta property="og:type" content={og.type} />
+<meta property="og:site_name" content={og.siteName} />
+<meta property="og:locale" content={og.locale} />
+<meta property="og:title" content={og.title} />
+<meta property="og:description" content={og.description} />
+<meta property="og:url" content={og.url} />
+<meta property="og:image" content={og.image} />
+<meta property="og:image:width" content={String(og.imageWidth)} />
+<meta property="og:image:height" content={String(og.imageHeight)} />
+<meta property="og:image:alt" content={og.imageAlt} />
+{
+	metadata.ogType === 'article' && (
+		<>
+			{metadata.publishedTime && (
+				<meta property="article:published_time" content={metadata.publishedTime} />
+			)}
+			{metadata.modifiedTime && (
+				<meta property="article:modified_time" content={metadata.modifiedTime} />
+			)}
+			{metadata.section && <meta property="article:section" content={metadata.section} />}
+			{metadata.tags?.map((tag) => <meta property="article:tag" content={tag} />)}
+		</>
+	)
+}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={og.title} />
+<meta name="twitter:description" content={og.description} />
+<meta name="twitter:image" content={og.image} />
+<meta name="twitter:image:alt" content={og.imageAlt} />
+{
+	metadata.jsonLd && (
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(metadata.jsonLd)} />
+	)
+}
+<ClientRouter />

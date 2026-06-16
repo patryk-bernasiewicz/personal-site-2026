@@ -1,0 +1,19 @@
+services:
+  site:
+    image: personal-site-2026
+    pull_policy: build
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:?Set PUBLIC_SITE_URL in .env.prod}
+        CONTENTFUL_ENABLED: ${CONTENTFUL_ENABLED:-false}
+        CONTENTFUL_SPACE_ID: ${CONTENTFUL_SPACE_ID:-}
+        CONTENTFUL_DELIVERY_TOKEN: ${CONTENTFUL_DELIVERY_TOKEN:-}
+        CONTENTFUL_PREVIEW_TOKEN: ${CONTENTFUL_PREVIEW_TOKEN:-}
+        MUSIC_PLAYLIST_URL: ${MUSIC_PLAYLIST_URL:-https://s3.patrykb.pl/patrykbpl/audio/playlist.json}
+    environment:
+      PORT: ${PORT:-3660}
+    ports:
+      - "${HOST_BIND:-127.0.0.1}:${PORT:-3660}:${PORT:-3660}"
+    restart: unless-stopped

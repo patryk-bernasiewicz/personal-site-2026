@@ -14,6 +14,10 @@ interface Props {
 
 const { locale } = Astro.props;
 const { hero } = getAboutPageContent(locale);
+const portraitAlt =
+  locale === "pl"
+    ? "Portret Patryka Bernasiewicza"
+    : "Portrait of Patryk Bernasiewicz";
 ---
 
 <Container
@@ -53,11 +57,10 @@ const { hero } = getAboutPageContent(locale);
       </div>
       <div
         class="absolute bottom-0 left-[-5%] top-[7%] w-[58%] opacity-90 lg:left-[clamp(1rem,4vw,3.5rem)] lg:top-5 lg:w-[min(42%,19rem)]"
-        aria-hidden="true"
       >
         <HeroMediaPicture
           desktop={{ webp: aboutMePhotoWebp, fallback: aboutMePhoto }}
-          alt=""
+          alt={portraitAlt}
           loading="eager"
           fetchpriority="high"
           desktopSizes="(min-width: 1024px) 48vw, 100vw"

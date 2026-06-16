@@ -15,6 +15,7 @@ interface Props {
   class?: string;
   desktopSizes?: string;
   mobileSizes?: string;
+  ariaHidden?: boolean;
 }
 
 const MOBILE_MEDIA = "(max-width: 1023px)";
@@ -29,6 +30,7 @@ const {
   class: className,
   desktopSizes = "(max-width: 1920px) 100vw, 1920px",
   mobileSizes = "100vw",
+  ariaHidden = alt === "",
 } = Astro.props;
 
 const hasMobileArt =
@@ -76,5 +78,6 @@ const hasMobileArt =
     fetchpriority={fetchpriority}
     decoding="async"
     class={className}
+    aria-hidden={ariaHidden ? "true" : undefined}
   />
 </picture>

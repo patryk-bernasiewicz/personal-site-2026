@@ -23,7 +23,7 @@ Registry: `src/lib/i18n/routes.ts` — never hardcode these paths in components.
 
 ```bash
 cp .env.example .env
-# set SITE_URL, CONTENTFUL_*, PORT
+# set PUBLIC_SITE_URL, CONTENTFUL_*, PORT
 npm install
 npm run dev
 ```
@@ -84,12 +84,11 @@ CORS, playback may work, but the Web Audio visualizer may not receive analyser d
 ## Docker deploy
 
 ```bash
-docker context use <remote>
-cp docker/.env.example docker/.env
-# set SITE_URL, PORT=3660, CONTENTFUL_*, then:
-docker compose -f docker/compose.yaml --env-file docker/.env up -d --build
+cp .env.prod.example .env.prod
+# set PUBLIC_SITE_URL, PORT=3660, CONTENTFUL_*, then:
+docker --context mikrus compose --env-file .env.prod up -d
 ```
 
-Site listens on `http://<host>:${PORT}` (default **3660**, same mapping inside and outside the container: `3660:3660`).
+Container publishes `HOST_BIND:PORT` (default `127.0.0.1:3660`) for the VPS nginx reverse proxy.
 
 Production image build needs valid `CONTENTFUL_*` values (static prerender).

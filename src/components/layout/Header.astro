@@ -36,14 +36,12 @@ const aria =
 				openMenu: 'Otwórz menu',
 				closeMenu: 'Zamknij menu',
 				mobileMenu: 'Menu nawigacji',
-				themeToggle: 'Przełącz motyw (wkrótce)',
 			})
 		: {
 				mainNav: 'Main',
 				openMenu: 'Open menu',
 				closeMenu: 'Close menu',
 				mobileMenu: 'Navigation menu',
-				themeToggle: 'Toggle theme (coming soon)',
 			};
 
 function isNavActive(href: string): boolean {
@@ -99,17 +97,6 @@ function navLinkClass(isActive: boolean): string {
 
 			<div class="flex items-center gap-4">
 				<LanguageSwitcher {locale} {routeKey} {alternatePaths} />
-				<button type="button" class="site-header__theme-toggle" aria-label={aria.themeToggle}>
-					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-						<circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5" />
-						<path
-							d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
-							stroke="currentColor"
-							stroke-width="1.5"
-							stroke-linecap="round"
-						/>
-					</svg>
-				</button>
 			</div>
 		</div>
 
@@ -204,17 +191,6 @@ function navLinkClass(isActive: boolean): string {
 			class="site-mobile-nav__footer mt-auto flex items-center justify-between gap-4 border-t border-white/10 pt-6"
 		>
 			<LanguageSwitcher {locale} {routeKey} {alternatePaths} />
-			<button type="button" class="site-header__theme-toggle" aria-label={aria.themeToggle}>
-				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-					<circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5" />
-					<path
-						d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
-						stroke="currentColor"
-						stroke-width="1.5"
-						stroke-linecap="round"
-					/>
-				</svg>
-			</button>
 		</div>
 	</aside>
 </div>
@@ -304,25 +280,6 @@ function navLinkClass(isActive: boolean): string {
 		background: linear-gradient(to top, transparent, var(--color-ink));
 		border-bottom-color: rgba(255, 255, 255, 0.1);
 		backdrop-filter: blur(24px);
-	}
-
-	.site-header__theme-toggle {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 2.75rem;
-		height: 2.75rem;
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		border-radius: var(--radius-button);
-		color: var(--color-text-muted);
-		transition:
-			border-color 180ms ease,
-			color 180ms ease;
-	}
-
-	.site-header__theme-toggle:hover {
-		border-color: rgba(255, 255, 255, 0.2);
-		color: var(--color-text-main);
 	}
 
 	.site-mobile-nav__head {

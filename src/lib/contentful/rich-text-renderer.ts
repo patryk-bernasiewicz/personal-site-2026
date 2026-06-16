@@ -130,12 +130,15 @@ function createRichTextRenderOptions(
 					return '';
 				}
 
-				const alt = escapeHtml(target.fields.title ?? '');
+				const rawAlt = typeof target.fields.title === 'string' ? target.fields.title.trim() : '';
+				const isGenericAlt = rawAlt === '' || /^image$/i.test(rawAlt);
+				const alt = isGenericAlt ? '' : escapeHtml(rawAlt);
+				const ariaHidden = isGenericAlt ? ' aria-hidden="true"' : '';
 				const caption = target.fields.description
 					? `<figcaption>${escapeHtml(target.fields.description)}</figcaption>`
 					: '';
 
-				return `<figure><img src="${escapeHtml(src)}" alt="${alt}" loading="lazy" decoding="async" />${caption}</figure>`;
+				return `<figure><img src="${escapeHtml(src)}" alt="${alt}"${ariaHidden} loading="lazy" decoding="async" />${caption}</figure>`;
 			},
 			[INLINES.HYPERLINK]: (node, children) =>
 				renderExternalLink(node.data.uri, children(node.content)),

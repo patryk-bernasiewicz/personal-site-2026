@@ -7,9 +7,18 @@ export type PageMetadata = {
 	description: string;
 	locale: Locale;
 	canonical?: string;
+	ogTitle?: string;
+	ogDescription?: string;
+	ogType?: 'website' | 'article';
 	ogImage?: string;
+	ogImageAlt?: string;
 	noIndex?: boolean;
 	alternatePaths?: Partial<Record<Locale, string>>;
+	publishedTime?: string;
+	modifiedTime?: string;
+	tags?: string[];
+	section?: string;
+	jsonLd?: Record<string, unknown>;
 };
 
 export function buildPageMetadata(
@@ -20,30 +29,47 @@ export function buildPageMetadata(
 		description: overrides.description ?? siteConfig.description,
 		locale: overrides.locale,
 		canonical: overrides.canonical,
+		ogTitle: overrides.ogTitle,
+		ogDescription: overrides.ogDescription,
+		ogType: overrides.ogType ?? 'website',
 		ogImage: overrides.ogImage ?? siteConfig.defaultOgImage,
+		ogImageAlt: overrides.ogImageAlt ?? siteConfig.defaultOgImageAlt,
 		noIndex: overrides.noIndex,
 		alternatePaths: overrides.alternatePaths,
+		publishedTime: overrides.publishedTime,
+		modifiedTime: overrides.modifiedTime,
+		tags: overrides.tags,
+		section: overrides.section,
+		jsonLd: overrides.jsonLd,
 	};
 }
 
 export function formatDocumentTitle(title: string): string {
-	if (title === siteConfig.name) {
-		return siteConfig.name;
-	}
+	return title;
+}
 
-	return `${title} · ${siteConfig.name}`;
+export function getOgLocale(locale: Locale): string {
+	return locale === 'pl' ? 'pl_PL' : 'en_US';
 }
 
 export function getOpenGraphTags(metadata: PageMetadata) {
 	const ogImage = metadata.ogImage
 		? absoluteUrl(metadata.ogImage)
 		: absoluteUrl(siteConfig.defaultOgImage);
+	const title = metadata.ogTitle ?? metadata.title;
+	const description = metadata.ogDescription ?? metadata.description;
 
 	return {
-		title: formatDocumentTitle(metadata.title),
-		description: metadata.description,
+		title,
+		description,
+		type: metadata.ogType ?? 'website',
 		url: metadata.canonical ? absoluteUrl(metadata.canonical) : siteConfig.url,
 		image: ogImage,
+		imageAlt: metadata.ogImageAlt ?? siteConfig.defaultOgImageAlt,
+		imageWidth: 1200,
+		imageHeight: 630,
+		siteName: siteConfig.name,
+		locale: getOgLocale(metadata.locale),
 	};
 }
 
@@ -73,4 +99,30 @@ export function getHrefLangAlternates(metadata: PageMetadata): HrefLangAlternate
 	}
 
 	return alternates;
+}
+
+export function buildBlogPostingJsonLd(metadata: PageMetadata) {
+	const og = getOpenGraphTags(metadata);
+
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'BlogPosting',
+		headline: metadata.title,
+		description: metadata.description,
+		image: og.image,
+		datePublished: metadata.publishedTime,
+		dateModified: metadata.modifiedTime ?? metadata.publishedTime,
+		author: {
+			'@type': 'Person',
+			name: siteConfig.author.name,
+		},
+		publisher: {
+			'@type': 'Person',
+			name: siteConfig.author.name,
+		},
+		mainEntityOfPage: {
+			'@type': 'WebPage',
+			'@id': og.url,
+		},
+	};
 }

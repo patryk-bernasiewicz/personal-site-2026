@@ -12,38 +12,46 @@ interface Props {
 const { locale } = Astro.props;
 
 const metricsPl = [
-	{ value: '9+ lat', label: 'praktyki zawodowej' },
-	{ value: '30+ rynków', label: 'e-commerce / Ploom' },
-	{ value: '24 releasy', label: 'w jednym produkcie SaaS' },
-	{ value: '75 komponentów', label: 'utrzymywane w Storybooku' },
+	{ value: 'Frontend produktowy', label: '9 lat doświadczenia przy realnych produktach' },
+	{ value: 'CMS & content', label: 'Strony statyczne i z zarządzaną treścią' },
+	{ value: 'Stabilność', label: 'Bugfixing, obsługa incidentów, utrzymanie' },
+	{ value: 'Delivery', label: 'Testy, review, releasy' },
 ];
 
 const metricsEn = [
-	{ value: '9+ years', label: 'professional practice' },
-	{ value: '30+ markets', label: 'e-commerce / Ploom' },
-	{ value: '24 releases', label: 'in one SaaS product' },
-	{ value: '75 components', label: 'maintained in Storybook' },
+	{ value: 'Product frontend', label: '9 years of experience with real products' },
+	{ value: 'CMS & content', label: 'Static and content-managed websites' },
+	{ value: 'Stability', label: 'Bugfixing, incidents, maintenance' },
+	{ value: 'Delivery', label: 'Tests, reviews, releases' },
 ];
 
 const metrics = locale === 'pl' ? metricsPl : metricsEn;
+const heroCopy =
+	locale === 'pl'
+		? {
+				eyebrow: 'CYFROWE PORTFOLIO',
+				headingStart: 'Moja ścieżka',
+				headingAccent: 'zawodowa.',
+				lead: 'Ponad 9 lat praktyki w produktowych projektach webowych. Pracuję tam, gdzie frontend spotyka realne potrzeby produktu: architekturę, CMS, migracje, testy, dostępność i codzienne delivery.',
+			}
+		: {
+				eyebrow: 'DIGITAL PORTFOLIO',
+				headingStart: 'My professional',
+				headingAccent: 'path.',
+				lead: 'Over 9 years of product web delivery experience. I work where frontend meets real product needs: architecture, CMS, migrations, testing, accessibility, and daily shipping.',
+			};
 ---
 
 <section class="dcv-hero section-gap">
 	<Container class="page-content-shell">
 		<div class="dcv-hero__content">
 			<div class="dcv-hero__copy">
-				<p class="eyebrow">CYFROWE PORTFOLIO</p>
+				<p class="eyebrow">{heroCopy.eyebrow}</p>
 				<h1>
-					<span>Moja ścieżka</span>
-					<strong>zawodowa.</strong>
+					<span>{heroCopy.headingStart}</span>
+					<strong>{heroCopy.headingAccent}</strong>
 				</h1>
-				<p class="dcv-hero__lead">
-					{
-						locale === 'pl'
-							? 'Ponad 9 lat praktyki w produktowych projektach webowych. Pracuję tam, gdzie frontend spotyka realne potrzeby produktu: architekturę, CMS, migracje, testy, dostępność i codzienne delivery.'
-							: 'Over 9 years of product web delivery experience. I work where frontend meets real product needs: architecture, CMS, migrations, testing, accessibility, and daily shipping.'
-					}
-				</p>
+				<p class="dcv-hero__lead">{heroCopy.lead}</p>
 			</div>
 
 			<div class="dcv-hero__visual" aria-hidden="true">
@@ -54,6 +62,7 @@ const metrics = locale === 'pl' ? metricsPl : metricsEn;
 						width={digitalResumeHero.width}
 						height={digitalResumeHero.height}
 						alt=""
+						aria-hidden="true"
 						loading="eager"
 						fetchpriority="high"
 						decoding="async"

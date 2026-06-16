@@ -1,18 +1,34 @@
 ﻿---
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+
 interface Props {
+	locale: Locale;
 	playlistUrl?: string;
 }
 
-const { playlistUrl = '/audio/playlist.json' } = Astro.props;
+const { locale, playlistUrl = '/audio/playlist.json' } = Astro.props;
+const labels = getDictionary(locale).audioPlayer;
 ---
 
 <div
 	class="floating-music"
 	data-floating-music-player
 	data-playlist-url={playlistUrl}
+	data-label-play={labels.play}
+	data-label-pause={labels.pause}
+	data-label-ready={labels.ready}
+	data-label-unknown-track={labels.unknownTrack}
+	data-label-playing={labels.playing}
+	data-label-stopped={labels.stopped}
+	data-label-loading-playlist={labels.loadingPlaylist}
+	data-label-selected={labels.selected}
+	data-label-playlist-load-error={labels.playlistLoadError}
+	data-label-track-play-error={labels.trackPlayError}
+	data-label-web-audio-error={labels.webAudioError}
 >
 	<p class="sr-only music-hint" data-music-hint hidden>
-		kliknij, aby posłuchać klimatycznych kawałków
+		{labels.hint}
 	</p>
 
 	<div class="music-shell" data-music-shell>
@@ -20,7 +36,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 			type="button"
 			class="music-skip"
 			data-music-prev
-			aria-label="Poprzedni utwór"
+			aria-label={labels.previous}
 		>
 			<svg viewBox="0 0 24 24" aria-hidden="true">
 				<path d="M7 6h2v12H7V6Zm3.5 6 8-5.5v11l-8-5.5Z" fill="currentColor"></path>
@@ -31,7 +47,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 			type="button"
 			class="music-toggle"
 			data-music-toggle
-			aria-label="Odtwórz muzykę"
+			aria-label={labels.play}
 		>
 			<span class="music-icon" data-play-icon>
 				<svg viewBox="0 0 24 24" aria-hidden="true">
@@ -49,7 +65,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 			type="button"
 			class="music-skip"
 			data-music-next
-			aria-label="Następny utwór"
+			aria-label={labels.next}
 		>
 			<svg viewBox="0 0 24 24" aria-hidden="true">
 				<path d="m5.5 6.5 8 5.5-8 5.5v-11ZM15 6h2v12h-2V6Z" fill="currentColor"></path>
@@ -68,7 +84,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 		</div>
 
 	<p class="sr-only music-status" aria-live="polite" hidden data-music-status>
-		Odtwarzacz muzyki gotowy
+		{labels.ready}
 	</p>
 	</div>
 
@@ -410,6 +426,20 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 		artist?: string;
 	};
 
+	type FloatingMusicLabels = {
+		play: string;
+		pause: string;
+		ready: string;
+		unknownTrack: string;
+		playing: string;
+		stopped: string;
+		loadingPlaylist: string;
+		selected: string;
+		playlistLoadError: string;
+		trackPlayError: string;
+		webAudioError: string;
+	};
+
 	type FloatingMusicBinding = {
 		animationFrame?: number;
 		bars: HTMLElement[];
@@ -439,6 +469,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 		isLoading: boolean;
 		isPlaying: boolean;
 		isPlaylistLoaded: boolean;
+		labels: FloatingMusicLabels;
 		playlistUrl: string;
 		source?: MediaElementAudioSourceNode;
 		statusMessage: string;
@@ -461,7 +492,28 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 	const AudioContextConstructor = window.AudioContext ?? globalWindow.webkitAudioContext;
 	const floatingMusicState = (globalWindow.__floatingMusicState ??= {});
 
-	function getEngine(playlistUrl: string): FloatingMusicEngine {
+	function getMusicLabels(player: HTMLElement): FloatingMusicLabels {
+		return {
+			play: player.dataset.labelPlay ?? 'Play music',
+			pause: player.dataset.labelPause ?? 'Pause music',
+			ready: player.dataset.labelReady ?? 'Music player ready',
+			unknownTrack: player.dataset.labelUnknownTrack ?? 'Unknown track',
+			playing: player.dataset.labelPlaying ?? 'Playing: {track}',
+			stopped: player.dataset.labelStopped ?? 'Music stopped',
+			loadingPlaylist: player.dataset.labelLoadingPlaylist ?? 'Loading playlist',
+			selected: player.dataset.labelSelected ?? 'Selected: {track}',
+			playlistLoadError: player.dataset.labelPlaylistLoadError ?? 'Could not load the playlist.',
+			trackPlayError: player.dataset.labelTrackPlayError ?? 'Could not play this track.',
+			webAudioError:
+				player.dataset.labelWebAudioError ?? 'Your browser does not support the Web Audio API.',
+		};
+	}
+
+	function formatMusicMessage(template: string, track: string): string {
+		return template.replace('{track}', track);
+	}
+
+	function getEngine(playlistUrl: string, labels: FloatingMusicLabels): FloatingMusicEngine {
 		if (!floatingMusicState.engine) {
 			floatingMusicState.engine = {
 				bindings: new Set<FloatingMusicBinding>(),
@@ -470,11 +522,17 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 				isLoading: false,
 				isPlaying: false,
 				isPlaylistLoaded: false,
+				labels,
 				playlistUrl,
-				statusMessage: 'Odtwarzacz muzyki gotowy',
+				statusMessage: labels.ready,
 				tracks: [],
 			};
 			return floatingMusicState.engine;
+		}
+
+		floatingMusicState.engine.labels = labels;
+		if (!floatingMusicState.engine.isLoading && !floatingMusicState.engine.isPlaying) {
+			floatingMusicState.engine.statusMessage = labels.ready;
 		}
 
 		if (!floatingMusicState.engine.isPlaylistLoaded) {
@@ -547,7 +605,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 			return () => undefined;
 		}
 
-		const engine = getEngine(playlistUrl);
+		const engine = getEngine(playlistUrl, getMusicLabels(player));
 		const controller = new AbortController();
 		const binding: FloatingMusicBinding = {
 			bars,
@@ -652,7 +710,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 		engine.audio.addEventListener('ended', () => void changeTrack(engine, 1, true));
 		engine.audio.addEventListener('error', () => {
 			if (engine.audio?.error) {
-				handleError(engine, 'Nie udalo sie odtworzyc utworu.', engine.audio.error);
+				handleError(engine, engine.labels.trackPlayError, engine.audio.error);
 			}
 		});
 
@@ -664,7 +722,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 			return '';
 		}
 
-		const title = track.title?.trim() || 'Nieznany utwor';
+		const title = track.title?.trim() || floatingMusicState.engine?.labels.unknownTrack || 'Unknown track';
 		const artist = track.artist?.trim();
 
 		return artist ? `${title} - ${artist}` : title;
@@ -684,7 +742,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 		binding.player.dataset.playing = String(engine.isPlaying);
 		binding.toggle.setAttribute(
 			'aria-label',
-			engine.isPlaying ? 'Zatrzymaj muzyke' : 'Odtworz muzyke',
+			engine.isPlaying ? engine.labels.pause : engine.labels.play,
 		);
 		binding.playIcon.hidden = engine.isPlaying;
 		binding.pauseIcon.hidden = !engine.isPlaying;
@@ -805,12 +863,18 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 		syncAllBindings(engine);
 
 		if (nextIsPlaying) {
-			setStatus(engine, `Odtwarzanie: ${getTrackLabel(engine.tracks[engine.currentIndex]) || 'utwor'}`);
+			setStatus(
+				engine,
+				formatMusicMessage(
+					engine.labels.playing,
+					getTrackLabel(engine.tracks[engine.currentIndex]) || engine.labels.unknownTrack,
+				),
+			);
 			startAllVisualizers(engine);
 			return;
 		}
 
-		setStatus(engine, 'Muzyka zatrzymana');
+		setStatus(engine, engine.labels.stopped);
 		stopAllVisualizers(engine);
 	}
 
@@ -945,7 +1009,7 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 		}
 
 		setLoading(engine, true);
-		setStatus(engine, 'Ladowanie playlisty');
+		setStatus(engine, engine.labels.loadingPlaylist);
 
 		try {
 			await loadPlaylist(engine);
@@ -954,13 +1018,13 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 		} catch (error) {
 			const message =
 				error instanceof SyntaxError
-					? 'Nie udalo sie zaladowac playlisty.'
+					? engine.labels.playlistLoadError
 					: error instanceof Error && error.message.includes('Web Audio API')
-						? 'Twoja przegladarka nie obsluguje Web Audio API.'
+						? engine.labels.webAudioError
 						: engine.isPlaylistLoaded
-							? 'Nie udalo sie odtworzyc utworu.'
-							: 'Nie udalo sie zaladowac playlisty.';
-			handleError(engine, message, error, message !== 'Nie udalo sie odtworzyc utworu.');
+							? engine.labels.trackPlayError
+							: engine.labels.playlistLoadError;
+			handleError(engine, message, error, message !== engine.labels.trackPlayError);
 		} finally {
 			setLoading(engine, false);
 		}
@@ -983,15 +1047,21 @@ const { playlistUrl = '/audio/playlist.json' } = Astro.props;
 				return;
 			}
 
-			setStatus(engine, `Wybrano: ${getTrackLabel(engine.tracks[engine.currentIndex]) || 'utwor'}`);
+			setStatus(
+				engine,
+				formatMusicMessage(
+					engine.labels.selected,
+					getTrackLabel(engine.tracks[engine.currentIndex]) || engine.labels.unknownTrack,
+				),
+			);
 		} catch (error) {
 			const message =
 				error instanceof SyntaxError
-					? 'Nie udalo sie zaladowac playlisty.'
+					? engine.labels.playlistLoadError
 					: engine.isPlaylistLoaded
-						? 'Nie udalo sie odtworzyc utworu.'
-						: 'Nie udalo sie zaladowac playlisty.';
-			handleError(engine, message, error, message !== 'Nie udalo sie odtworzyc utworu.');
+						? engine.labels.trackPlayError
+						: engine.labels.playlistLoadError;
+			handleError(engine, message, error, message !== engine.labels.trackPlayError);
 		} finally {
 			setLoading(engine, false);
 		}

@@ -46,7 +46,7 @@ public/
 ├─ og/                 # Default OG images
 └─ files/              # CV PDFs, downloads
 
-docker/                # compose, Dockerfile, nginx
+docker/                # Dockerfile, nginx
 ```
 
 ## Import alias
@@ -155,7 +155,7 @@ CONTENTFUL_PREVIEW_TOKEN=   # optional; dev preview API
 
 ### `src/config`
 
-- `site.ts` — name, `SITE_URL` (env), description, author, default OG
+- `site.ts` — name, `PUBLIC_SITE_URL` (env), description, author, default OG
 - `social.ts` — profile links
 - `about-content.ts` / `resume-content.ts` — localized static copy (not inline in sections)
 
@@ -200,7 +200,7 @@ Centralize in `@/lib/seo`. Each localized page supplies:
 
 `BaseLayout` sets `<html lang>` and renders canonical + alternates.
 
-Set `SITE_URL` in `.env` before deploy. Sitemap via `@astrojs/sitemap`; `src/pages/robots.txt.ts` points at `/sitemap-index.xml`.
+Set `PUBLIC_SITE_URL` in `.env` before deploy. Sitemap via `@astrojs/sitemap`; `src/pages/robots.txt.ts` points at `/sitemap-index.xml`.
 
 ## Scripts
 
@@ -211,16 +211,15 @@ Set `SITE_URL` in `.env` before deploy. Sitemap via `@astrojs/sitemap`; `src/pag
 | `npm run check` | Typecheck |
 | `npm run content:check` | Verify Contentful connectivity |
 
-Production Docker build needs valid `CONTENTFUL_*` in `docker/.env` (static prerender at build time).
+Production Docker build needs valid `CONTENTFUL_*` in `.env.prod` (static prerender at build time).
 
-**Docker runtime:** `PORT` in `docker/.env` maps host↔container (`${PORT}:${PORT}`). Default `3660`. Nginx listens on `PORT` via `docker/nginx.conf.template`.
+**Docker runtime:** `HOST_BIND` and `PORT` in `.env.prod` publish the container for the VPS reverse proxy. Default `127.0.0.1:3660`. Container nginx listens on `PORT` via `docker/nginx.conf.template`.
 
 ## Deploy
 
 ```bash
-docker context use <remote>
-cp docker/.env.example docker/.env   # PORT, CONTENTFUL_*
-docker compose -f docker/compose.yaml --env-file docker/.env up -d --build
+cp .env.prod.example .env.prod   # PUBLIC_SITE_URL, HOST_BIND, PORT, CONTENTFUL_*
+docker --context mikrus compose --env-file .env.prod up -d
 ```
 
 ## Anti-patterns

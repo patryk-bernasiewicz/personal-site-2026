@@ -14,6 +14,16 @@ export type ContentfulBlogPostEntry = {
 		content?: EntryFieldTypes.RichText;
 		body?: EntryFieldTypes.RichText;
 		coverImage?: unknown;
+		seoTitle?: EntryFieldTypes.Text;
+		seoDescription?: EntryFieldTypes.Text;
+		ogTitle?: EntryFieldTypes.Text;
+		ogDescription?: EntryFieldTypes.Text;
+		ogImage?: unknown;
+		ogImageAlt?: EntryFieldTypes.Text;
+		canonicalUrl?: EntryFieldTypes.Text;
+		noindex?: EntryFieldTypes.Boolean;
+		noIndex?: EntryFieldTypes.Boolean;
+		category?: unknown;
 		tags?: unknown;
 		tag?: unknown;
 	};
@@ -25,6 +35,18 @@ export type BlogPost = {
 	title: string;
 	slug: string;
 	description: string;
+	seoTitle: string;
+	seoDescription: string;
+	ogTitle: string;
+	ogDescription: string;
+	ogImage?: {
+		src: string;
+		alt: string;
+		caption?: string;
+	};
+	canonicalUrl?: string;
+	noIndex: boolean;
+	category?: string;
 	publishedAt: string;
 	updatedAt?: string;
 	tags: string[];

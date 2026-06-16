@@ -1,17 +1,12 @@
 ---
 import '@/styles/global.css';
 import { MUSIC_PLAYLIST_URL } from 'astro:env/server';
-import { ClientRouter } from 'astro:transitions';
 import FloatingMusicPlayer from '@/components/FloatingMusicPlayer.astro';
 import Footer from '@/components/layout/Footer.astro';
 import Header from '@/components/layout/Header.astro';
+import SEO from '@/components/layout/SEO.astro';
 import SkipLink from '@/components/layout/SkipLink.astro';
-import {
-	formatDocumentTitle,
-	getHrefLangAlternates,
-	getOpenGraphTags,
-	type PageMetadata,
-} from '@/lib/seo';
+import type { PageMetadata } from '@/lib/seo';
 
 interface Props {
 	metadata: PageMetadata;
@@ -19,45 +14,12 @@ interface Props {
 }
 
 const { metadata, routeKey } = Astro.props;
-const documentTitle = formatDocumentTitle(metadata.title);
-const og = getOpenGraphTags(metadata);
-const hrefLangAlternates = getHrefLangAlternates(metadata);
 ---
 
 <!doctype html>
 <html lang={metadata.locale}>
 	<head>
-		<meta charset="utf-8" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-			rel="stylesheet"
-		/>
-		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{documentTitle}</title>
-		<meta name="description" content={metadata.description} />
-		{metadata.canonical && <link rel="canonical" href={og.url} />}
-		{
-			hrefLangAlternates.map((alternate) => (
-				<link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
-			))
-		}
-		{metadata.noIndex && <meta name="robots" content="noindex" />}
-		<meta property="og:type" content="website" />
-		<meta property="og:locale" content={metadata.locale} />
-		<meta property="og:title" content={og.title} />
-		<meta property="og:description" content={og.description} />
-		<meta property="og:url" content={og.url} />
-		<meta property="og:image" content={og.image} />
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={og.title} />
-		<meta name="twitter:description" content={og.description} />
-		<meta name="twitter:image" content={og.image} />
-		<ClientRouter />
+		<SEO {metadata} generator={Astro.generator} />
 	</head>
 	<body class="flex min-h-screen flex-col">
 		<SkipLink locale={metadata.locale} />
@@ -67,6 +29,7 @@ const hrefLangAlternates = getHrefLangAlternates(metadata);
 			alternatePaths={metadata.alternatePaths}
 		/>
 		<FloatingMusicPlayer
+			locale={metadata.locale}
 			playlistUrl={MUSIC_PLAYLIST_URL}
 			transition:name="floating-music-player"
 			transition:persist

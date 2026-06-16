@@ -204,16 +204,6 @@ const aboutContentByLocale = {
           description:
             "Utrzymywalny kod zwykle wygrywa z kodem, który wygląda imponująco tylko w dniu napisania.",
         },
-        {
-          title: "Dowiezienie ponad perfekcjonizm",
-          description:
-            "Wolę wypuścić coś solidnego i ulepszać na podstawie realnego użycia niż polerować bez końca.",
-        },
-        {
-          title: "Jakość widoczna w szczegółach",
-          description:
-            "Frontend jest dobry wtedy, gdy użytkownik rozumie, co się dzieje, a zespół może bezpiecznie rozwijać kod dalej.",
-        },
       ],
     },
     collaboration: {
@@ -327,8 +317,8 @@ const aboutContentByLocale = {
       },
       {
         icon: "folder",
-        title: "Projekty",
-        description: "Wybrane rzeczy zbudowane, dowiezione albo eksplorowane.",
+        title: "GitHub",
+        description: "Kod, eksperymenty i techniczne rzeczy rozwijane poza codzienną pracą.",
         target: "github",
       },
       {
@@ -436,16 +426,6 @@ const aboutContentByLocale = {
           title: "Simpler solutions over clever abstractions",
           description:
             "Maintainable code usually wins over code that only looks impressive on the day it was written.",
-        },
-        {
-          title: "Delivery over perfectionism",
-          description:
-            "I prefer shipping something solid and improving it with real usage over polishing forever.",
-        },
-        {
-          title: "Quality visible in details",
-          description:
-            "Frontend is good when users understand what is happening and the team can safely evolve the code.",
         },
       ],
     },
@@ -559,8 +539,8 @@ const aboutContentByLocale = {
       },
       {
         icon: "folder",
-        title: "Projects",
-        description: "Selected things built, delivered or explored.",
+        title: "GitHub",
+        description: "Code, experiments, and technical work developed outside day-to-day projects.",
         target: "github",
       },
       {

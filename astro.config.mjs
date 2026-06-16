@@ -4,8 +4,14 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-const siteUrl = process.env.SITE_URL ?? 'https://example.com';
 const isDev = process.env.NODE_ENV !== 'production';
+const rawSiteUrl = process.env.PUBLIC_SITE_URL?.trim();
+const siteUrl = (rawSiteUrl || 'http://localhost:4321').replace(/\/+$/, '');
+
+if (!rawSiteUrl && !isDev) {
+	console.warn('[seo] PUBLIC_SITE_URL is not set. Falling back to http://localhost:4321 for this build.');
+}
+
 const devAllowedHost = 'patryk-macbook.local';
 const devAllowedHosts = [
 	devAllowedHost,
@@ -90,7 +96,7 @@ export default defineConfig({
 	},
 	env: {
 		schema: {
-			SITE_URL: envField.string({
+			PUBLIC_SITE_URL: envField.string({
 				context: 'client',
 				access: 'public',
 				default: siteUrl,

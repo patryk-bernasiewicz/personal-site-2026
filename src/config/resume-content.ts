@@ -371,7 +371,7 @@ const workHistoryByLocale = {
 				'Performed controlled state-management migration from Recoil to Jotai.',
 				'Removed 15–20% of unused/legacy code from backend areas to improve maintainability.',
 				'Implemented drone control with gamepad support and live camera stream.',
-				'Resolved 2–3 high-impact broken modules/functions weekly before they reached users.',
+				'Fixed around 109 existing platform defects over 10 months.',
 				'Migrated the system from SaaS to on-premise with better customization and control.',
 			],
 			tags: ['React', 'Next.js', 'SSR', 'Jotai', 'Recoil', '.NET', 'C#', 'Gamepad API', 'WebRTC'],
@@ -574,25 +574,25 @@ const resumeCopyByLocale = {
 			],
 		},
 		projects: {
-			label: 'Projekty',
-			title: 'Wybrane rzeczy w opracowaniu.',
+			label: 'Obszary pracy',
+			title: 'Obszary pracy',
 			intro:
-				'Spokojne miejsce na case studies, eksperymenty i produkty rozwijane poza codzienną pracą komercyjną — jako kontekst do mojego sposobu myślenia o frontendzie.',
+				'Najczęściej pracuję przy frontendzie produktowym, modernizacjach, integracjach CMS, dashboardach, testach i utrzymaniu aplikacji po wdrożeniu.',
 			items: [
 				{
 					title: 'Frontend produktowy',
 					description:
-						'Architektura, komponenty i doświadczenia użytkownika w produktach, które mają działać nie tylko dobrze w demo, ale też w codziennym użyciu.',
+						'Interfejsy, komponenty, stany aplikacji i przepływy użytkownika w realnych produktach webowych.',
 				},
 				{
-					title: 'Notatki wdrożeniowe',
+					title: 'Modernizacje i integracje',
 					description:
-						'Co działało, co wymagało decyzji, gdzie pojawiły się ograniczenia i które rozwiązania warto powtórzyć w kolejnych projektach.',
+						'Migracje, porządkowanie legacy, integracje CMS i praca z ograniczeniami istniejących platform.',
 				},
 				{
-					title: 'Techniczne zaplecze',
+					title: 'Jakość po wdrożeniu',
 					description:
-						'Bez tonu sprzedażowego: więcej kontekstu powstawania, kompromisów, utrzymania i praktycznych detali implementacyjnych.',
+						'Testy, dostępność, utrzymanie, poprawki defektów i stabilizacja aplikacji po release’ach.',
 				},
 			],
 		},
@@ -706,25 +706,25 @@ const resumeCopyByLocale = {
 			],
 		},
 		projects: {
-			label: 'Projects',
-			title: 'Selected work in progress.',
+			label: 'Work areas',
+			title: 'Work areas',
 			intro:
-				'A calm place for case studies, experiments, and products developed outside day-to-day commercial work — as context for how I think about frontend delivery.',
+				'I most often work on product frontend, modernizations, CMS integrations, dashboards, testing, and post-release application maintenance.',
 			items: [
 				{
 					title: 'Product frontend',
 					description:
-						'Architecture, components, and user experience decisions for products that need to work beyond a polished demo.',
+						'Interfaces, components, application states, and user flows in real web products.',
 				},
 				{
-					title: 'Delivery notes',
+					title: 'Modernization and integrations',
 					description:
-						'What worked, what required tradeoffs, where constraints appeared, and which decisions are worth repeating.',
+						'Migrations, legacy cleanup, CMS integrations, and work within existing platform constraints.',
 				},
 				{
-					title: 'Technical context',
+					title: 'Post-release quality',
 					description:
-						'No sales tone: more production context, implementation details, maintenance, and the practical shape of the work.',
+						'Testing, accessibility, maintenance, defect fixes, and stabilizing applications after releases.',
 				},
 			],
 		},
@@ -762,7 +762,7 @@ const resumeCopyByLocale = {
 			],
 		},
 		narrative: {
-			title: 'From implementation to delivery ownership',
+			title: 'From implementation to delivery responsibility',
 			paragraphs: [
 				'The career moved from classic frontend and fullstack foundations through e-commerce and SaaS into systems where architecture, stability, accessibility, testing, and product-team collaboration matter every day.',
 			],
