@@ -79,18 +79,21 @@ const cta = dictionary.home.cta;
 					</svg>
 				</div>
 
-				<h2
-					id="home-cta-heading"
-					class="home-cta__heading min-w-0 font-display text-[clamp(1.75rem,6vw,2.25rem)] leading-[1.14] font-normal tracking-normal text-text-main lg:flex-1 lg:text-[clamp(1.75rem,3vw,2.875rem)] lg:leading-[1.15]"
-				>
-					<span class="home-cta__line block">{cta.heading.line1}</span>
-					<span class="home-cta__line block">
-						<span class="home-cta__highlight font-semibold text-gradient-gold">
-							{cta.heading.highlight}
+				<div class="home-cta__copy min-w-0">
+					<h2
+						id="home-cta-heading"
+						class="home-cta__heading font-display text-[clamp(1.45rem,4.5vw,1.85rem)] leading-[1.18] font-normal tracking-normal text-text-main lg:text-[clamp(1.55rem,2vw,2.125rem)] lg:leading-[1.18]"
+					>
+						{cta.heading.line1}{' '}
+						<span>
+							<span class="home-cta__highlight font-semibold text-gradient-gold">
+								{cta.heading.highlight}
+							</span>
+							{cta.heading.line2 && <span> {cta.heading.line2}</span>}
 						</span>
-						{cta.heading.line2 && <span> {cta.heading.line2}</span>}
-					</span>
-				</h2>
+					</h2>
+					<p class="mt-4 max-w-2xl text-body leading-relaxed text-text-muted">{cta.description}</p>
+				</div>
 
 				<a
 					href={`mailto:${siteConfig.author.email}`}
@@ -150,18 +153,8 @@ const cta = dictionary.home.cta;
 			text-align: left;
 		}
 
-		.home-cta__heading {
+		.home-cta__copy {
 			padding-inline: clamp(0.5rem, 2vw, 1.5rem);
-		}
-
-		.home-cta__line {
-			white-space: nowrap;
-		}
-	}
-
-	@media (max-width: 1023px) {
-		.home-cta__line {
-			white-space: normal;
 		}
 	}
 

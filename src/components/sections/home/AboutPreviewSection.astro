@@ -94,7 +94,7 @@ const iconPaths: Record<AboutPreviewIcon, string> = {
 				</Button>
 			</div>
 
-			<p class="about-preview__closing mt-8 hidden pl-5 text-body leading-relaxed text-text-soft lg:block">
+			<p class="about-preview__closing mt-8 hidden max-w-lg text-body leading-relaxed text-text-soft lg:block">
 				{aboutPreview.closing}
 			</p>
 		</div>
@@ -136,10 +136,6 @@ const iconPaths: Record<AboutPreviewIcon, string> = {
 
 	.about-preview__rail-mobile + .eyebrow {
 		margin-top: 0;
-	}
-
-	.about-preview__closing {
-		border-left: 1px solid rgba(217, 164, 65, 0.28);
 	}
 
 	.about-preview__icon svg {

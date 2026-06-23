@@ -62,17 +62,38 @@ export const dictionaries = {
 			},
 			hero: {
 				number: '01',
-				eyebrow: 'Frontend Developer',
+				eyebrow: 'Frontend Developer · React / Next.js',
 				heading: {
-					line1: 'Tworzę cyfrowe',
-					line2: 'produkty, które robią',
-					line3: 'różnicę.',
+					line1: 'Buduję i modernizuję',
+					line2: 'frontendy działające',
+					line3: 'na wielu rynkach.',
 				},
-				lead: 'Tworzę szybkie, skalowalne i dostępne doświadczenia webowe, oparte na czystym kodzie, przemyślanej implementacji i dobrym UX.',
+				lead: 'Obecnie rozwijam platformy Ploom dla ponad 30 rynków. Wcześniej migrowałem siedmiomodułową platformę robotyczną do Next.js i budowałem moduły analityczne w produkcie SaaS.',
 				viewWork: 'Zobacz cyfrowe CV',
 				letsTalk: 'Porozmawiajmy',
 				followMe: 'Obserwuj',
 				scroll: 'Przewiń',
+			},
+			proofStrip: {
+				label: 'Dowody doświadczenia',
+				items: [
+					{
+						value: '9+ lat',
+						label: 'komercyjnego doświadczenia frontendowego',
+					},
+					{
+						value: '30+ rynków',
+						label: 'platformy Ploom rozwijane globalnie',
+					},
+					{
+						value: '7 modułów',
+						label: 'migracja platformy robotycznej do Next.js',
+					},
+					{
+						value: '24 releasy',
+						label: 'około 75 komponentów w pracy nad produktem SaaS',
+					},
+				],
 			},
 			aboutPreview: {
 				number: '02',
@@ -128,10 +149,12 @@ export const dictionaries = {
 			},
 			cta: {
 				heading: {
-					line1: 'Zbudujmy razem coś',
-					highlight: 'naprawdę',
-					line2: 'dobrego.',
+					line1: 'Pracujesz nad frontendem, który wymaga',
+					highlight: 'modernizacji lub stabilizacji?',
+					line2: '',
 				},
+				description:
+					'Mogę pomóc w migracji, uporządkowaniu architektury albo rozwoju istniejącego produktu React lub Next.js.',
 				button: 'Napisz do mnie',
 			},
 		},
@@ -215,17 +238,38 @@ export const dictionaries = {
 			},
 			hero: {
 				number: '01',
-				eyebrow: 'Frontend Developer',
+				eyebrow: 'Frontend Developer · React / Next.js',
 				heading: {
-					line1: 'I build digital',
-					line2: 'products that make an',
-					line3: 'impact.',
+					line1: 'I build and modernize',
+					line2: 'production frontends',
+					line3: 'across markets.',
 				},
-				lead: 'I build fast, scalable, and accessible web experiences with clean code, thoughtful implementation, and good UX.',
+				lead: 'I currently build Ploom platforms for 30+ markets. Previously, I migrated a seven-module robotics platform to Next.js and built analytics modules for a SaaS product.',
 				viewWork: 'View digital resume',
 				letsTalk: "Let's talk",
 				followMe: 'Follow me',
 				scroll: 'Scroll',
+			},
+			proofStrip: {
+				label: 'Experience proof points',
+				items: [
+					{
+						value: '9+ years',
+						label: 'of commercial frontend experience',
+					},
+					{
+						value: '30+ markets',
+						label: 'global Ploom platforms',
+					},
+					{
+						value: '7 modules',
+						label: 'robotics platform migration to Next.js',
+					},
+					{
+						value: '24 releases',
+						label: 'around 75 components in SaaS product work',
+					},
+				],
 			},
 			aboutPreview: {
 				number: '02',
@@ -281,10 +325,12 @@ export const dictionaries = {
 			},
 			cta: {
 				heading: {
-					line1: "Let's build something",
-					highlight: 'amazing',
-					line2: 'together.',
+					line1: 'Working on a frontend that needs',
+					highlight: 'modernization or stabilization?',
+					line2: '',
 				},
+				description:
+					'I can help with migration, architecture cleanup, or ongoing development of an existing React or Next.js product.',
 				button: 'Contact me',
 			},
 		},

@@ -5,6 +5,7 @@ import HeroSection from '@/components/sections/home/HeroSection.astro';
 import HomeScrollIndicator from '@/components/sections/home/HomeScrollIndicator.astro';
 import HomeCtaSection from '@/components/sections/home/HomeCtaSection.astro';
 import LatestPostsSection from '@/components/sections/home/LatestPostsSection.astro';
+import ProofStripSection from '@/components/sections/home/ProofStripSection.astro';
 import TechStackSection from '@/components/sections/home/TechStackSection.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getLatestBlogPosts } from '@/lib/contentful/queries';
@@ -33,6 +34,7 @@ const metadata = buildPageMetadata({
 <PageLayout {metadata} routeKey="home">
 	<HomeScrollIndicator {locale} />
 	<HeroSection {locale} />
+	<ProofStripSection {locale} />
 	<AboutPreviewSection {locale} />
 	<TechStackSection {locale} />
 	<ExperiencePreviewSection {locale} />

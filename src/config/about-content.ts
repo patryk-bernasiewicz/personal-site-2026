@@ -154,7 +154,7 @@ const aboutContentByLocale = {
           icon: "bolt",
           title: "AI-assisted workflow",
           description:
-            "AI pomaga mi planować, researchować i wspierać implementację, ale odpowiedzialność za jakość zostaje po mojej stronie.",
+            "Testuję agentów i workflowy, które pomagają szybciej planować, sprawdzać założenia i dowozić kod. AI traktuję jak narzędzie pracy, nie autora decyzji.",
         },
       ],
     },
@@ -269,7 +269,7 @@ const aboutContentByLocale = {
         {
           title: "AI-assisted development",
           description:
-            "Agenci do planowania, researchu i wsparcia implementacji jako codzienny workflow.",
+            "Agenci i workflowy do planowania, sprawdzania założeń i wsparcia implementacji. Decyzje techniczne zostają po mojej stronie.",
         },
         {
           title: "Backend i bazy danych",
@@ -377,7 +377,7 @@ const aboutContentByLocale = {
           icon: "bolt",
           title: "AI-assisted workflow",
           description:
-            "AI agents help with planning, research and implementation support, but judgment and quality remain my responsibility.",
+            "I test agents and workflows that help me plan faster, check assumptions, and ship code. I treat AI as a work tool, not the author of decisions.",
         },
       ],
     },
@@ -491,7 +491,7 @@ const aboutContentByLocale = {
         {
           title: "AI-assisted development",
           description:
-            "Agents for planning, research and implementation support as a daily workflow.",
+            "Agents and workflows for planning, checking assumptions, and implementation support. Technical decisions stay with me.",
         },
         {
           title: "Backend and databases",
