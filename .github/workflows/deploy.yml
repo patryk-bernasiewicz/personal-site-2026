@@ -5,7 +5,7 @@ on:
     branches: [main]
   workflow_dispatch:
   repository_dispatch:
-    types: [contentful_publish]
+    types: [contentful_publish, publish-event]
 
 concurrency:
   group: production-deploy
