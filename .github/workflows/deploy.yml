@@ -29,10 +29,16 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.MIKRUS_SSH_KEY }}
 
+      - name: Validate deploy secrets
+        run: |
+          test -n "$MIKRUS_HOST" || (echo "Missing MIKRUS_HOST secret" && exit 1)
+          test -n "$MIKRUS_PORT" || (echo "Missing MIKRUS_PORT secret" && exit 1)
+          test -n "$MIKRUS_USER" || (echo "Missing MIKRUS_USER secret" && exit 1)
+
       - name: Trust Mikrus host key
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -p "$MIKRUS_PORT" "$MIKRUS_HOST" >> ~/.ssh/known_hosts
+          ssh-keyscan -H -p "$MIKRUS_PORT" "$MIKRUS_HOST" >> ~/.ssh/known_hosts
 
       - name: Create production env file
         run: |
