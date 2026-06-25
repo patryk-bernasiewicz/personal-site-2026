@@ -35,10 +35,16 @@ jobs:
           test -n "$MIKRUS_PORT" || (echo "Missing MIKRUS_PORT secret" && exit 1)
           test -n "$MIKRUS_USER" || (echo "Missing MIKRUS_USER secret" && exit 1)
 
-      - name: Trust Mikrus host key
+      - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H -p "$MIKRUS_PORT" "$MIKRUS_HOST" >> ~/.ssh/known_hosts
+          cat > ~/.ssh/config <<EOF
+          Host mikrus-deploy
+            HostName $MIKRUS_HOST
+            Port $MIKRUS_PORT
+            User $MIKRUS_USER
+            StrictHostKeyChecking accept-new
+          EOF
 
       - name: Create production env file
         run: |
@@ -53,7 +59,7 @@ jobs:
           EOF
 
       - name: Configure Docker context
-        run: docker context create mikrus --docker "host=ssh://${MIKRUS_USER}@${MIKRUS_HOST}:${MIKRUS_PORT}"
+        run: docker context create mikrus --docker "host=ssh://mikrus-deploy"
 
       - name: Deploy
         run: docker --context mikrus compose --env-file .env.prod up -d --build
