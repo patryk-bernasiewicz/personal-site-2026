@@ -1,0 +1,53 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  repository_dispatch:
+    types: [contentful_publish]
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy to Mikrus
+    runs-on: ubuntu-24.04
+    environment: Production
+    env:
+      MIKRUS_HOST: ${{ secrets.MIKRUS_HOST }}
+      MIKRUS_PORT: ${{ secrets.MIKRUS_PORT || '22' }}
+      MIKRUS_USER: ${{ secrets.MIKRUS_USER }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.MIKRUS_SSH_KEY }}
+
+      - name: Trust Mikrus host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "$MIKRUS_PORT" "$MIKRUS_HOST" >> ~/.ssh/known_hosts
+
+      - name: Create production env file
+        run: |
+          cat > .env.prod <<'EOF'
+          PUBLIC_SITE_URL=${{ secrets.PUBLIC_SITE_URL }}
+          HOST_BIND=${{ secrets.HOST_BIND || '127.0.0.1' }}
+          PORT=${{ secrets.PORT || '3660' }}
+          CONTENTFUL_ENABLED=${{ secrets.CONTENTFUL_ENABLED || 'true' }}
+          CONTENTFUL_SPACE_ID=${{ secrets.CONTENTFUL_SPACE_ID }}
+          CONTENTFUL_DELIVERY_TOKEN=${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
+          MUSIC_PLAYLIST_URL=${{ secrets.MUSIC_PLAYLIST_URL }}
+          EOF
+
+      - name: Configure Docker context
+        run: docker context create mikrus --docker "host=ssh://${MIKRUS_USER}@${MIKRUS_HOST}:${MIKRUS_PORT}"
+
+      - name: Deploy
+        run: docker --context mikrus compose --env-file .env.prod up -d --build
