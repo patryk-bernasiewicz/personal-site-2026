@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { createClient } from 'contentful';
+import { locales, toContentfulLocale } from '../lib/i18n/locales';
 
 const enabled = process.env.CONTENTFUL_ENABLED === 'true';
 const hasCredentials = Boolean(
@@ -32,12 +33,27 @@ const client = createClient({
 });
 
 try {
-	const response = await client.getEntries({
-		content_type: 'blogPost',
-		limit: 1,
-	});
+	for (const locale of locales) {
+		const response = await client.getEntries({
+			content_type: 'blogPost',
+			locale: toContentfulLocale(locale),
+			limit: 5,
+			order: ['-sys.updatedAt'],
+		});
 
-	console.log(`Contentful OK - blogPost content type reachable (${response.total} total).`);
+		const slugs = response.items
+			.map((item) => {
+				const fields = item.fields as { slug?: unknown; title?: unknown };
+				const slug = typeof fields.slug === 'string' ? fields.slug : '(no slug)';
+				const title = typeof fields.title === 'string' ? fields.title : '(no title)';
+				return `${slug} - ${title}`;
+			})
+			.join('; ');
+
+		console.log(
+			`Contentful OK - ${locale}/${toContentfulLocale(locale)}: ${response.total} blogPost total. Recent: ${slugs || '(none)'}`,
+		);
+	}
 } catch (error) {
 	const message = error instanceof Error ? error.message : String(error);
 	console.error(`Contentful check failed: ${message}`);

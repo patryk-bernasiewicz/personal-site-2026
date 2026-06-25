@@ -24,7 +24,7 @@ ENV CONTENTFUL_DELIVERY_TOKEN=$CONTENTFUL_DELIVERY_TOKEN
 ENV CONTENTFUL_PREVIEW_TOKEN=$CONTENTFUL_PREVIEW_TOKEN
 ENV MUSIC_PLAYLIST_URL=$MUSIC_PLAYLIST_URL
 
-RUN npm run build
+RUN npm run content:check && npx astro telemetry disable && npm run build
 
 FROM nginx:1.27-alpine AS runner
 

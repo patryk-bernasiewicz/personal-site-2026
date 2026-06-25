@@ -62,4 +62,6 @@ jobs:
         run: docker context create mikrus --docker "host=ssh://mikrus-deploy"
 
       - name: Deploy
-        run: docker --context mikrus compose --env-file .env.prod up -d --build
+        run: |
+          docker --context mikrus compose --env-file .env.prod build --no-cache site
+          docker --context mikrus compose --env-file .env.prod up -d site
