@@ -28,7 +28,6 @@ const { item, locale, tone = 'regular' } = Astro.props;
 		<span class="dcv-timeline-item__dot" aria-hidden="true" />
 		<p class="dcv-timeline-item__period">{item.period}</p>
 		<p class="dcv-timeline-item__duration">{item.duration}</p>
-		<p class="dcv-timeline-item__company">{item.company}</p>
 	</div>
 
 	<div>
@@ -68,10 +67,6 @@ const { item, locale, tone = 'regular' } = Astro.props;
 		color: var(--color-text-faint);
 		font-size: 0.72rem;
 		line-height: 1;
-	}
-
-	.dcv-timeline-item__company {
-		margin: 0.85rem 0 0;
 	}
 
 	.dcv-timeline-item__dot {

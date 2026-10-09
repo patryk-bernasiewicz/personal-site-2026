@@ -55,7 +55,6 @@ export const dictionaries = {
 			readBlog: 'Zobacz blog',
 			readBlogWithCount: (count: number) => `Zobacz blog (${count} najnowszych)`,
 			latestPostsTitle: 'Najnowsze wpisy',
-			latestPostsDescription: 'Ostatnie publikacje z Contentful (build time).',
 			scrollIndicator: {
 				label: 'Nawigacja po sekcjach strony głównej',
 				scrollToSectionLabel: 'Przewiń do sekcji {number}',
@@ -147,16 +146,6 @@ export const dictionaries = {
 					'Ostatnie projekty skupione wokół Reacta, Next.js, TypeScriptu, SSR, dostępności, testów i architektury frontendowej.',
 				cta: 'Zobacz pełne cyfrowe CV',
 			},
-			cta: {
-				heading: {
-					line1: 'Pracujesz nad frontendem, który wymaga',
-					highlight: 'modernizacji lub stabilizacji?',
-					line2: '',
-				},
-				description:
-					'Mogę pomóc w migracji, uporządkowaniu architektury albo rozwoju istniejącego produktu React lub Next.js.',
-				button: 'Napisz do mnie',
-			},
 		},
 		about: {
 			eyebrow: 'O mnie',
@@ -231,7 +220,6 @@ export const dictionaries = {
 			readBlog: 'Read articles',
 			readBlogWithCount: (count: number) => `Read articles (${count} recent)`,
 			latestPostsTitle: 'Latest posts',
-			latestPostsDescription: 'Recent posts from Contentful at build time.',
 			scrollIndicator: {
 				label: 'Home page section navigation',
 				scrollToSectionLabel: 'Scroll to section {number}',
@@ -322,16 +310,6 @@ export const dictionaries = {
 				intro:
 					'Recent work focused on React, Next.js, TypeScript, SSR, accessibility, testing, and production-grade frontend architecture.',
 				cta: 'View full digital CV',
-			},
-			cta: {
-				heading: {
-					line1: 'Working on a frontend that needs',
-					highlight: 'modernization or stabilization?',
-					line2: '',
-				},
-				description:
-					'I can help with migration, architecture cleanup, or ongoing development of an existing React or Next.js product.',
-				button: 'Contact me',
 			},
 		},
 		about: {

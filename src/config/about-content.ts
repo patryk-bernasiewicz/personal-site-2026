@@ -325,7 +325,7 @@ const aboutContentByLocale = {
         icon: "pencil",
         title: "Blog",
         description:
-          "Kanał treści pod search visibility i długoterminowy ruch.",
+          "Wpisy o frontendzie, JavaScripcie i narzędziach, z którymi pracuję.",
         target: "blogIndex",
       },
     ],
@@ -547,7 +547,7 @@ const aboutContentByLocale = {
         icon: "pencil",
         title: "Blog",
         description:
-          "Content channel for search visibility and long-term traffic.",
+          "Posts about frontend, JavaScript, and the tools I work with.",
         target: "blogIndex",
       },
     ],

@@ -126,17 +126,18 @@ Zostaje (to jedyna naprawdę Twoja treść). Lista: data + tytuł (+ ewentualnie
 
 ## 5. Plan wdrożenia (małe PR-y, każdy do zmergowania osobno)
 
-### Faza 0 — szybkie poprawki (1 PR, ~30 min) ✅ można od razu
-- [ ] Usunąć wycieki: „Ostatnie publikacje z Contentful (build time)”, „Kanał treści pod search visibility…”, „Skrót sygnałowy / Signal row”, „Cyfrowe portfolio” na CV.
-- [ ] Czas trwania ról liczony z dat przy buildzie (`src/lib/dates.ts`) zamiast „10 miesięcy”.
-- [ ] Usunąć zdublowaną nazwę firmy w roli na CV.
+### Faza 0 — szybkie poprawki ✅ zrobione (branch `claude/epic-mayer-0cj1iu`)
+- [x] Usunąć wycieki: „Ostatnie publikacje z Contentful (build time)”, „Kanał treści pod search visibility…”, „Cyfrowe portfolio” na CV. („Skrót sygnałowy / Signal row” żyje tylko w martwym `ResumeHeader` — zniknie w fazie 4.)
+- [x] Czas trwania ról liczony z dat przy buildzie (`formatMonthPeriod` / `formatMonthDuration` w `src/lib/dates.ts`) zamiast wpisanego „10 miesięcy”.
+- [x] Usunąć zdublowaną nazwę firmy w roli na CV.
+- [x] Usunąć CTA freelance z home (`HomeCtaSection` + klucze `home.cta`).
 
 ### Faza 1 — wywalenie dekoracji (1–2 PR-y)
 - [ ] Home: usunąć `HeroCosmos`, `HeroParticleStream`, `HeroSilhouette`, `HeroMediaPicture`, `HomeScrollIndicator`, numerację, pionowe labele, side rail.
 - [ ] Usunąć `TechStackSection` + `TechStackParticleFlow` + `src/lib/particles/`.
 - [ ] Usunąć obrazy: `hero-*`, `hero-silhouette*`, `resume-bottom-background*`, `about-me-signature*`, `digitalresume-hero*` (jeśli zostaje inne zdjęcie).
 - [ ] Odinstalować `@tsparticles/*`, `embla-carousel`.
-- [ ] (po decyzji) Usunąć `FloatingMusicPlayer` + `MUSIC_PLAYLIST_URL` z env/schema + klucze `audioPlayer` w słowniku.
+- Odtwarzacz muzyki **zostaje** (decyzja) — w fazie 2 tylko przestylowanie do nowej palety.
 
 ### Faza 2 — nowy, płaski system wizualny (1 PR)
 - [ ] Przepisać `@theme` w `global.css`: neutralna paleta light/dark, 1 akcent, 3 rozmiary tekstu, bez `shadow-gold`, `gold-pulse`, `slow-spin`, `orbit-ring`, `card-glass`, `text-gradient-gold`, `bg-hero-cosmos`, `bg-gold-flow`.
@@ -157,11 +158,11 @@ Zostaje (to jedyna naprawdę Twoja treść). Lista: data + tytuł (+ ewentualnie
 
 **Szacunek efektu:** z ~6 200 linii w `sections/` + 1 169 w `global.css` + ~2 600 linii skryptów klienta → prawdopodobnie < 1 500 linii łącznie; JS klienta bliski zeru (tylko menu mobilne / przełącznik języka, jeśli w ogóle).
 
-## 6. Decyzje do podjęcia
+## 6. Decyzje (2026-10-09)
 
-1. **Odtwarzacz muzyki** — wywalamy? (rekomendacja: tak)
-2. **`/o-mnie`** — scalamy z home (A) czy krótka proza (B)?
-3. **Zdjęcie** — żadne / jedno małe prawdziwe (które)?
-4. **Akcent kolorystyczny** — zostaje przygaszone złoto jako „ślad” marki czy coś innego?
-5. **CTA freelance** („Mogę pomóc w migracji…”) — szukasz zleceń czy to usuwamy?
-6. **Wersja EN** — utrzymujemy pełny parytet treści czy EN może być krótsza?
+1. **Odtwarzacz muzyki** — zostaje.
+2. **`/o-mnie`** — scalamy z home (wariant A, z redirectem `/o-mnie` → `/`, `/about` → `/en`).
+3. **Zdjęcie** — jedno małe, prawdziwe; Patryk dośle nowe.
+4. **Akcent kolorystyczny** — złoto wylatuje całkowicie. Nowa paleta do zaproponowania na podstawie raportu, który Patryk dośle.
+5. **CTA freelance** — usunięte (nie szuka zleceń).
+6. **Wersja EN** — pełny parytet z PL.

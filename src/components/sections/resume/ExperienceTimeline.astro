@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '@/lib/i18n/locales';
 import Container from '@/components/ui/Container.astro';
+import { formatMonthDuration, formatMonthPeriod } from '@/lib/dates';
 import ExperienceTimelineItem from './ExperienceTimelineItem.astro';
 
 interface Props {
@@ -16,8 +17,8 @@ const data = {
 			{
 				company: 'Japan Tobacco International',
 				role: 'Senior L3 Frontend Engineer',
-				period: '08.2025 — obecnie',
-				duration: '10 miesięcy',
+				start: '2025-08',
+				end: null,
 				domain: 'Software Development / eCommerce',
 				summary:
 					'Utrzymanie i rozwój frontendowej części stron Ploom działających na ponad 30 rynkach, z naciskiem na stabilność, komponenty globalne, CMS i wsparcie zespołów contentowych.',
@@ -34,8 +35,8 @@ const data = {
 			{
 				company: 'Roboverse Reply DE',
 				role: 'Freelance Fullstack Developer (React/.NET)',
-				period: '11.2024 — 08.2025',
-				duration: '10 miesięcy',
+				start: '2024-11',
+				end: '2025-08',
 				domain: 'Software Development / Robotics',
 				summary:
 					'Modernizacja platformy do zdalnego sterowania robotami: migracja do Next.js, przebudowa state managementu, porządkowanie legacy oraz rozwój funkcji sterowania i podglądu na żywo.',
@@ -52,8 +53,8 @@ const data = {
 			{
 				company: 'NapoleonCat',
 				role: 'Senior Frontend Developer',
-				period: '03.2023 — 10.2024',
-				duration: '1 rok 8 miesięcy',
+				start: '2023-03',
+				end: '2024-10',
 				domain: 'Software Development / Social Media Management',
 				summary:
 					'Frontend dla produktu SaaS: moduł analityczny, globalne powiadomienia, mikrofrontendy, Storybook i regularne releasy produkcyjne.',
@@ -70,8 +71,8 @@ const data = {
 			{
 				company: 'Merixstudio',
 				role: 'Senior React Developer',
-				period: '10.2021 — 09.2022',
-				duration: 'około 1 rok',
+				start: '2021-10',
+				end: '2022-09',
 				domain: 'Software Development / Gaming Platform',
 				summary:
 					'Frontend backoffice dla platformy gamifikacyjnej online casino: rozbudowane formularze, kampanie, testy integracyjne i dynamiczny skrypt kampanii.',
@@ -88,8 +89,8 @@ const data = {
 			{
 				company: 'Netguru',
 				role: 'Mid Frontend Developer',
-				period: '04.2020 — 09.2021',
-				duration: '1 rok 6 miesięcy',
+				start: '2020-04',
+				end: '2021-09',
 				domain: 'Software Development',
 				summary:
 					'Frontend dla projektów crowdfundingowych, real estate i narzędzi analitycznych Salesforce.',
@@ -105,8 +106,8 @@ const data = {
 			{
 				company: 'Trol Intermedia',
 				role: 'PHP/Frontend Developer',
-				period: '04.2018 — 03.2020',
-				duration: 'prawie 2 lata',
+				start: '2018-04',
+				end: '2020-03',
 				domain: 'Software Development / eCommerce',
 				summary:
 					'Frontend, UI i moduły PHP/MySQL dla e-commerce opartych o autorski CMS 2ClickShop.',
@@ -122,8 +123,8 @@ const data = {
 			{
 				company: 'LEOCODE / 314 Apps',
 				role: 'Ruby on Rails/Frontend Developer',
-				period: '03.2017 — 11.2017',
-				duration: '9 miesięcy',
+				start: '2017-03',
+				end: '2017-11',
 				domain: 'Software Development',
 				summary:
 					'Fullstackowe początki: aplikacje Ruby on Rails i Angular dla klientów zagranicznych, dashboardy, panele administracyjne i tracking usług.',
@@ -146,8 +147,8 @@ const data = {
 			{
 				company: 'Japan Tobacco International',
 				role: 'Senior L3 Frontend Engineer',
-				period: '08.2025 — present',
-				duration: '10 months',
+				start: '2025-08',
+				end: null,
 				domain: 'Software Development / eCommerce',
 				summary:
 					'Maintaining and improving the frontend part of Ploom websites across 30+ markets.',
@@ -164,8 +165,8 @@ const data = {
 			{
 				company: 'Roboverse Reply DE',
 				role: 'Freelance Fullstack Developer (React/.NET)',
-				period: '11.2024 — 08.2025',
-				duration: '10 months',
+				start: '2024-11',
+				end: '2025-08',
 				domain: 'Software Development / Robotics',
 				summary:
 					'Remote robot platform modernization: Next.js migration, state-management rebuild, legacy cleanup, and live control/preview features.',
@@ -182,8 +183,8 @@ const data = {
 			{
 				company: 'NapoleonCat',
 				role: 'Senior Frontend Developer',
-				period: '03.2023 — 10.2024',
-				duration: '1 year 8 months',
+				start: '2023-03',
+				end: '2024-10',
 				domain: 'Software Development / Social Media Management',
 				summary:
 					'SaaS product frontend: analytics module, global notifications, micro-frontends, Storybook, and regular production releases.',
@@ -200,8 +201,8 @@ const data = {
 			{
 				company: 'Merixstudio',
 				role: 'Senior React Developer',
-				period: '10.2021 — 09.2022',
-				duration: 'about 1 year',
+				start: '2021-10',
+				end: '2022-09',
 				domain: 'Software Development / Gaming Platform',
 				summary:
 					'Backoffice frontend for gamification platform: forms, campaign system, integration testing, and dynamic campaign scripts.',
@@ -218,8 +219,8 @@ const data = {
 			{
 				company: 'Netguru',
 				role: 'Mid Frontend Developer',
-				period: '04.2020 — 09.2021',
-				duration: '1 year 6 months',
+				start: '2020-04',
+				end: '2021-09',
 				domain: 'Software Development',
 				summary:
 					'Frontend for crowdfunding, real estate and Salesforce analytical tools.',
@@ -235,8 +236,8 @@ const data = {
 			{
 				company: 'Trol Intermedia',
 				role: 'PHP/Frontend Developer',
-				period: '04.2018 — 03.2020',
-				duration: 'almost 2 years',
+				start: '2018-04',
+				end: '2020-03',
 				domain: 'Software Development / eCommerce',
 				summary:
 					'Frontend, UI and PHP/MySQL modules for e-commerce on custom 2ClickShop CMS.',
@@ -252,8 +253,8 @@ const data = {
 			{
 				company: 'LEOCODE / 314 Apps',
 				role: 'Ruby on Rails/Frontend Developer',
-				period: '03.2017 — 11.2017',
-				duration: '9 months',
+				start: '2017-03',
+				end: '2017-11',
 				domain: 'Software Development',
 				summary:
 					'Fullstack beginnings: Ruby on Rails and Angular applications for international clients, including dashboards, admin panels, and service tracking.',
@@ -272,6 +273,11 @@ const data = {
 
 const { locale } = Astro.props;
 const current = data[locale];
+const items = current.items.map((item) => ({
+	...item,
+	period: formatMonthPeriod(item.start, item.end, locale),
+	duration: formatMonthDuration(item.start, item.end, locale),
+}));
 ---
 
 <section class="dcv-experience section-gap" aria-label={current.title}>
@@ -282,7 +288,7 @@ const current = data[locale];
 		<div class="dcv-experience__timeline" role="list">
 			<div class="dcv-experience__rail" aria-hidden="true" />
 			{
-				current.items.map((item, index) => (
+				items.map((item, index) => (
 					<ExperienceTimelineItem
 						item={item}
 						locale={locale}
