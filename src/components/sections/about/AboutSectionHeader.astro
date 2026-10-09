@@ -16,11 +16,11 @@ const { label, id, class: className = '' } = Astro.props;
 		className,
 	)}
 >
-	<h2 id={id} class="text-caption font-bold uppercase tracking-[0.18em] text-gold">
+	<h2 id={id} class="text-caption font-bold uppercase tracking-[0.18em] text-accent">
 		{label}
 	</h2>
 	<span
-		class="h-px bg-[linear-gradient(90deg,rgba(217,164,65,0.48),rgba(217,164,65,0.06))]"
+		class="h-px bg-border-accent"
 		aria-hidden="true"
 	></span>
 </div>

@@ -23,18 +23,16 @@ const { title, description, items } = Astro.props as TechGroupProps;
 		display: grid;
 		grid-template-rows: auto 1fr;
 		gap: 1rem;
-		border: 1px solid rgba(217, 164, 65, 0.3);
+		border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
 		border-radius: 0.9rem;
-		background:
-			linear-gradient(145deg, rgba(217, 164, 65, 0.08), rgba(9, 9, 9, 0.82)),
-			rgba(0, 0, 0, 0.68);
+		background: color-mix(in srgb, var(--color-page) 68%, transparent);
 		min-height: 15.25rem;
 		padding: 1.35rem;
 	}
 
 	.dcv-tech-group h3 {
 		margin: 0;
-		color: var(--color-gold);
+		color: var(--color-accent);
 		font-family: var(--font-display);
 		font-size: 1.1rem;
 		line-height: 1.25;

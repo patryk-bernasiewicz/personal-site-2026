@@ -10,7 +10,7 @@ interface Props {
 const { post } = Astro.props;
 ---
 
-<article class="card-glass card-gold-hover rounded-card p-6">
+<article class="card-flat rounded-card p-6">
 	<a href={getLocalizedBlogPostUrl(post.slug, post.locale)} class="block">
 		<p class="text-caption font-semibold uppercase tracking-widest text-text-faint">
 			{formatDate(post.publishedAt, post.locale)}

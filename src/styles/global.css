@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "./typography.css";
 
+/*
+ * Palette "Teal": neutral greys + one accent. Light by default, dark from
+ * prefers-color-scheme (no toggle). Components use the semantic tokens only;
+ * translucent tints are color-mix() of text-main or accent, so they work in both schemes.
+ */
 @theme {
 	/* Fonts */
 	--font-sans:
@@ -8,24 +13,22 @@
 	--font-display:
 		"Inter", "Geist", "SF Pro Display", ui-sans-serif, system-ui, sans-serif;
 
-	/* Core colors */
-	--color-ink: #050505;
-	--color-ink-soft: #090909;
-	--color-ink-card: #101010;
-	--color-ink-card-soft: #151515;
+	/* Colors (light) */
+	--color-page: #f6f7f6;
+	--color-surface: #eceeec;
+	--color-surface-strong: #e1e5e2;
 
-	--color-gold: #d9a441;
-	--color-gold-soft: #f1c66a;
-	--color-gold-muted: #8f6826;
-	--color-gold-dark: #3d2a0d;
+	--color-text-main: #141816;
+	--color-text-soft: #2c332f;
+	--color-text-muted: #4b5550;
+	--color-text-faint: #69736e;
 
-	--color-text-main: #f7f4ee;
-	--color-text-soft: #d8d2c8;
-	--color-text-muted: #9a948b;
-	--color-text-faint: #6d675f;
+	--color-border-soft: color-mix(in srgb, #141816 12%, transparent);
+	--color-border-accent: color-mix(in srgb, #0f766e 45%, transparent);
 
-	--color-border-soft: rgba(255, 255, 255, 0.12);
-	--color-border-gold: rgba(217, 164, 65, 0.42);
+	--color-accent: #0f766e;
+	--color-accent-hover: #115e59;
+	--color-accent-contrast: #ffffff;
 
 	/* Typography */
 	--text-hero: clamp(3rem, 6vw, 5.75rem);
@@ -51,58 +54,63 @@
 	--radius-md: 0.875rem;
 	--radius-lg: 1.25rem;
 	--radius-xl: 1.75rem;
-	--radius-card: 1rem;
+	--radius-card: 0.75rem;
 	--radius-button: 0.5rem;
-
-	/* Shadows */
-	--shadow-gold:
-		0 0 24px rgba(217, 164, 65, 0.28), 0 0 80px rgba(217, 164, 65, 0.12);
-
-	--shadow-card:
-		inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 80px rgba(0, 0, 0, 0.55);
 
 	/* Layout */
 	--spacing-page-x: clamp(1.5rem, 4vw, 5rem);
 	--spacing-page-content-max: 1180px;
 	--spacing-section-y: clamp(4rem, 8vw, 8rem);
 	--spacing-nav-h: 6rem;
-
 }
 
 @layer base {
 	:root {
-		color-scheme: dark;
-		background: var(--color-ink);
+		color-scheme: light dark;
+		background: var(--color-page);
 		color: var(--color-text-main);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--color-page: #0e1211;
+			--color-surface: #161b19;
+			--color-surface-strong: #1e2522;
+
+			--color-text-main: #e3e8e5;
+			--color-text-soft: #c5ccc8;
+			--color-text-muted: #9aa5a0;
+			--color-text-faint: #7d8883;
+
+			--color-border-soft: color-mix(in srgb, #e3e8e5 12%, transparent);
+			--color-border-accent: color-mix(in srgb, #4fd1c0 45%, transparent);
+
+			--color-accent: #4fd1c0;
+			--color-accent-hover: #7ee0d3;
+			--color-accent-contrast: #0e1211;
+		}
 	}
 
 	html {
 		scroll-behavior: smooth;
-		background: var(--color-ink);
+		background: var(--color-page);
 	}
 
 	body {
 		min-height: 100vh;
-		background:
-			radial-gradient(
-				circle at 52% 22%,
-				rgba(217, 164, 65, 0.14),
-				transparent 32%
-			),
-			radial-gradient(
-				circle at 78% 20%,
-				rgba(255, 255, 255, 0.08),
-				transparent 28%
-			),
-			linear-gradient(180deg, #050505 0%, #080808 52%, #030303 100%);
+		background: var(--color-page);
 		color: var(--color-text-main);
 		font-family: var(--font-sans);
-		text-rendering: geometricPrecision;
+		text-rendering: optimizeLegibility;
 		-webkit-font-smoothing: antialiased;
 	}
 
+	a {
+		text-underline-offset: 0.2em;
+	}
+
 	::selection {
-		background: rgba(217, 164, 65, 0.32);
+		background: color-mix(in srgb, var(--color-accent) 30%, transparent);
 		color: var(--color-text-main);
 	}
 }
@@ -129,77 +137,35 @@
 	padding-top: var(--spacing-nav-h);
 }
 
-@utility text-gradient-gold {
-	background: linear-gradient(
-		135deg,
-		var(--color-gold-soft),
-		var(--color-gold)
-	);
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
-}
-
 @utility overflow-wrap-anywhere {
 	overflow-wrap: anywhere;
 }
 
-@utility card-glass {
-	background:
-		linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015)),
-		rgba(12, 12, 12, 0.76);
-	border: 1px solid rgba(255, 255, 255, 0.13);
-	box-shadow: var(--shadow-card);
-	backdrop-filter: blur(18px);
+@utility card-flat {
+	background: var(--color-surface);
+	border: 1px solid var(--color-border-soft);
 }
 
-@utility card-gold-hover {
-	transition:
-		border-color 220ms ease,
-		box-shadow 220ms ease,
-		transform 220ms ease;
-
-	&:hover {
-		transform: translateY(-4px);
-		border-color: var(--color-border-gold);
-		box-shadow: var(--shadow-card), var(--shadow-gold);
-	}
-}
-
-@utility btn-gold {
+@utility btn-accent {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	gap: 0.875rem;
-	min-height: 3.25rem;
-	padding-inline: 1.5rem;
-	border: 1px solid var(--color-border-gold);
+	gap: 0.75rem;
+	min-height: 3rem;
+	padding-inline: 1.25rem;
+	border: 1px solid var(--color-accent);
 	border-radius: var(--radius-button);
-	color: var(--color-text-main);
-	background:
-		linear-gradient(135deg, rgba(217, 164, 65, 0.12), rgba(217, 164, 65, 0.02)),
-		rgba(5, 5, 5, 0.58);
-	font-size: 0.75rem;
-	font-weight: 700;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
+	color: var(--color-accent-contrast);
+	background: var(--color-accent);
+	font-size: 0.875rem;
+	font-weight: 600;
 	transition:
-		background 220ms ease,
-		border-color 220ms ease,
-		box-shadow 220ms ease,
-		transform 220ms ease;
+		background-color 160ms ease,
+		border-color 160ms ease;
 
 	&:hover {
-		transform: translateY(-2px);
-		border-color: var(--color-gold);
-		background:
-			linear-gradient(
-				135deg,
-				rgba(217, 164, 65, 0.22),
-				rgba(217, 164, 65, 0.05)
-			),
-			rgba(5, 5, 5, 0.72);
-		box-shadow: var(--shadow-gold);
+		border-color: var(--color-accent-hover);
+		background: var(--color-accent-hover);
 	}
 }
 
@@ -208,9 +174,7 @@
 		position: relative;
 		z-index: 1;
 		padding-block: clamp(4.25rem, 7vw, 6.5rem);
-		background:
-			linear-gradient(180deg, rgba(217, 164, 65, 0.06), transparent 52%),
-			#050505;
+		background: #050505;
 	}
 
 	.resume-summary__heading {
@@ -238,13 +202,10 @@
 		position: relative;
 		min-height: 13rem;
 		overflow: hidden;
-		border: 1px solid rgba(217, 164, 65, 0.34);
+		border: 1px solid color-mix(in srgb, var(--color-accent) 34%, transparent);
 		border-radius: 0.5rem;
-		background:
-			linear-gradient(135deg, rgba(217, 164, 65, 0.12), transparent 42%),
-			rgba(10, 10, 10, 0.86);
+		background: color-mix(in srgb, var(--color-page) 86%, transparent);
 		padding: 1.45rem;
-		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
 	}
 
 	.resume-summary__card::after {
@@ -252,12 +213,7 @@
 		position: absolute;
 		inset: auto 1.1rem 0 1.1rem;
 		height: 1px;
-		background: linear-gradient(
-			90deg,
-			transparent,
-			rgba(217, 164, 65, 0.6),
-			transparent
-		);
+		background: var(--color-border-accent);
 		opacity: 0.45;
 	}
 

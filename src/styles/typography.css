@@ -52,7 +52,7 @@
 }
 
 .prose li::marker {
-	color: var(--color-gold);
+	color: var(--color-accent);
 	font-weight: 700;
 }
 
@@ -65,14 +65,14 @@
 }
 
 .prose a {
-	color: var(--color-gold-soft);
+	color: var(--color-accent-hover);
 	text-decoration: underline;
 	text-underline-offset: 3px;
 	transition: color 180ms ease;
 }
 
 .prose a:hover {
-	color: var(--color-gold);
+	color: var(--color-accent);
 }
 
 .prose :where(strong, b) {
@@ -81,7 +81,7 @@
 }
 
 .prose blockquote {
-	border-left: 1px solid var(--color-gold);
+	border-left: 1px solid var(--color-accent);
 	padding: 0.25rem 0 0.25rem 1.25rem;
 	color: var(--color-text-main);
 	font-size: var(--text-body-large);
@@ -112,11 +112,11 @@
 }
 
 .prose :not(pre) > code {
-	border: 1px solid rgba(217, 164, 65, 0.22);
+	border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
 	border-radius: var(--radius-xs);
-	background: rgba(217, 164, 65, 0.08);
+	background: color-mix(in srgb, var(--color-accent) 8%, transparent);
 	padding: 0.12rem 0.35rem;
-	color: var(--color-gold-soft);
+	color: var(--color-accent-hover);
 	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 	font-size: 0.9em;
 }
@@ -124,9 +124,9 @@
 .prose .code-block {
 	position: relative;
 	overflow: hidden;
-	border: 1px solid rgba(217, 164, 65, 0.22);
+	border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
 	border-radius: var(--radius-sm);
-	background: rgba(5, 5, 5, 0.78);
+	background: color-mix(in srgb, var(--color-page) 78%, transparent);
 }
 
 @media (min-width: 768px) {
@@ -140,7 +140,7 @@
 .prose .code-block::before {
 	content: attr(data-language);
 	display: block;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	border-bottom: 1px solid color-mix(in srgb, var(--color-text-main) 8%, transparent);
 	padding: 0.65rem 1rem;
 	color: var(--color-text-faint);
 	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -165,6 +165,15 @@
 	font-size: var(--text-caption);
 	letter-spacing: var(--text-caption--letter-spacing);
 	text-transform: uppercase;
-	color: var(--color-gold);
+	color: var(--color-accent);
 	font-weight: 600;
+}
+
+/* Shiki dual theme: inline colors are the light theme, swap to the dark variables in dark mode. */
+@media (prefers-color-scheme: dark) {
+	.prose .shiki,
+	.prose .shiki span {
+		color: var(--shiki-dark) !important;
+		background-color: var(--shiki-dark-bg) !important;
+	}
 }

@@ -30,13 +30,13 @@ const { principles } = getAboutPageContent(locale);
 							class:list={[
 								'h-full p-6 lg:p-7',
 								featured &&
-									'border-[rgba(217,164,65,0.42)] bg-[linear-gradient(135deg,rgba(217,164,65,0.11),transparent_48%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01)),rgba(8,8,8,0.82)]',
+									'border-[color-mix(in_srgb,var(--color-accent)_42%,transparent)] bg-surface',
 							]}
 						>
 							<div class="relative flex min-h-[11.5rem] flex-col">
 								<span
 									class:list={[
-										'mb-5 h-px w-16 bg-[linear-gradient(90deg,rgba(217,164,65,0.68),transparent)]',
+										'mb-5 h-px w-16 bg-border-accent',
 										!featured && 'opacity-55',
 									]}
 									aria-hidden="true"

@@ -16,7 +16,7 @@ const resumeHref = getLocalizedRoute('resume', locale);
 ---
 
 <section
-	class="experience-preview home-section-gap relative isolate bg-ink lg:overflow-hidden"
+	class="experience-preview home-section-gap relative isolate bg-page lg:overflow-hidden"
 	aria-labelledby="experience-preview-heading"
 >
 	<div class="page-shell">
@@ -27,7 +27,7 @@ const resumeHref = getLocalizedRoute('resume', locale);
 
 			<div class="experience-preview__cta-row mt-5 flex justify-start lg:justify-end">
 				<a
-					class="experience-preview__resume-link inline-flex items-center gap-2 text-caption font-semibold uppercase tracking-widest text-gold transition-colors hover:text-gold-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-gold"
+					class="experience-preview__resume-link inline-flex items-center gap-2 text-caption font-semibold uppercase tracking-widest text-accent transition-colors hover:text-accent-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-accent"
 					href={resumeHref}
 				>
 					{experiencePreview.cta}
@@ -62,7 +62,7 @@ const resumeHref = getLocalizedRoute('resume', locale);
 								<h3 class="mt-2 font-display text-base font-semibold leading-snug text-text-main">
 									{role.title}
 								</h3>
-								<p class="mt-1 text-caption font-semibold text-gold">{role.company}</p>
+								<p class="mt-1 text-caption font-semibold text-accent">{role.company}</p>
 								<p class="experience-preview__summary mt-3 text-body leading-relaxed text-text-muted max-lg:hidden">
 									{role.summary}
 								</p>
@@ -86,7 +86,7 @@ const resumeHref = getLocalizedRoute('resume', locale);
 		grid-template-columns: auto 1fr;
 		column-gap: 1.25rem;
 		padding-block: 1.125rem;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		border-bottom: 1px solid color-mix(in srgb, var(--color-text-main) 6%, transparent);
 	}
 
 	.experience-preview__item:last-child {
@@ -111,8 +111,7 @@ const resumeHref = getLocalizedRoute('resume', locale);
 		height: 0.375rem;
 		flex-shrink: 0;
 		border-radius: 999px;
-		background: rgb(217, 164, 65);
-		box-shadow: 0 0 12px rgba(217, 164, 65, 0.42);
+		background: var(--color-accent);
 	}
 
 	.experience-preview__stem {
@@ -120,7 +119,7 @@ const resumeHref = getLocalizedRoute('resume', locale);
 		width: 1px;
 		flex: 1;
 		min-height: 1.5rem;
-		background: rgba(255, 255, 255, 0.14);
+		background: color-mix(in srgb, var(--color-text-main) 14%, transparent);
 	}
 
 	.experience-preview__item:last-child .experience-preview__stem {
@@ -161,7 +160,7 @@ const resumeHref = getLocalizedRoute('resume', locale);
 			top: 0.1875rem;
 			left: 0.75rem;
 			width: calc(100% + clamp(1.5rem, 3vw, 2.5rem));
-			border-top: 1px dashed rgba(217, 164, 65, 0.24);
+			border-top: 1px dashed color-mix(in srgb, var(--color-accent) 24%, transparent);
 			pointer-events: none;
 		}
 

@@ -79,9 +79,9 @@ const cards: EndingCard[] = [
 		gap: 0.65rem;
 		padding: 1.35rem 1.3rem;
 		min-height: 8.4rem;
-		border: 1px solid rgba(217, 164, 65, 0.42);
+		border: 1px solid color-mix(in srgb, var(--color-accent) 42%, transparent);
 		border-radius: 0.9rem;
-		background: linear-gradient(155deg, rgba(217, 164, 65, 0.08), rgba(10, 10, 10, 0.78));
+		background: var(--color-surface);
 		transition:
 			border-color 180ms ease,
 			transform 180ms ease,
@@ -90,8 +90,7 @@ const cards: EndingCard[] = [
 
 	.dcv-ending-card:hover {
 		transform: translateY(-2px);
-		border-color: var(--color-gold);
-		box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.4), 0 0 1.4rem rgba(217, 164, 65, 0.2);
+		border-color: var(--color-accent);
 	}
 
 
@@ -114,7 +113,7 @@ const cards: EndingCard[] = [
 		position: absolute;
 		right: 1.1rem;
 		bottom: 1rem;
-		color: var(--color-gold-soft);
+		color: var(--color-accent-hover);
 		font-size: 1.15rem;
 		line-height: 1;
 	}

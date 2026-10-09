@@ -141,10 +141,14 @@ Zostaje (to jedyna naprawdę Twoja treść). Lista: data + tytuł (+ ewentualnie
 - [x] Przy okazji (z fazy 4): martwe komponenty CV (`ResumeHeader`, `WorkHistorySection`, `ResumeTechnologiesSection`, `ResumeBottomLinksSection`, `ResumeNarrativeSection`, `ResumeStrengthSection`, `BottomWaveBackground`), nieużywany `ui/Card`, martwe utility i ~850 linii `.resume-*` w `global.css` (1169 → ~300 linii).
 - Odtwarzacz muzyki **zostaje** (decyzja) — w fazie 2 tylko przestylowanie do nowej palety.
 
-### Faza 2 — nowy, płaski system wizualny (1 PR)
-- [ ] Przepisać `@theme` w `global.css`: neutralna paleta light/dark, 1 akcent, 3 rozmiary tekstu, bez `shadow-gold`, `gold-pulse`, `slow-spin`, `orbit-ring`, `card-glass`, `text-gradient-gold`, `bg-hero-cosmos`, `bg-gold-flow`.
-- [ ] Wyrzucić blok `.resume-*` (~800 linii) — CV przejdzie na utility/`.prose`.
-- [ ] Uprościć `Header` (498 l. → ~60), `Footer`, `Button`, `Card` (Card prawdopodobnie do usunięcia).
+### Faza 2 — nowy, płaski system wizualny ✅ zrobione
+- [x] `@theme` w `global.css`: paleta Teal (tokeny `page`, `surface`, `surface-strong`, `text-*`, `border-soft`, `border-accent`, `accent`, `accent-hover`, `accent-contrast`), dark mode z `prefers-color-scheme`.
+- [x] Złoto → teal w całym `src`; `rgba(255,255,255,…)` → `color-mix()` z `text-main`, ciemne tła → `page`/`surface`.
+- [x] Wyrzucone glow, cienie, backdrop-blur, `text-gradient-gold`, `card-gold-hover`, `shadow-gold`; gradienty spłaszczone (karty → `surface`, hairline'y → `border-accent`).
+- [x] `btn-gold` → `btn-accent` (pełny akcent), `card-glass` → `card-flat`.
+- [x] Odtwarzacz: pigułka w kolorze akcentu, kontrolki w `accent-contrast`.
+- [x] Logo SVG adaptacyjne (light/dark), `theme-color` dla obu trybów, Shiki z motywem `github-light` / `github-dark`.
+- [ ] Uproszczenie `Header` (~500 l.) — przeniesione do fazy 3 razem z nowym IA (mniej pozycji w menu po scaleniu `/o-mnie`).
 
 ### Faza 3 — przepisanie treści (1 PR na stronę; **tu potrzebuję Ciebie**)
 - [ ] Home: nowe copy wg pkt 4 (szkic przygotuję, Ty poprawiasz własnym głosem).

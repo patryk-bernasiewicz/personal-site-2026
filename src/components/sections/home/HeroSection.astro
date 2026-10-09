@@ -25,7 +25,7 @@ const leadClass =
 		: 'max-lg:text-[1.0625rem] max-lg:leading-[1.65] lg:max-w-lg';
 ---
 
-<section class="hero-section relative bg-ink pt-nav" aria-labelledby="hero-heading">
+<section class="hero-section relative bg-page pt-nav" aria-labelledby="hero-heading">
 	<div
 		class="page-shell py-[clamp(3rem,8vw,6rem)]"
 	>
@@ -71,7 +71,7 @@ const leadClass =
 						</svg>
 					</Button>
 					<a
-						class="inline-flex items-center gap-3 rounded-xs text-caption font-semibold uppercase tracking-widest text-text-muted transition-colors hover:text-text-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-gold"
+						class="inline-flex items-center gap-3 rounded-xs text-caption font-semibold uppercase tracking-widest text-text-muted transition-colors hover:text-text-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-accent"
 						href={`mailto:${siteConfig.author.email}`}
 					>
 						{hero.letsTalk}
@@ -90,7 +90,7 @@ const leadClass =
 									target={link.icon === 'email' ? undefined : '_blank'}
 									rel={link.icon === 'email' ? undefined : 'noopener noreferrer'}
 									aria-label={link.label}
-									class="inline-flex size-8 items-center justify-center opacity-72 transition-[opacity,transform] duration-200 hover:-translate-y-0.5 hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-gold motion-reduce:hover:translate-y-0"
+									class="inline-flex size-8 items-center justify-center opacity-72 transition-[opacity,transform] duration-200 hover:-translate-y-0.5 hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-accent motion-reduce:hover:translate-y-0"
 								>
 									<img
 										src={socialIconPaths[link.icon]}

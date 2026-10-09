@@ -51,7 +51,7 @@ function isNavActive(href: string): boolean {
 function navLinkClass(isActive: boolean): string {
 	return [
 		'text-caption font-semibold uppercase tracking-widest transition-colors',
-		isActive ? 'text-gold-soft' : 'text-text-muted hover:text-text-main',
+		isActive ? 'text-accent-hover' : 'text-text-muted hover:text-text-main',
 	].join(' ');
 }
 
@@ -65,7 +65,7 @@ function navLinkClass(isActive: boolean): string {
 	<div class="page-shell flex min-h-[var(--spacing-nav-h)] items-center justify-between gap-4 py-4">
 		<a
 			href={getLocalizedRoute('home', locale)}
-			class="site-header__logo flex shrink-0 items-center gap-3 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-soft"
+			class="site-header__logo flex shrink-0 items-center gap-3 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
 		>
 			<SiteLogo class="h-10 w-10" />
 			<span class="sr-only">{dictionary.nav.home}</span>
@@ -103,7 +103,7 @@ function navLinkClass(isActive: boolean): string {
 		<button
 			type="button"
 			id="mobile-nav-trigger"
-			class="site-header__menu-btn flex h-11 w-11 items-center justify-center rounded-md border border-white/10 text-text-main transition-colors hover:border-white/20 hover:text-gold-soft lg:hidden"
+			class="site-header__menu-btn flex h-11 w-11 items-center justify-center rounded-md border border-text-main/10 text-text-main transition-colors hover:border-text-main/20 hover:text-accent-hover lg:hidden"
 			aria-expanded="false"
 			aria-controls="mobile-nav-drawer"
 			aria-label={aria.openMenu}
@@ -143,7 +143,7 @@ function navLinkClass(isActive: boolean): string {
 			</a>
 			<button
 				type="button"
-				class="site-mobile-nav__close flex h-11 w-11 items-center justify-center rounded-md border border-white/10 text-text-main transition-colors hover:border-white/20 hover:text-gold-soft"
+				class="site-mobile-nav__close flex h-11 w-11 items-center justify-center rounded-md border border-text-main/10 text-text-main transition-colors hover:border-text-main/20 hover:text-accent-hover"
 				data-mobile-close
 				aria-label={aria.closeMenu}
 			>
@@ -171,8 +171,8 @@ function navLinkClass(isActive: boolean): string {
 									class:list={[
 										'block rounded-md px-3 py-3 text-sm font-semibold uppercase tracking-widest transition-colors',
 										isActive
-											? 'text-gold-soft'
-											: 'text-text-muted hover:bg-white/5 hover:text-text-main',
+											? 'text-accent-hover'
+											: 'text-text-muted hover:bg-text-main/5 hover:text-text-main',
 									]}
 									target={item.external ? '_blank' : undefined}
 									rel={item.external ? 'noopener noreferrer' : undefined}
@@ -188,7 +188,7 @@ function navLinkClass(isActive: boolean): string {
 		</nav>
 
 		<div
-			class="site-mobile-nav__footer mt-auto flex items-center justify-between gap-4 border-t border-white/10 pt-6"
+			class="site-mobile-nav__footer mt-auto flex items-center justify-between gap-4 border-t border-text-main/10 pt-6"
 		>
 			<LanguageSwitcher {locale} {routeKey} {alternatePaths} />
 		</div>
@@ -220,8 +220,7 @@ function navLinkClass(isActive: boolean): string {
 	.site-mobile-nav__backdrop {
 		position: absolute;
 		inset: 0;
-		background: rgba(5, 5, 5, 0.62);
-		backdrop-filter: blur(4px);
+		background: rgb(0 0 0 / 0.4);
 		opacity: 0;
 		transition: opacity 240ms ease;
 		will-change: opacity;
@@ -241,9 +240,8 @@ function navLinkClass(isActive: boolean): string {
 		height: 100%;
 		max-height: 100dvh;
 		padding: 1.25rem 1.25rem 1.5rem;
-		border-left: 1px solid rgba(255, 255, 255, 0.1);
-		background: linear-gradient(180deg, rgba(16, 16, 16, 0.98), rgba(5, 5, 5, 0.98));
-		box-shadow: -24px 0 80px rgba(0, 0, 0, 0.45);
+		border-left: 1px solid color-mix(in srgb, var(--color-text-main) 10%, transparent);
+		background: var(--color-surface);
 		transform: translate3d(100%, 0, 0);
 		transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
 		will-change: transform;
@@ -269,7 +267,6 @@ function navLinkClass(isActive: boolean): string {
 	.site-header {
 		background: transparent;
 		border-bottom: 1px solid transparent;
-		backdrop-filter: blur(0);
 		transition:
 			background 220ms ease,
 			backdrop-filter 220ms ease,
@@ -277,9 +274,8 @@ function navLinkClass(isActive: boolean): string {
 	}
 
 	.site-header[data-scrolled='true'] {
-		background: linear-gradient(to top, transparent, var(--color-ink));
-		border-bottom-color: rgba(255, 255, 255, 0.1);
-		backdrop-filter: blur(24px);
+		background: var(--color-surface);
+		border-bottom-color: color-mix(in srgb, var(--color-text-main) 10%, transparent);
 	}
 
 	.site-mobile-nav__head {

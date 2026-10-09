@@ -169,10 +169,10 @@ Blog rich text: `src/lib/contentful/rich-text-renderer.ts` — explicit Contentf
 
 ### Styling
 
-- `global.css` — `@import "tailwindcss"`, `@theme` (ink/gold palette, typography scale, utilities)
+- `global.css` — `@import "tailwindcss"`, `@theme` ("Teal" palette: neutral greys + one accent, typography scale, utilities). Light by default, dark via `prefers-color-scheme` (overrides in `@layer base`, no toggle)
 - `typography.css` — `.prose`, `.eyebrow`
 
-Design tokens live in `@theme` inside `global.css` (not scattered). Reuse utilities: `page-shell`, `section-gap`, `btn-gold`, `card-glass`, `text-gradient-gold`, etc.
+Design tokens live in `@theme` inside `global.css` (not scattered). Use semantic tokens only (`page`, `surface`, `text-*`, `border-*`, `accent*`); for translucent tints use `color-mix()` of `text-main` or `accent` — never hardcoded `rgba(255,255,255,…)` / dark hex, which break the light scheme. No glows, heavy shadows or decorative gradients. Reuse utilities: `page-shell`, `section-gap`, `btn-accent`, `card-flat`, etc.
 
 No random global CSS in components. Tailwind v4 via `@tailwindcss/vite`.
 

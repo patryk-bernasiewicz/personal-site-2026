@@ -25,7 +25,7 @@ function resolveAlternateHref(targetLocale: Locale): string | undefined {
 }
 ---
 
-<ul class="flex items-center gap-2 border-l border-white/10 pl-4 text-sm">
+<ul class="flex items-center gap-2 border-l border-text-main/10 pl-4 text-sm">
 	{
 		locales
 			.filter((targetLocale) => targetLocale !== locale)
@@ -42,7 +42,7 @@ function resolveAlternateHref(targetLocale: Locale): string | undefined {
 						<a
 							href={href}
 							hreflang={targetLocale}
-							class="text-caption font-semibold uppercase tracking-widest text-text-muted transition-colors hover:text-gold-soft"
+							class="text-caption font-semibold uppercase tracking-widest text-text-muted transition-colors hover:text-accent-hover"
 						>
 							{label}
 						</a>

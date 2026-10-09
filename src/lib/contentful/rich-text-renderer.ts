@@ -83,7 +83,7 @@ async function renderCodeBlock(code: string): Promise<string> {
 	try {
 		highlighted = await codeToHtml(parsed.code, {
 			lang: parsed.lang,
-			theme: 'github-dark',
+			themes: { light: 'github-light', dark: 'github-dark' },
 		});
 	} catch {
 		highlighted = `<pre><code>${escapeHtml(parsed.code)}</code></pre>`;
