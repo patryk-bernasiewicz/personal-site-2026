@@ -2,7 +2,6 @@
 import type { Locale } from '@/lib/i18n/locales';
 import Container from '@/components/ui/Container.astro';
 import TechGroup from './TechGroup.astro';
-import BottomWaveBackground from './BottomWaveBackground.astro';
 
 interface Props {
 	locale: Locale;
@@ -81,9 +80,6 @@ const groups = groupsByLocale[locale];
 ---
 
 <section class="dcv-tech section-gap">
-	<div class="dcv-tech__bg" aria-hidden="true">
-		<BottomWaveBackground />
-	</div>
 	<Container class="page-content-shell">
 		<p class="eyebrow">{locale === 'pl' ? 'Technologie i narzędzia' : 'Technologies and tools'}</p>
 		<p class="dcv-tech__intro">
@@ -109,12 +105,6 @@ const groups = groupsByLocale[locale];
 		overflow: hidden;
 	}
 
-	.dcv-tech__bg {
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		z-index: 0;
-	}
 
 	.dcv-tech__intro {
 		margin-top: 1rem;

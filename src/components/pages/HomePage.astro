@@ -2,10 +2,8 @@
 import AboutPreviewSection from '@/components/sections/home/AboutPreviewSection.astro';
 import ExperiencePreviewSection from '@/components/sections/home/ExperiencePreviewSection.astro';
 import HeroSection from '@/components/sections/home/HeroSection.astro';
-import HomeScrollIndicator from '@/components/sections/home/HomeScrollIndicator.astro';
 import LatestPostsSection from '@/components/sections/home/LatestPostsSection.astro';
 import ProofStripSection from '@/components/sections/home/ProofStripSection.astro';
-import TechStackSection from '@/components/sections/home/TechStackSection.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getLatestBlogPosts } from '@/lib/contentful/queries';
 import { getDictionary } from '@/lib/i18n/dictionaries';
@@ -31,11 +29,9 @@ const metadata = buildPageMetadata({
 ---
 
 <PageLayout {metadata} routeKey="home">
-	<HomeScrollIndicator {locale} />
 	<HeroSection {locale} />
 	<ProofStripSection {locale} />
 	<AboutPreviewSection {locale} />
-	<TechStackSection {locale} />
 	<ExperiencePreviewSection {locale} />
 	<LatestPostsSection {locale} posts={latestPosts} />
 </PageLayout>

@@ -132,11 +132,13 @@ Zostaje (to jedyna naprawdę Twoja treść). Lista: data + tytuł (+ ewentualnie
 - [x] Usunąć zdublowaną nazwę firmy w roli na CV.
 - [x] Usunąć CTA freelance z home (`HomeCtaSection` + klucze `home.cta`).
 
-### Faza 1 — wywalenie dekoracji (1–2 PR-y)
-- [ ] Home: usunąć `HeroCosmos`, `HeroParticleStream`, `HeroSilhouette`, `HeroMediaPicture`, `HomeScrollIndicator`, numerację, pionowe labele, side rail.
-- [ ] Usunąć `TechStackSection` + `TechStackParticleFlow` + `src/lib/particles/`.
-- [ ] Usunąć obrazy: `hero-*`, `hero-silhouette*`, `resume-bottom-background*`, `about-me-signature*`, `digitalresume-hero*` (jeśli zostaje inne zdjęcie).
-- [ ] Odinstalować `@tsparticles/*`, `embla-carousel`.
+### Faza 1 — wywalenie dekoracji ✅ zrobione
+- [x] Home: usunięte `HeroCosmos`, `HeroParticleStream`, `HeroSilhouette`, `HomeScrollIndicator`, `hero-media-frame`, numeracja sekcji, pionowe labele, side rail, skacząca strzałka, glow-kropka.
+- [x] Usunięte `TechStackSection` + `TechStackParticleFlow` + `src/lib/particles/` (sekcja tech znika z home).
+- [x] Ikonki w kartach „O mnie” na home, kod-snippet i podpis na `/o-mnie`, portret z kodem na CV, złota fala na CV, numerki kart na CV.
+- [x] Usunięte obrazy: `hero-*`, `hero-silhouette*`, `resume-bottom-background*`, `about-me-signature*`, `digitalresume-hero*`.
+- [x] Odinstalowane `@tsparticles/*`, `embla-carousel`.
+- [x] Przy okazji (z fazy 4): martwe komponenty CV (`ResumeHeader`, `WorkHistorySection`, `ResumeTechnologiesSection`, `ResumeBottomLinksSection`, `ResumeNarrativeSection`, `ResumeStrengthSection`, `BottomWaveBackground`), nieużywany `ui/Card`, martwe utility i ~850 linii `.resume-*` w `global.css` (1169 → ~300 linii).
 - Odtwarzacz muzyki **zostaje** (decyzja) — w fazie 2 tylko przestylowanie do nowej palety.
 
 ### Faza 2 — nowy, płaski system wizualny (1 PR)

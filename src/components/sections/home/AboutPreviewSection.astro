@@ -12,53 +12,15 @@ interface Props {
 const { locale } = Astro.props;
 const dictionary = getDictionary(locale);
 const aboutPreview = dictionary.home.aboutPreview;
-
-type AboutPreviewIcon = (typeof aboutPreview.values)[number]['icon'];
-
-const iconPaths: Record<AboutPreviewIcon, string> = {
-	lightning:
-		'M13 2L4 14h6l-1 8 9-12h-6l1-8z',
-	cube: 'M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z M12 12l8-4.5 M12 12v9 M12 12L4 7.5',
-	pencil:
-		'M12 20h9 M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z',
-	users:
-		'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2 M9 11a4 4 0 100-8 4 4 0 000 8z M22 21v-2a4 4 0 00-3-3.87 M16 3.13a4 4 0 010 7.75',
-};
 ---
 
 <Container
 	tag="section"
 	class="about-preview home-section-gap relative isolate overflow-hidden bg-ink"
 	aria-labelledby="about-preview-heading"
-	data-home-scroll-section
 >
 	<div class="grid gap-8 lg:grid-cols-12 lg:items-start lg:gap-8 xl:gap-12">
 		<div class="relative lg:col-span-5 xl:max-w-xl">
-			<aside
-				class="about-preview__rail absolute top-0 right-full z-10 mr-6 hidden flex-col items-center lg:flex xl:mr-10"
-				aria-hidden="true"
-			>
-				<span class="font-display text-sm font-semibold tracking-widest text-gold">
-					{aboutPreview.number}
-				</span>
-				<div class="relative mt-4 flex flex-col items-center">
-					<span class="size-1 rounded-full bg-white/30"></span>
-					<div class="about-preview__rail-line mt-2 w-px bg-white/14"></div>
-				</div>
-				<div
-					class="mt-4 w-px bg-[linear-gradient(to_bottom,rgba(255,255,255,0.14),rgba(217,164,65,0.42),transparent)]"
-					aria-hidden="true"
-				>
-				</div>
-			</aside>
-
-			<div class="about-preview__rail-mobile mb-6 flex items-center gap-3 lg:hidden" aria-hidden="true">
-				<span class="font-display text-sm font-semibold tracking-widest text-gold">
-					{aboutPreview.number}
-				</span>
-				<span class="h-px w-10 bg-white/14"></span>
-			</div>
-
 			<p class="eyebrow">{aboutPreview.eyebrow}</p>
 
 			<h2
@@ -104,19 +66,6 @@ const iconPaths: Record<AboutPreviewIcon, string> = {
 				aboutPreview.values.map((value) => (
 					<li>
 						<article class="about-preview__card card-glass card-gold-hover flex h-full flex-col rounded-card p-6 sm:p-7">
-							<div class="about-preview__icon mb-6 text-gold" aria-hidden="true">
-								<svg
-									class="size-9"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="1.35"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<path d={iconPaths[value.icon]} />
-								</svg>
-							</div>
 							<h3 class="font-display text-base font-semibold leading-snug text-text-main">
 								{value.title}
 							</h3>
@@ -128,17 +77,3 @@ const iconPaths: Record<AboutPreviewIcon, string> = {
 		</ul>
 	</div>
 </Container>
-
-<style>
-	.about-preview__rail-line {
-		height: clamp(3.5rem, 8vh, 5.5rem);
-	}
-
-	.about-preview__rail-mobile + .eyebrow {
-		margin-top: 0;
-	}
-
-	.about-preview__icon svg {
-		filter: drop-shadow(0 0 14px rgba(217, 164, 65, 0.28));
-	}
-</style>

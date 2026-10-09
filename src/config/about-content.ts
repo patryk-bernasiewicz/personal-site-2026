@@ -66,8 +66,6 @@ export type AboutPageContent = {
     headingHighlight: string;
     lead: string;
     description: string;
-    codeLines: readonly { indent: number; content: string }[];
-    signature: string;
   };
   summary: {
     label: string;
@@ -115,19 +113,6 @@ const aboutContentByLocale = {
       lead: "Frontend developer skupiony na dopracowanych, utrzymywalnych interfejsach dla zespołów produktowych.",
       description:
         "Najlepiej pracuję wtedy, gdy mogę zrozumieć kontekst, zaplanować implementację, dopasować się do istniejącej architektury i dowieźć rozwiązanie z dbałością o UX, wydajność oraz utrzymywalność.",
-      codeLines: [
-        { indent: 0, content: "const developer = {" },
-        { indent: 1, content: "name: 'Patryk'," },
-        { indent: 1, content: "role: 'Frontend'," },
-        {
-          indent: 1,
-          content:
-            "focus: ['Product', 'Implementation', 'Quality', 'Teamwork'],",
-        },
-        { indent: 1, content: "mindset: 'Ship with care'" },
-        { indent: 0, content: "};" },
-      ],
-      signature: "Patryk",
     },
     summary: {
       label: "W skrócie",
@@ -338,19 +323,6 @@ const aboutContentByLocale = {
       lead: "Frontend developer focused on polished, maintainable interfaces for product teams.",
       description:
         "I work best when I can understand the context, plan the implementation, align with the existing architecture and deliver with care for UX, performance and maintainability.",
-      codeLines: [
-        { indent: 0, content: "const developer = {" },
-        { indent: 1, content: "name: 'Patryk'," },
-        { indent: 1, content: "role: 'Frontend'," },
-        {
-          indent: 1,
-          content:
-            "focus: ['Product', 'Implementation', 'Quality', 'Teamwork'],",
-        },
-        { indent: 1, content: "mindset: 'Ship with care'" },
-        { indent: 0, content: "};" },
-      ],
-      signature: "Patryk",
     },
     summary: {
       label: "In short",

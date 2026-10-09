@@ -55,12 +55,7 @@ export const dictionaries = {
 			readBlog: 'Zobacz blog',
 			readBlogWithCount: (count: number) => `Zobacz blog (${count} najnowszych)`,
 			latestPostsTitle: 'Najnowsze wpisy',
-			scrollIndicator: {
-				label: 'Nawigacja po sekcjach strony głównej',
-				scrollToSectionLabel: 'Przewiń do sekcji {number}',
-			},
 			hero: {
-				number: '01',
 				eyebrow: 'Frontend Developer · React / Next.js',
 				heading: {
 					line1: 'Buduję i modernizuję',
@@ -71,7 +66,6 @@ export const dictionaries = {
 				viewWork: 'Zobacz cyfrowe CV',
 				letsTalk: 'Porozmawiajmy',
 				followMe: 'Obserwuj',
-				scroll: 'Przewiń',
 			},
 			proofStrip: {
 				label: 'Dowody doświadczenia',
@@ -95,7 +89,6 @@ export const dictionaries = {
 				],
 			},
 			aboutPreview: {
-				number: '02',
 				eyebrow: 'O mnie',
 				heading: {
 					line1: 'Najpierw sens.',
@@ -107,39 +100,28 @@ export const dictionaries = {
 					'Po godzinach rozwijam własne projekty internetowe — z tej samej potrzeby łączenia technologii, treści i sensownego doświadczenia.',
 				values: [
 					{
-						icon: 'lightning',
 						title: 'Zaczynam od problemu',
 						description:
 							'Zanim wybiorę rozwiązanie, chcę wiedzieć, co naprawdę próbujemy uprościć, przyspieszyć albo wyjaśnić.',
 					},
 					{
-						icon: 'cube',
 						title: 'Frontend w kontekście produktu',
 						description:
 							'Interfejs traktuję jako część większego systemu: treści, architektury, SEO, CMS-a i decyzji produktowych.',
 					},
 					{
-						icon: 'pencil',
 						title: 'Porządkuję złożoność',
 						description:
 							'Najlepiej odnajduję się tam, gdzie trzeba poukładać kod, strukturę projektu albo ścieżkę użytkownika.',
 					},
 					{
-						icon: 'users',
 						title: 'Buduję na kolejne iteracje',
 						description:
 							'Wolę rozwiązania, które da się rozwijać po miesiącach, niż takie, które dobrze wyglądają tylko przy pierwszym wdrożeniu.',
 					},
 				],
 			},
-			techStack: {
-				number: '03',
-				label: 'Narzędzia',
-				previous: 'Poprzednie technologie',
-				next: 'Następne technologie',
-			},
 			experiencePreview: {
-				number: '04',
 				eyebrow: 'Doświadczenie',
 				heading: 'Ostatnie role frontendowe',
 				intro:
@@ -220,12 +202,7 @@ export const dictionaries = {
 			readBlog: 'Read articles',
 			readBlogWithCount: (count: number) => `Read articles (${count} recent)`,
 			latestPostsTitle: 'Latest posts',
-			scrollIndicator: {
-				label: 'Home page section navigation',
-				scrollToSectionLabel: 'Scroll to section {number}',
-			},
 			hero: {
-				number: '01',
 				eyebrow: 'Frontend Developer · React / Next.js',
 				heading: {
 					line1: 'I build and modernize',
@@ -236,7 +213,6 @@ export const dictionaries = {
 				viewWork: 'View digital resume',
 				letsTalk: "Let's talk",
 				followMe: 'Follow me',
-				scroll: 'Scroll',
 			},
 			proofStrip: {
 				label: 'Experience proof points',
@@ -260,7 +236,6 @@ export const dictionaries = {
 				],
 			},
 			aboutPreview: {
-				number: '02',
 				eyebrow: 'About me',
 				heading: {
 					line1: 'I care more about why something exists',
@@ -272,39 +247,28 @@ export const dictionaries = {
 					'I build my own web projects after hours because the same thing still fascinates me: how to connect technology, content, and useful structure into something people actually want to use.',
 				values: [
 					{
-						icon: 'lightning',
 						title: 'I start with the problem',
 						description:
 							'Technologies change. A well-named problem lasts longer. Before implementation, I want to understand what we are really trying to simplify, speed up, or explain.',
 					},
 					{
-						icon: 'cube',
 						title: 'Frontend in product context',
 						description:
 							'An interface does not exist in isolation. I also look at application architecture, CMSs, content flow, SEO, and constraints that affect implementation and maintenance.',
 					},
 					{
-						icon: 'pencil',
 						title: 'I organize complexity',
 						description:
 							'I get the most satisfaction from simplifying difficult things: code, project structure, content, and user paths.',
 					},
 					{
-						icon: 'users',
 						title: 'I build for the next iterations',
 						description:
 							'I like solutions that remain understandable after months of product development, not just ones that look good on launch day.',
 					},
 				],
 			},
-			techStack: {
-				number: '03',
-				label: 'Tech stack',
-				previous: 'Previous technologies',
-				next: 'Next technologies',
-			},
 			experiencePreview: {
-				number: '04',
 				eyebrow: 'Digital CV',
 				heading: 'Selected frontend experience',
 				intro:

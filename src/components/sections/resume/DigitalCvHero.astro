@@ -1,6 +1,4 @@
 ---
-import digitalResumeHero from '@/assets/images/digitalresume-hero.jpg';
-import digitalResumeHeroWebp from '@/assets/images/digitalresume-hero.webp';
 import type { Locale } from '@/lib/i18n/locales';
 import Container from '@/components/ui/Container.astro';
 import HeroMetric from './HeroMetric.astro';
@@ -54,22 +52,6 @@ const heroCopy =
 				<p class="dcv-hero__lead">{heroCopy.lead}</p>
 			</div>
 
-			<div class="dcv-hero__visual" aria-hidden="true">
-				<picture class="dcv-hero__portrait">
-					<source srcset={digitalResumeHeroWebp.src} type="image/webp" />
-					<img
-						src={digitalResumeHero.src}
-						width={digitalResumeHero.width}
-						height={digitalResumeHero.height}
-						alt=""
-						aria-hidden="true"
-						loading="eager"
-						fetchpriority="high"
-						decoding="async"
-					/>
-				</picture>
-			</div>
-
 			<ul class="dcv-hero__metrics">
 				{
 					metrics.map((metric) => (
@@ -91,7 +73,7 @@ const heroCopy =
 		margin: 0 auto;
 		width: 100%;
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+		grid-template-columns: minmax(0, 1fr);
 		gap: 2rem 3.5rem;
 		align-items: stretch;
 	}
@@ -194,29 +176,6 @@ const heroCopy =
 		line-height: 1.45;
 	}
 
-	.dcv-hero__visual {
-		position: relative;
-		min-height: 26.5rem;
-		border: 1px solid rgba(217, 164, 65, 0.22);
-		border-radius: 0.9rem;
-		background: rgba(5, 5, 5, 0.4);
-		overflow: hidden;
-	}
-
-	.dcv-hero__portrait {
-		position: absolute;
-		inset: 0;
-		display: block;
-	}
-
-	.dcv-hero__portrait img {
-		display: block;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: center;
-	}
-
 	@media (max-width: 1080px) {
 		.dcv-hero {
 			padding-top: 5.4rem;
@@ -230,20 +189,11 @@ const heroCopy =
 		.dcv-hero__metrics {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
-
-		.dcv-hero__visual {
-			min-height: 23rem;
-		}
 	}
 
 	@media (max-width: 640px) {
 		.dcv-hero__metrics {
 			grid-template-columns: 1fr 1fr;
 		}
-
-		.dcv-hero__portrait img {
-			object-position: 58% center;
-		}
-
 	}
 </style>

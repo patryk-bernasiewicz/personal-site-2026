@@ -43,14 +43,13 @@ const cards: EndingCard[] = [
 	<Container class="page-content-shell">
 		<div class="dcv-ending__cards">
 			{
-				cards.map((card, index) => (
+				cards.map((card) => (
 					<a
 						href={card.href}
 						class="dcv-ending-card"
 						target={card.external ? '_blank' : undefined}
 						rel={card.external ? 'noopener noreferrer' : undefined}
 					>
-						<span class="dcv-ending-card__index">0{index + 1}</span>
 						<p class="dcv-ending-card__title">{card.title}</p>
 						<p class="dcv-ending-card__desc">{card.description}</p>
 						<span class="dcv-ending-card__arrow" aria-hidden="true">→</span>
@@ -95,13 +94,6 @@ const cards: EndingCard[] = [
 		box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.4), 0 0 1.4rem rgba(217, 164, 65, 0.2);
 	}
 
-	.dcv-ending-card__index {
-		color: var(--color-gold);
-		font-size: 0.72rem;
-		line-height: 1;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-	}
 
 	.dcv-ending-card__title {
 		margin: 0.1rem 0 0;

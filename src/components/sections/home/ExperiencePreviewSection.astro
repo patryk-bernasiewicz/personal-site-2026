@@ -18,33 +18,9 @@ const resumeHref = getLocalizedRoute('resume', locale);
 <section
 	class="experience-preview home-section-gap relative isolate bg-ink lg:overflow-hidden"
 	aria-labelledby="experience-preview-heading"
-	data-home-scroll-section
 >
 	<div class="page-shell">
 		<div class="relative">
-			<aside
-				class="experience-preview__rail absolute top-0 right-full z-10 mr-6 hidden flex-col items-center lg:flex xl:mr-10"
-				aria-hidden="true"
-			>
-				<span class="font-display text-sm font-semibold tracking-widest text-gold">
-					{experiencePreview.number}
-				</span>
-				<div class="relative mt-4 flex flex-col items-center">
-					<span class="size-1 rounded-full bg-white/30"></span>
-					<div class="experience-preview__rail-line mt-2 w-px bg-white/14"></div>
-				</div>
-			</aside>
-
-			<div
-				class="experience-preview__rail-mobile mb-6 flex items-center gap-3 lg:hidden"
-				aria-hidden="true"
-			>
-				<span class="font-display text-sm font-semibold tracking-widest text-gold">
-					{experiencePreview.number}
-				</span>
-				<span class="h-px w-10 bg-white/14"></span>
-			</div>
-
 			<p class="eyebrow" id="experience-preview-heading">{experiencePreview.eyebrow}</p>
 
 			<h2 class="sr-only">{experiencePreview.heading}</h2>
@@ -100,10 +76,6 @@ const resumeHref = getLocalizedRoute('resume', locale);
 </section>
 
 <style>
-	.experience-preview__rail-line {
-		height: clamp(3.5rem, 8vh, 5.5rem);
-	}
-
 	.experience-preview__list {
 		display: grid;
 		gap: 0;

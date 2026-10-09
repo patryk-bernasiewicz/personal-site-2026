@@ -23,9 +23,8 @@ const projects = getResumeCopy(locale).projects;
 
 		<div class="dcv-projects__grid" role="list">
 			{
-				projects.items.map((item, index) => (
+				projects.items.map((item) => (
 					<article class="dcv-projects__card" role="listitem">
-						<span>{String(index + 1).padStart(2, '0')}</span>
 						<h3>{item.title}</h3>
 						<p>{item.description}</p>
 					</article>
@@ -103,12 +102,6 @@ const projects = getResumeCopy(locale).projects;
 		opacity: 0.42;
 	}
 
-	.dcv-projects__card span {
-		color: var(--color-gold);
-		font-size: 0.76rem;
-		font-weight: 800;
-		letter-spacing: 0.16em;
-	}
 
 	.dcv-projects__card h3 {
 		margin: 1.1rem 0 0;
