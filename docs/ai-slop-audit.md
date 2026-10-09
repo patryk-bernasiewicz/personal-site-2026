@@ -160,9 +160,21 @@ Zostaje (to jedyna naprawdę Twoja treść). Lista: data + tytuł (+ ewentualnie
 
 ## 6. Decyzje (2026-10-09)
 
+Archetyp wg raportu porównawczego (11 stron znanych devów): **pisarz-minimalista + odrobina indie** — blog w centrum, bio ze zdjęciem, odtwarzacz muzyki jako jedyny „charakterystyczny detal”. Do dorzucenia przy okazji: RSS (`@astrojs/rss`) i link do repo w stopce.
+
+
 1. **Odtwarzacz muzyki** — zostaje.
 2. **`/o-mnie`** — scalamy z home (wariant A, z redirectem `/o-mnie` → `/`, `/about` → `/en`).
-3. **Zdjęcie** — jedno małe, prawdziwe; Patryk dośle nowe.
-4. **Akcent kolorystyczny** — złoto wylatuje całkowicie. Nowa paleta do zaproponowania na podstawie raportu, który Patryk dośle.
+3. **Zdjęcie** — jedno, małe (~200 px): frontalny portret na szarym tle (wersja z retuszem, wybór Patryka). Dodawane w fazie 3.
+4. **Paleta — B · Teal.** Złoto wylatuje całkowicie. Jasny/ciemny z `prefers-color-scheme`, bez przełącznika.
+
+   | Token | Jasny | Ciemny |
+   |---|---|---|
+   | tło | `#f6f7f6` | `#0e1211` |
+   | tekst | `#141816` (16,7:1) | `#e3e8e5` (15,2:1) |
+   | tekst drugorzędny | `#4b5550` (7,2:1) | `#9aa5a0` (7,4:1) |
+   | akcent / linki | `#0f766e` (5,1:1) | `#4fd1c0` (10,1:1) |
+
+   Kontrasty liczone względem tła (WCAG AA ≥ 4,5:1).
 5. **CTA freelance** — usunięte (nie szuka zleceń).
 6. **Wersja EN** — pełny parytet z PL.
