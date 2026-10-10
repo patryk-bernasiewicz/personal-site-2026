@@ -38,7 +38,7 @@ function isActive(href: string): boolean {
 	</a>
 
 	<nav aria-label={dictionary.nav.main}>
-		<ul class="flex items-center gap-5 text-sm font-medium">
+		<ul class="flex items-center gap-6 text-sm font-medium sm:gap-8">
 			{
 				navItems.map((item) => {
 					const href = getLocalizedRoute(item.routeKey, locale);
@@ -59,7 +59,7 @@ function isActive(href: string): boolean {
 					);
 				})
 			}
-			<li class="border-l border-border-soft pl-5">
+			<li class="border-l border-border-soft pl-6 sm:pl-8">
 				<LanguageSwitcher {locale} {routeKey} {alternatePaths} />
 			</li>
 		</ul>
