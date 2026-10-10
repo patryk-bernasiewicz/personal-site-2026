@@ -158,11 +158,24 @@ Zostaje (to jedyna naprawdę Twoja treść). Lista: data + tytuł (+ ewentualnie
 - [x] Usunięte: wszystkie stare sekcje home/about/resume, `about-content.ts`, `ui/{Button,Container,SectionHeading}`, `BlogCard`, ikony social, `classNames` + `clsx`/`tailwind-merge`, utility `card-flat`/`btn`/`.eyebrow`.
 - [x] Naprawa po fazie 1: `vite.optimizeDeps.include` wskazywał na odinstalowane paczki.
 
-### Faza 4 — sprzątanie (1 PR)
-- [ ] Usunąć martwe komponenty CV (~1 330 l.) i nieużywane klucze w `resume-content.ts`, `about-content.ts`, `dictionaries.ts`.
-- [ ] Usunąć `react`/`@astrojs/react`, jeśli nadal brak wysp.
-- [ ] Zaktualizować `AGENTS.md` (folder contract: mniej sekcji, brak `particles/`, nowe utilities).
-- [ ] `npm run build` + przegląd PL/EN + Lighthouse przed/po.
+### Faza 4 — sprzątanie ✅ zrobione
+- [x] Martwy kod: `slugs.ts`, nieużywane helpery w `i18n/urls.ts` i `i18n/routes.ts`, `polishCopy`, tokeny `radius-md`/`radius-xl`.
+- [x] React usunięty (`@astrojs/react`, `react`, `react-dom`) — brak wysp; `AGENTS.md` mówi, kiedy go dodać z powrotem.
+- [x] RSS per język: `/rss.xml`, `/en/rss.xml` (`src/lib/feeds.ts`, `@astrojs/rss`), `<link rel="alternate">` w `<head>`, link w stopce.
+- [x] `AGENTS.md` i README zaktualizowane.
+- [ ] Link do repo w stopce — czeka na decyzję (czy repo jest publiczne).
+- [ ] Lighthouse — nie do zmierzenia z tego środowiska; zastępczo porównanie buildów poniżej.
+
+**Wynik (build `master` → branch, bez treści z Contentful):**
+
+| | Przed | Po |
+|---|---|---|
+| Home: HTML / gzip | 66 KB / 12 KB | 12 KB / 3 KB |
+| Home: JS / CSS / obrazy | 47 / 87 / 207 KB | 26 / 27 / 8 KB |
+| CV: HTML / CSS / obrazy | 49 / 90 / 128 KB | 19 / 27 / 0 KB |
+| Cały `dist` (JS / CSS / wszystko) | 332 / 105 / 1644 KB | 26 / 27 / 229 KB |
+| Linie w `src` | 16 288 | ~4 700 |
+| Zależności w `package.json` | 21 | 14 |
 
 **Szacunek efektu:** z ~6 200 linii w `sections/` + 1 169 w `global.css` + ~2 600 linii skryptów klienta → prawdopodobnie < 1 500 linii łącznie; JS klienta bliski zeru (tylko menu mobilne / przełącznik języka, jeśli w ogóle).
 

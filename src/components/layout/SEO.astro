@@ -1,5 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import { feedPaths } from '@/lib/i18n/routes';
 import {
 	formatDocumentTitle,
 	getHrefLangAlternates,
@@ -41,6 +43,12 @@ const robotsContent = metadata.noIndex ? 'noindex,nofollow' : undefined;
 	))
 }
 {robotsContent && <meta name="robots" content={robotsContent} />}
+<link
+	rel="alternate"
+	type="application/rss+xml"
+	title={getDictionary(metadata.locale).meta.blogIndex.title}
+	href={feedPaths[metadata.locale]}
+/>
 
 <meta property="og:type" content={og.type} />
 <meta property="og:site_name" content={og.siteName} />

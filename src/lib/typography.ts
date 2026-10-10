@@ -1,5 +1,3 @@
-﻿import type { Locale } from '@/lib/i18n/locales';
-
 const NBSP = '\u00A0';
 
 const BOUNDARY = String.raw`(?:^|[\s(,;:\[]|„|[–—-])`;
@@ -40,10 +38,6 @@ export function polishNbsp(text: string): string {
 	}
 
 	return result;
-}
-
-export function polishCopy(text: string, locale: Locale): string {
-	return locale === 'pl' ? polishNbsp(text) : text;
 }
 
 export function applyPolishTypography<T>(value: T): T {

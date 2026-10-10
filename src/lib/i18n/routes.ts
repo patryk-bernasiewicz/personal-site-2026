@@ -1,5 +1,3 @@
-import type { Locale } from '@/lib/i18n/locales';
-
 export const routes = {
 	home: {
 		pl: '/',
@@ -23,8 +21,8 @@ export type RouteKey = keyof typeof routes;
 
 export type StaticRouteKey = Exclude<RouteKey, 'blogPostBase'>;
 
-export const routeKeys = Object.keys(routes) as RouteKey[];
-
-export function getRoutePaths(routeKey: RouteKey): Record<Locale, string> {
-	return routes[routeKey];
-}
+/** RSS feed per locale (not a page, so not part of `routes`). */
+export const feedPaths = {
+	pl: '/rss.xml',
+	en: '/en/rss.xml',
+} as const;

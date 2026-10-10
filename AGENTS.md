@@ -10,7 +10,7 @@ Personal **static** site: Astro-first, content-focused, SEO-friendly, minimal cl
 |------|--------|
 | Home (incl. bio), resume | Static sections + `src/config` + `src/lib/i18n/dictionaries` |
 | Blog listing & posts | Contentful (`blogPost`, per locale) |
-| Interactivity | React islands only when needed |
+| Interactivity | Plain `<script>` in `.astro` (music player, code blocks); React islands only if ever needed |
 | Languages | `pl` (default), `en` — translated public URLs |
 
 **Not** a React SPA. Default to `.astro`; use React in `src/components/islands/` only for real client behavior.
@@ -34,7 +34,6 @@ src/
 │  ├─ contentful/      # SDK, rich-text-renderer
 │  ├─ seo.ts
 │  ├─ dates.ts
-│  ├─ slugs.ts
 │  └─ urls.ts          # absolute URLs only (not localized paths)
 ├─ styles/             # global.css (@theme), typography.css
 ├─ assets/             # Processed by Astro
@@ -164,7 +163,7 @@ Nav labels live in `src/lib/i18n/dictionaries.ts`. Nav URLs via `getLocalizedRou
 
 ### `src/lib` utilities
 
-Pure helpers: `seo.ts`, `dates.ts` (`formatDate(iso, locale)`), `slugs.ts`, `urls.ts` — no UI, no Contentful.
+Pure helpers: `seo.ts`, `dates.ts` (`formatDate`, `formatMonthPeriod`, `formatMonthDuration`), `typography.ts` (Polish non-breaking spaces), `urls.ts` — no UI, no Contentful.
 
 Blog rich text: `src/lib/contentful/rich-text-renderer.ts` — explicit Contentful HTML options + light sanitization. Do not call `documentToHtmlString` from components.
 
@@ -186,6 +185,8 @@ Contentful SDK → queries.ts → mappers.ts → pages → layouts → component
 Never: `Component → Contentful SDK → render raw entry`.
 
 ## React
+
+React is **not installed** (no islands today). Add `@astrojs/react` + `react`/`react-dom` together with the first island that truly needs it.
 
 Use only for: theme toggle, mobile nav state, search/filter, widgets.
 

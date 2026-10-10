@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig, envField } from 'astro/config';
-import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -66,7 +65,7 @@ export default defineConfig({
 	devToolbar: {
 		enabled: false,
 	},
-	integrations: [sitemap(), react()],
+	integrations: [sitemap()],
 	redirects: {
 		'/resume': '/cyfrowe-cv',
 		'/cv': '/cyfrowe-cv',
