@@ -8,7 +8,7 @@ export const dictionaries = {
 		nav: {
 			home: 'Strona główna',
 			main: 'Główna nawigacja',
-			resume: 'CV',
+			resume: 'Cyfrowe CV',
 			blog: 'Blog',
 		},
 		skipLink: 'Przejdź do treści',
@@ -19,7 +19,7 @@ export const dictionaries = {
 					'Frontend developer z Polski. Od 2017 roku buduję aplikacje webowe, obecnie w React i Next.js dla stron Ploom w JTI. Piszę o frontendzie i JavaScripcie.',
 			},
 			resume: {
-				title: 'CV — Patryk Bernasiewicz',
+				title: 'Cyfrowe CV — Patryk Bernasiewicz',
 				description:
 					'Doświadczenie zawodowe i technologie: React, Next.js, TypeScript, CMS-y i e-commerce. Role od 2017 roku.',
 			},
@@ -66,7 +66,7 @@ export const dictionaries = {
 		nav: {
 			home: 'Home',
 			main: 'Main navigation',
-			resume: 'Resume',
+			resume: 'Digital resume',
 			blog: 'Articles',
 		},
 		skipLink: 'Skip to content',
@@ -77,7 +77,7 @@ export const dictionaries = {
 					'Frontend developer from Poland. Building web apps since 2017, currently React and Next.js for the Ploom websites at JTI. Writing about frontend and JavaScript.',
 			},
 			resume: {
-				title: 'Resume — Patryk Bernasiewicz',
+				title: 'Digital resume — Patryk Bernasiewicz',
 				description:
 					'Work experience and technologies: React, Next.js, TypeScript, CMSs and e-commerce. Roles since 2017.',
 			},
