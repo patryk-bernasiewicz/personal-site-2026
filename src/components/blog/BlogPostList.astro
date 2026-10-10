@@ -1,0 +1,40 @@
+---
+import { formatDate } from '@/lib/dates';
+import type { BlogPost } from '@/lib/contentful/types';
+import { getLocalizedBlogPostUrl } from '@/lib/i18n/urls';
+
+interface Props {
+	posts: readonly BlogPost[];
+	/** Show the post description under the title (blog index); home keeps it to date + title. */
+	showDescription?: boolean;
+}
+
+const { posts, showDescription = false } = Astro.props;
+---
+
+<ul class="divide-y divide-border-soft border-y border-border-soft">
+	{
+		posts.map((post) => (
+			<li class="py-4">
+				<article class="grid gap-1 sm:grid-cols-[8.5rem_1fr] sm:gap-6">
+					<time datetime={post.publishedAt} class="text-sm text-text-faint sm:pt-0.5">
+						{formatDate(post.publishedAt, post.locale)}
+					</time>
+					<div>
+						<h3 class="font-medium text-text-main">
+							<a
+								href={getLocalizedBlogPostUrl(post.slug, post.locale)}
+								class="transition-colors hover:text-accent"
+							>
+								{post.title}
+							</a>
+						</h3>
+						{showDescription && post.description && (
+							<p class="mt-1 text-sm text-text-muted">{post.description}</p>
+						)}
+					</div>
+				</article>
+			</li>
+		))
+	}
+</ul>

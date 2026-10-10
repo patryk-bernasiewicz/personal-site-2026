@@ -34,8 +34,6 @@ export const GET: APIRoute = async () => {
 		{ path: routes.home.en },
 		{ path: routes.resume.pl },
 		{ path: routes.resume.en },
-		{ path: routes.about.pl },
-		{ path: routes.about.en },
 		{ path: routes.blogIndex.pl },
 		{ path: routes.blogIndex.en },
 	];

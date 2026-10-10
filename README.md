@@ -11,11 +11,10 @@ Personal static site: **Astro 6**, **TypeScript**, **Tailwind v4**, **Contentful
 | Page | Polski (`pl`) | English (`en`) |
 |------|---------------|----------------|
 | Home | `/` | `/en` |
-| About | `/o-mnie` | `/about` |
 | Resume | `/cyfrowe-cv` | `/digital-resume` |
 | Blog | `/blog` | `/articles` |
 
-Redirects: `/resume` → `/cyfrowe-cv`, `/cv` → `/cyfrowe-cv`.
+Redirects: `/resume` → `/cyfrowe-cv`, `/cv` → `/cyfrowe-cv`, `/o-mnie` → `/`, `/about` → `/en` (the about page was merged into home).
 
 Registry: `src/lib/i18n/routes.ts` — never hardcode these paths in components.
 

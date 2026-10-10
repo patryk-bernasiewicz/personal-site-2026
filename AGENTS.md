@@ -8,7 +8,7 @@ Personal **static** site: Astro-first, content-focused, SEO-friendly, minimal cl
 
 | Area | Source |
 |------|--------|
-| Home, about, resume | Mostly static sections + `src/config` + `src/lib/i18n/dictionaries` |
+| Home (incl. bio), resume | Static sections + `src/config` + `src/lib/i18n/dictionaries` |
 | Blog listing & posts | Contentful (`blogPost`, per locale) |
 | Interactivity | React islands only when needed |
 | Languages | `pl` (default), `en` — translated public URLs |
@@ -25,10 +25,10 @@ src/
 │  ├─ pages/           # Page composers (locale + sections)
 │  ├─ ui/
 │  ├─ layout/
-│  ├─ sections/{home,resume,about}/
+│  ├─ sections/{home,resume}/
 │  ├─ blog/
 │  └─ islands/         # React, client:* when needed
-├─ config/             # site, social, about-content, resume-content
+├─ config/             # site, social, home-content, resume-content
 ├─ lib/
 │  ├─ i18n/            # routes, urls, dictionaries, locales
 │  ├─ contentful/      # SDK, rich-text-renderer
@@ -102,11 +102,12 @@ export async function getStaticPaths() {
 | Key | `pl` | `en` |
 |-----|------|------|
 | `home` | `/` | `/en` |
-| `about` | `/o-mnie` | `/about` |
 | `resume` | `/cyfrowe-cv` | `/digital-resume` |
 | `blogIndex` | `/blog` | `/articles` |
 
 Blog posts: `/blog/{slug}` (pl), `/articles/{slug}` (en) — localized slugs from Contentful per locale.
+
+Redirects (`astro.config.mjs`): `/resume`, `/cv` → `/cyfrowe-cv`; `/o-mnie` → `/`, `/about` → `/en` (about merged into home).
 
 Internal links: `getLocalizedRoute("resume", locale)` — never `/digital-resume` in components.
 
@@ -116,10 +117,10 @@ Language switcher: `getLocalizedRoute` / `alternatePaths` — never string-repla
 
 | Folder | Purpose |
 |--------|---------|
-| `ui/` | Generic UI (Button, Card, Container, Prose) — props only, no Contentful |
+| `ui/` | Generic UI (Prose) — props only, no Contentful |
 | `pages/` | Compose layouts + sections; receive `locale`; may fetch via queries in composer only through thin pages |
-| `layout/` | Header, Footer, Nav, LanguageSwitcher — use `dictionaries` + `getLocalizedRoute` |
-| `sections/{home,resume,about}/` | Page sections — `locale` prop + dictionary strings |
+| `layout/` | Header, Footer, LanguageSwitcher — use `dictionaries` + `getLocalizedRoute` |
+| `sections/{home,resume}/` | Page sections — `locale` prop + dictionary strings |
 | `blog/` | Blog UI — typed `BlogPost`, no SDK |
 | `islands/` | React + hydration only when interactive |
 
@@ -128,7 +129,7 @@ Language switcher: `getLocalizedRoute` / `alternatePaths` — never string-repla
 | File | Use |
 |------|-----|
 | `BaseLayout.astro` | `<html>`, head, global CSS, header/footer, base SEO |
-| `PageLayout.astro` | Home, about, marketing pages |
+| `PageLayout.astro` | Home, blog index |
 | `BlogLayout.astro` | Single blog post |
 | `ResumeLayout.astro` | Digital resume |
 
@@ -157,7 +158,7 @@ CONTENTFUL_PREVIEW_TOKEN=   # optional; dev preview API
 
 - `site.ts` — name, `PUBLIC_SITE_URL` (env), description, author, default OG
 - `social.ts` — profile links
-- `about-content.ts` / `resume-content.ts` — localized static copy (not inline in sections)
+- `home-content.ts` / `resume-content.ts` — localized static copy (not inline in sections). `resume-content.ts` is the single source for roles (`start`/`end` as `YYYY-MM`; period and duration are computed in `@/lib/dates`)
 
 Nav labels live in `src/lib/i18n/dictionaries.ts`. Nav URLs via `getLocalizedRoute`.
 
@@ -172,7 +173,7 @@ Blog rich text: `src/lib/contentful/rich-text-renderer.ts` — explicit Contentf
 - `global.css` — `@import "tailwindcss"`, `@theme` ("Teal" palette: neutral greys + one accent, typography scale, utilities). Light by default, dark via `prefers-color-scheme` (overrides in `@layer base`, no toggle)
 - `typography.css` — `.prose`, `.eyebrow`
 
-Design tokens live in `@theme` inside `global.css` (not scattered). Use semantic tokens only (`page`, `surface`, `text-*`, `border-*`, `accent*`). The accent is muted and reserved for links, active nav and focus; decorative lines, borders and tints are neutral (`border-strong`, `color-mix()` of `text-main`) — never hardcoded `rgba(255,255,255,…)` / dark hex, which break the light scheme. No glows, heavy shadows or decorative gradients. Reuse utilities: `page-shell`, `section-gap`, `btn`, `card-flat`, etc.
+Design tokens live in `@theme` inside `global.css` (not scattered). Use semantic tokens only (`page`, `surface`, `text-*`, `border-*`, `accent*`). The accent is muted and reserved for links, active nav and focus; decorative lines, borders and tints are neutral (`border-strong`, `color-mix()` of `text-main`) — never hardcoded `rgba(255,255,255,…)` / dark hex, which break the light scheme. No glows, heavy shadows or decorative gradients. Reuse utilities: `page-shell` (the single ~46rem reading column used by header, pages and footer), `section-gap`, `link`. No cards, icon grids, section numbering or eyebrows.
 
 No random global CSS in components. Tailwind v4 via `@tailwindcss/vite`.
 

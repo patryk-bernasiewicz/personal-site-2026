@@ -1,9 +1,6 @@
 ---
-import AboutPreviewSection from '@/components/sections/home/AboutPreviewSection.astro';
-import ExperiencePreviewSection from '@/components/sections/home/ExperiencePreviewSection.astro';
-import HeroSection from '@/components/sections/home/HeroSection.astro';
+import HomeIntro from '@/components/sections/home/HomeIntro.astro';
 import LatestPostsSection from '@/components/sections/home/LatestPostsSection.astro';
-import ProofStripSection from '@/components/sections/home/ProofStripSection.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getLatestBlogPosts } from '@/lib/contentful/queries';
 import { getDictionary } from '@/lib/i18n/dictionaries';
@@ -17,7 +14,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const dictionary = getDictionary(locale);
-const latestPosts = await getLatestBlogPosts(3, locale);
+const latestPosts = await getLatestBlogPosts(5, locale);
 
 const metadata = buildPageMetadata({
 	title: dictionary.meta.home.title,
@@ -29,9 +26,6 @@ const metadata = buildPageMetadata({
 ---
 
 <PageLayout {metadata} routeKey="home">
-	<HeroSection {locale} />
-	<ProofStripSection {locale} />
-	<AboutPreviewSection {locale} />
-	<ExperiencePreviewSection {locale} />
+	<HomeIntro {locale} />
 	<LatestPostsSection {locale} posts={latestPosts} />
 </PageLayout>

@@ -1,14 +1,13 @@
 ---
-import BlogCard from '@/components/blog/BlogCard.astro';
-import Container from '@/components/ui/Container.astro';
-import SectionHeading from '@/components/ui/SectionHeading.astro';
+import BlogPostList from '@/components/blog/BlogPostList.astro';
 import type { BlogPost } from '@/lib/contentful/types';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import type { Locale } from '@/lib/i18n/locales';
+import { getLocalizedRoute } from '@/lib/i18n/urls';
 
 interface Props {
 	locale: Locale;
-	posts: BlogPost[];
+	posts: readonly BlogPost[];
 }
 
 const { locale, posts } = Astro.props;
@@ -17,18 +16,16 @@ const dictionary = getDictionary(locale);
 
 {
 	posts.length > 0 && (
-		<Container tag="section" class="pb-16">
-			<SectionHeading
-				eyebrow={dictionary.nav.blog}
-				title={dictionary.home.latestPostsTitle}
-			/>
-			<ul class="grid gap-4">
-				{posts.map((post) => (
-					<li>
-						<BlogCard post={post} />
-					</li>
-				))}
-			</ul>
-		</Container>
+		<section class="page-shell pb-[var(--spacing-section-y)]" aria-labelledby="latest-posts-heading">
+			<h2 id="latest-posts-heading" class="mb-4 font-display text-section-title font-semibold text-text-main">
+				{dictionary.home.latestPostsTitle}
+			</h2>
+			<BlogPostList {posts} />
+			<p class="mt-4">
+				<a href={getLocalizedRoute('blogIndex', locale)} class="link">
+					{dictionary.home.allPosts} →
+				</a>
+			</p>
+		</section>
 	)
 }

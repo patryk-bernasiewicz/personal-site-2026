@@ -31,16 +31,16 @@
 	--color-accent-hover: #2f534f;
 
 	/* Typography */
-	--text-hero: clamp(3rem, 6vw, 5.75rem);
-	--text-hero--line-height: 0.98;
-	--text-hero--letter-spacing: -0.055em;
+	--text-page-title: clamp(1.875rem, 4vw, 2.5rem);
+	--text-page-title--line-height: 1.15;
+	--text-page-title--letter-spacing: -0.02em;
 
-	--text-section-title: clamp(2rem, 3vw, 3.25rem);
-	--text-section-title--line-height: 1.05;
-	--text-section-title--letter-spacing: -0.04em;
+	--text-section-title: 1.25rem;
+	--text-section-title--line-height: 1.3;
+	--text-section-title--letter-spacing: -0.01em;
 
 	--text-body-large: 1.125rem;
-	--text-body-large--line-height: 1.8;
+	--text-body-large--line-height: 1.7;
 
 	--text-body: 1rem;
 	--text-body--line-height: 1.75;
@@ -54,14 +54,11 @@
 	--radius-md: 0.875rem;
 	--radius-lg: 1.25rem;
 	--radius-xl: 1.75rem;
-	--radius-card: 0.75rem;
-	--radius-button: 0.5rem;
 
 	/* Layout */
-	--spacing-page-x: clamp(1.5rem, 4vw, 5rem);
-	--spacing-page-content-max: 1180px;
-	--spacing-section-y: clamp(4rem, 8vw, 8rem);
-	--spacing-nav-h: 6rem;
+	--spacing-column: 46rem;
+	--spacing-section-y: clamp(2.5rem, 6vw, 4rem);
+	--spacing-nav-h: 4.5rem;
 }
 
 @layer base {
@@ -114,145 +111,31 @@
 	}
 }
 
+/* One narrow reading column for every page (header, content and footer share it). */
 @utility page-shell {
-	width: min(100% - 2rem, 1440px);
+	width: 100%;
+	max-width: var(--spacing-column);
 	margin-inline: auto;
-	padding-inline: var(--spacing-page-x);
-}
-
-@utility page-content-shell {
-	max-width: var(--spacing-page-content-max);
+	padding-inline: 1.25rem;
 }
 
 @utility section-gap {
 	padding-block: var(--spacing-section-y);
 }
 
-@utility home-section-gap {
-	padding-block: clamp(2.25rem, 4.5vw, 3.75rem);
-}
+/* Inline text link: the only place the accent color is used at rest. */
+@utility link {
+	color: var(--color-accent);
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+	transition: color 160ms ease;
 
-@utility pt-nav {
-	padding-top: var(--spacing-nav-h);
+	&:hover {
+		color: var(--color-accent-hover);
+	}
 }
 
 @utility overflow-wrap-anywhere {
 	overflow-wrap: anywhere;
-}
-
-@utility card-flat {
-	background: var(--color-surface);
-	border: 1px solid var(--color-border-soft);
-}
-
-@utility btn {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 0.75rem;
-	min-height: 3rem;
-	padding-inline: 1.25rem;
-	border: 1px solid var(--color-border-strong);
-	border-radius: var(--radius-button);
-	color: var(--color-text-main);
-	background: transparent;
-	font-size: 0.875rem;
-	font-weight: 600;
-	transition:
-		background-color 160ms ease,
-		border-color 160ms ease;
-
-	&:hover {
-		border-color: var(--color-text-muted);
-		background: var(--color-surface);
-	}
-}
-
-@layer components {
-	.resume-summary {
-		position: relative;
-		z-index: 1;
-		padding-block: clamp(4.25rem, 7vw, 6.5rem);
-		background: #050505;
-	}
-
-	.resume-summary__heading {
-		display: grid;
-		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
-		gap: 2rem;
-		align-items: end;
-		margin-bottom: 1.6rem;
-	}
-
-	.resume-summary__heading p:last-child {
-		max-width: 36rem;
-		color: var(--color-text-muted);
-		font-size: 0.98rem;
-		line-height: 1.7;
-	}
-
-	.resume-summary__grid {
-		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: 1rem;
-	}
-
-	.resume-summary__card {
-		position: relative;
-		min-height: 13rem;
-		overflow: hidden;
-		border: 1px solid color-mix(in srgb, var(--color-text-main) 17%, transparent);
-		border-radius: 0.5rem;
-		background: color-mix(in srgb, var(--color-page) 86%, transparent);
-		padding: 1.45rem;
-	}
-
-	.resume-summary__card::after {
-		content: "";
-		position: absolute;
-		inset: auto 1.1rem 0 1.1rem;
-		height: 1px;
-		background: var(--color-border-strong);
-		opacity: 0.45;
-	}
-
-
-	.resume-summary__card h3 {
-		margin-top: 1.15rem;
-		color: var(--color-text-main);
-		font-family: var(--font-display);
-		font-size: 1.24rem;
-		font-weight: 500;
-		line-height: 1.22;
-	}
-
-	.resume-summary__card p {
-		margin-top: 0.9rem;
-		color: var(--color-text-muted);
-		font-size: 0.94rem;
-		font-weight: 400;
-		letter-spacing: normal;
-		line-height: 1.68;
-		text-transform: none;
-	}
-
-	body .resume-summary__card > p {
-		color: var(--color-text-muted) !important;
-		font-weight: 400 !important;
-		letter-spacing: normal !important;
-		text-transform: none !important;
-	}
-
-	@media (max-width: 1023px) {
-		.resume-summary__grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-	}
-
-	@media (max-width: 640px) {
-		.resume-summary__heading,
-		.resume-summary__grid {
-			grid-template-columns: 1fr;
-		}
-	}
 }

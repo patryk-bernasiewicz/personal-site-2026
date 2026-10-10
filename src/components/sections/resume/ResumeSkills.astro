@@ -1,0 +1,29 @@
+---
+import { getResume } from '@/config/resume-content';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
+const { skills } = getResume(locale);
+---
+
+<section class="mt-12" aria-labelledby="skills-heading">
+	<h2 id="skills-heading" class="font-display text-section-title font-semibold text-text-main">
+		{dictionary.resume.skillsTitle}
+	</h2>
+	<dl class="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-[10rem_1fr]">
+		{
+			skills.map((group) => (
+				<>
+					<dt class="font-medium text-text-main">{group.title}</dt>
+					<dd class="text-body text-text-muted">{group.items.join(', ')}</dd>
+				</>
+			))
+		}
+	</dl>
+</section>

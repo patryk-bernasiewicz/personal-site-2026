@@ -70,6 +70,9 @@ export default defineConfig({
 	redirects: {
 		'/resume': '/cyfrowe-cv',
 		'/cv': '/cyfrowe-cv',
+		// The about page was merged into the home page.
+		'/o-mnie': '/',
+		'/about': '/en',
 	},
 	...(isDev && {
 		server: {
@@ -90,9 +93,6 @@ export default defineConfig({
 	}),
 	vite: {
 		plugins: [tailwindcss(), ...(isDev ? [noStoreInDev] : [])],
-		optimizeDeps: {
-			include: ['embla-carousel', '@tsparticles/engine', '@tsparticles/basic'],
-		},
 	},
 	env: {
 		schema: {

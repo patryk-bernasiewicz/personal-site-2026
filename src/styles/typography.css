@@ -161,13 +161,6 @@
 	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-.eyebrow {
-	font-size: var(--text-caption);
-	letter-spacing: var(--text-caption--letter-spacing);
-	text-transform: uppercase;
-	color: var(--color-text-faint);
-	font-weight: 600;
-}
 
 /* Shiki dual theme: inline colors are the light theme, swap to the dark variables in dark mode. */
 @media (prefers-color-scheme: dark) {

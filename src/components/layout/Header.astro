@@ -1,8 +1,8 @@
 ---
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher.astro';
 import SiteLogo from '@/components/layout/SiteLogo.astro';
+import { siteConfig } from '@/config/site';
 import { getDictionary } from '@/lib/i18n/dictionaries';
-import { applyPolishTypography } from '@/lib/typography';
 import type { Locale } from '@/lib/i18n/locales';
 import type { RouteKey, StaticRouteKey } from '@/lib/i18n/routes';
 import { getLocalizedRoute } from '@/lib/i18n/urls';
@@ -14,481 +14,54 @@ interface Props {
 }
 
 const { locale, routeKey, alternatePaths } = Astro.props;
-
 const dictionary = getDictionary(locale);
-const currentPath = Astro.url.pathname;
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 
-type NavItem =
-	| { routeKey: StaticRouteKey; label: string; external?: false }
-	| { href: string; label: string; external: true };
-
-const navItems: NavItem[] = [
-	{ routeKey: 'home', label: dictionary.nav.home },
+const navItems: { routeKey: StaticRouteKey; label: string }[] = [
 	{ routeKey: 'resume', label: dictionary.nav.resume },
-	{ routeKey: 'about', label: dictionary.nav.about },
 	{ routeKey: 'blogIndex', label: dictionary.nav.blog },
 ];
 
-const aria =
-	locale === 'pl'
-		? applyPolishTypography({
-				mainNav: 'Główne',
-				openMenu: 'Otwórz menu',
-				closeMenu: 'Zamknij menu',
-				mobileMenu: 'Menu nawigacji',
-			})
-		: {
-				mainNav: 'Main',
-				openMenu: 'Open menu',
-				closeMenu: 'Close menu',
-				mobileMenu: 'Navigation menu',
-			};
-
-function isNavActive(href: string): boolean {
+function isActive(href: string): boolean {
 	return currentPath === href || currentPath.startsWith(`${href}/`);
 }
-
-function navLinkClass(isActive: boolean): string {
-	return [
-		'text-caption font-semibold uppercase tracking-widest transition-colors',
-		isActive ? 'text-accent-hover' : 'text-text-muted hover:text-text-main',
-	].join(' ');
-}
-
 ---
 
-<header
-	id="site-header"
-	class="site-header fixed top-0 z-50 w-full"
-	data-scrolled="false"
->
-	<div class="page-shell flex min-h-[var(--spacing-nav-h)] items-center justify-between gap-4 py-4">
-		<a
-			href={getLocalizedRoute('home', locale)}
-			class="site-header__logo flex shrink-0 items-center gap-3 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-		>
-			<SiteLogo class="h-10 w-10" />
-			<span class="sr-only">{dictionary.nav.home}</span>
-		</a>
-
-		<div class="hidden items-center gap-8 lg:flex">
-			<nav aria-label={aria.mainNav}>
-				<ul class="flex items-center gap-6">
-					{
-						navItems.map((item) => {
-							const href = 'routeKey' in item ? getLocalizedRoute(item.routeKey, locale) : item.href;
-							const isActive = 'routeKey' in item && isNavActive(href);
-							return (
-								<li>
-									<a
-										href={href}
-										class={navLinkClass(isActive)}
-										target={item.external ? '_blank' : undefined}
-										rel={item.external ? 'noopener noreferrer' : undefined}
-									>
-										{item.label}
-									</a>
-								</li>
-							);
-						})
-					}
-				</ul>
-			</nav>
-
-			<div class="flex items-center gap-4">
-				<LanguageSwitcher {locale} {routeKey} {alternatePaths} />
-			</div>
-		</div>
-
-		<button
-			type="button"
-			id="mobile-nav-trigger"
-			class="site-header__menu-btn flex h-11 w-11 items-center justify-center rounded-md border border-text-main/10 text-text-main transition-colors hover:border-text-main/20 hover:text-accent-hover lg:hidden"
-			aria-expanded="false"
-			aria-controls="mobile-nav-drawer"
-			aria-label={aria.openMenu}
-		>
-			<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-				<path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-			</svg>
-		</button>
-	</div>
-</header>
-
-<div
-	id="mobile-nav"
-	class="site-mobile-nav"
-	data-mobile-nav
-	aria-hidden="true"
-	inert
-	hidden
->
-	<div class="site-mobile-nav__backdrop" data-mobile-backdrop></div>
-	<aside
-		id="mobile-nav-drawer"
-		class="site-mobile-nav__drawer"
-		role="dialog"
-		aria-modal="true"
-		aria-label={aria.mobileMenu}
-		tabindex="-1"
+<header class="page-shell flex min-h-[var(--spacing-nav-h)] items-center justify-between gap-6">
+	<a
+		href={getLocalizedRoute('home', locale)}
+		class="flex items-center gap-3 rounded-xs font-semibold text-text-main focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
 	>
-		<div class="site-mobile-nav__head">
-			<a
-				href={getLocalizedRoute('home', locale)}
-				class="flex items-center gap-3"
-				data-mobile-nav-link
-			>
-				<SiteLogo class="h-9 w-9" />
-				<span class="sr-only">{dictionary.nav.home}</span>
-			</a>
-			<button
-				type="button"
-				class="site-mobile-nav__close flex h-11 w-11 items-center justify-center rounded-md border border-text-main/10 text-text-main transition-colors hover:border-text-main/20 hover:text-accent-hover"
-				data-mobile-close
-				aria-label={aria.closeMenu}
-			>
-				<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-					<path
-						d="M6 6l12 12M18 6L6 18"
-						stroke="currentColor"
-						stroke-width="1.5"
-						stroke-linecap="round"
-					/>
-				</svg>
-			</button>
-		</div>
+		<SiteLogo class="size-8" />
+		<span class="hidden sm:inline">{siteConfig.name}</span>
+		<span class="sr-only sm:hidden">{dictionary.nav.home}</span>
+	</a>
 
-		<nav class="site-mobile-nav__nav" aria-label={aria.mainNav}>
-			<ul class="flex flex-col gap-1">
-				{
-					navItems.map((item) => {
-						const href = 'routeKey' in item ? getLocalizedRoute(item.routeKey, locale) : item.href;
-						const isActive = 'routeKey' in item && isNavActive(href);
-						return (
-							<li>
-								<a
-									href={href}
-									class:list={[
-										'block rounded-md px-3 py-3 text-sm font-semibold uppercase tracking-widest transition-colors',
-										isActive
-											? 'text-accent-hover'
-											: 'text-text-muted hover:bg-text-main/5 hover:text-text-main',
-									]}
-									target={item.external ? '_blank' : undefined}
-									rel={item.external ? 'noopener noreferrer' : undefined}
-									data-mobile-nav-link
-								>
-									{item.label}
-								</a>
-							</li>
-						);
-					})
-				}
-			</ul>
-		</nav>
-
-		<div
-			class="site-mobile-nav__footer mt-auto flex items-center justify-between gap-4 border-t border-text-main/10 pt-6"
-		>
-			<LanguageSwitcher {locale} {routeKey} {alternatePaths} />
-		</div>
-	</aside>
-</div>
-
-<style is:global>
-	.site-mobile-nav {
-		position: fixed;
-		inset: 0;
-		display: none;
-		z-index: 60;
-		visibility: hidden;
-		pointer-events: none;
-		transition: visibility 0s linear 240ms;
-	}
-
-	.site-mobile-nav[hidden] {
-		display: none !important;
-	}
-
-	.site-mobile-nav.is-open {
-		display: block;
-		visibility: visible;
-		pointer-events: auto;
-		transition-delay: 0s;
-	}
-
-	.site-mobile-nav__backdrop {
-		position: absolute;
-		inset: 0;
-		background: rgb(0 0 0 / 0.4);
-		opacity: 0;
-		transition: opacity 240ms ease;
-		will-change: opacity;
-	}
-
-	.site-mobile-nav.is-open .site-mobile-nav__backdrop {
-		opacity: 1;
-	}
-
-	.site-mobile-nav__drawer {
-		position: absolute;
-		top: 0;
-		right: 0;
-		display: flex;
-		flex-direction: column;
-		width: min(86vw, 360px);
-		height: 100%;
-		max-height: 100dvh;
-		padding: 1.25rem 1.25rem 1.5rem;
-		border-left: 1px solid color-mix(in srgb, var(--color-text-main) 10%, transparent);
-		background: var(--color-surface);
-		transform: translate3d(100%, 0, 0);
-		transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
-		will-change: transform;
-		outline: none;
-	}
-
-	.site-mobile-nav.is-open .site-mobile-nav__drawer {
-		transform: translate3d(0, 0, 0);
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.site-mobile-nav__backdrop {
-			transition-duration: 0.01ms;
-		}
-
-		.site-mobile-nav__drawer {
-			transition-duration: 0.01ms;
-		}
-	}
-</style>
-
-<style>
-	.site-header {
-		background: transparent;
-		border-bottom: 1px solid transparent;
-		transition:
-			background 220ms ease,
-			backdrop-filter 220ms ease,
-			border-color 220ms ease;
-	}
-
-	.site-header[data-scrolled='true'] {
-		background: var(--color-surface);
-		border-bottom-color: color-mix(in srgb, var(--color-text-main) 10%, transparent);
-	}
-
-	.site-mobile-nav__head {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 2rem;
-	}
-
-	.site-mobile-nav__nav {
-		flex: 1;
-	}
-
-	@media (min-width: 1024px) {
-		.site-mobile-nav {
-			display: none;
-		}
-	}
-
-	@media (max-width: 1023px) {
-		.site-mobile-nav {
-			display: block;
-		}
-	}
-</style>
-
-<script>
-	type SiteHeaderState = {
-		cleanup?: () => void;
-		setupHandler?: () => void;
-	};
-
-	const FOCUSABLE_SELECTOR =
-		'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
-
-	const siteHeaderState = ((window as Window & { __siteHeaderState?: SiteHeaderState })
-		.__siteHeaderState ??= {});
-
-	function getFocusableElements(container: HTMLElement): HTMLElement[] {
-		return Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
-			(element) =>
-				!element.hasAttribute('disabled') &&
-				element.tabIndex !== -1 &&
-				(element.offsetParent !== null || element === document.activeElement),
-		);
-	}
-
-	function setupSiteHeader() {
-		siteHeaderState.cleanup?.();
-		siteHeaderState.cleanup = undefined;
-
-		const header = document.getElementById('site-header');
-		const menuTrigger = document.getElementById('mobile-nav-trigger');
-		const mobileNav = document.querySelector<HTMLElement>('[data-mobile-nav]');
-		const drawer = document.getElementById('mobile-nav-drawer');
-		const closeButton = document.querySelector<HTMLButtonElement>('[data-mobile-close]');
-		const backdrop = document.querySelector<HTMLElement>('[data-mobile-backdrop]');
-		const navLinks = document.querySelectorAll<HTMLAnchorElement>('[data-mobile-nav-link]');
-
-		if (!header || !menuTrigger || !mobileNav || !drawer || !closeButton || !backdrop) {
-			return;
-		}
-
-		const controller = new AbortController();
-		const { signal } = controller;
-		let restoreFocusTarget: HTMLElement | null = null;
-		let openFrame: number | undefined;
-		let focusTimer: number | undefined;
-
-		const setScrolledState = () => {
-			const scrolled = window.scrollY > 0;
-			header.dataset.scrolled = scrolled ? 'true' : 'false';
-		};
-
-		const prefersReducedMotion = () =>
-			window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-		const isDrawerOpen = () => mobileNav.classList.contains('is-open');
-
-		const cancelOpenFrame = () => {
-			if (openFrame === undefined) {
-				return;
+	<nav aria-label={dictionary.nav.main}>
+		<ul class="flex items-center gap-5 text-sm font-medium">
+			{
+				navItems.map((item) => {
+					const href = getLocalizedRoute(item.routeKey, locale);
+					const active = isActive(href);
+					return (
+						<li>
+							<a
+								href={href}
+								aria-current={active ? 'page' : undefined}
+								class:list={[
+									'transition-colors',
+									active ? 'text-accent' : 'text-text-muted hover:text-text-main',
+								]}
+							>
+								{item.label}
+							</a>
+						</li>
+					);
+				})
 			}
-
-			window.cancelAnimationFrame(openFrame);
-			openFrame = undefined;
-		};
-
-		const clearFocusTimer = () => {
-			if (focusTimer === undefined) {
-				return;
-			}
-
-			window.clearTimeout(focusTimer);
-			focusTimer = undefined;
-		};
-
-		const trapFocus = (event: KeyboardEvent) => {
-			if (event.key !== 'Tab' || !isDrawerOpen()) {
-				return;
-			}
-
-			const focusable = getFocusableElements(drawer);
-			if (focusable.length === 0) {
-				return;
-			}
-
-			const first = focusable[0];
-			const last = focusable[focusable.length - 1];
-			const active = document.activeElement;
-
-			if (event.shiftKey && active === first) {
-				event.preventDefault();
-				last.focus();
-				return;
-			}
-
-			if (!event.shiftKey && active === last) {
-				event.preventDefault();
-				first.focus();
-			}
-		};
-
-		const finishClose = () => {
-			mobileNav.setAttribute('aria-hidden', 'true');
-			mobileNav.setAttribute('inert', '');
-			mobileNav.hidden = true;
-		};
-
-		const openDrawer = () => {
-			if (isDrawerOpen()) {
-				return;
-			}
-
-			restoreFocusTarget = menuTrigger;
-			mobileNav.hidden = false;
-			mobileNav.removeAttribute('inert');
-			mobileNav.setAttribute('aria-hidden', 'false');
-			mobileNav.classList.remove('is-open');
-			void drawer.offsetWidth;
-			cancelOpenFrame();
-			openFrame = window.requestAnimationFrame(() => {
-				mobileNav.classList.add('is-open');
-				openFrame = undefined;
-			});
-			menuTrigger.setAttribute('aria-expanded', 'true');
-			document.body.style.overflow = 'hidden';
-			const focusDelay = prefersReducedMotion() ? 0 : 260;
-			clearFocusTimer();
-			focusTimer = window.setTimeout(() => {
-				closeButton.focus();
-				focusTimer = undefined;
-			}, focusDelay);
-		};
-
-		const closeDrawer = ({ restoreFocus = true } = {}) => {
-			const wasOpen = isDrawerOpen();
-
-			cancelOpenFrame();
-			clearFocusTimer();
-			mobileNav.classList.remove('is-open');
-			menuTrigger.setAttribute('aria-expanded', 'false');
-			document.body.style.overflow = '';
-
-			if (wasOpen && restoreFocus) {
-				(restoreFocusTarget ?? menuTrigger).focus();
-			}
-
-			restoreFocusTarget = null;
-			finishClose();
-		};
-
-		setScrolledState();
-		window.addEventListener('scroll', setScrolledState, { passive: true, signal });
-
-		menuTrigger.addEventListener('click', () => {
-			if (isDrawerOpen()) {
-				closeDrawer();
-			} else {
-				openDrawer();
-			}
-		}, { signal });
-
-		closeButton.addEventListener('click', () => closeDrawer(), { signal });
-		backdrop.addEventListener('click', () => closeDrawer(), { signal });
-
-		navLinks.forEach((link) => {
-			link.addEventListener('click', () => {
-				if (!isDrawerOpen()) {
-					return;
-				}
-				closeDrawer();
-			}, { signal });
-		});
-
-		document.addEventListener('keydown', trapFocus, { signal });
-		document.addEventListener('keydown', (event) => {
-			if (event.key === 'Escape' && isDrawerOpen()) {
-				closeDrawer();
-			}
-		}, { signal });
-
-		siteHeaderState.cleanup = () => {
-			closeDrawer({ restoreFocus: false });
-			controller.abort();
-		};
-	}
-
-	if (siteHeaderState.setupHandler) {
-		document.removeEventListener('astro:page-load', siteHeaderState.setupHandler);
-	}
-
-	siteHeaderState.setupHandler = setupSiteHeader;
-	setupSiteHeader();
-	document.addEventListener('astro:page-load', siteHeaderState.setupHandler);
-</script>
+			<li class="border-l border-border-soft pl-5">
+				<LanguageSwitcher {locale} {routeKey} {alternatePaths} />
+			</li>
+		</ul>
+	</nav>
+</header>

@@ -1,28 +1,19 @@
 ---
 import { siteConfig } from '@/config/site';
 import { socialLinks } from '@/config/social';
-
-interface Props {
-	locale: import('@/lib/i18n/locales').Locale;
-}
-
-const { locale: _locale } = Astro.props;
-void _locale;
 ---
 
-<footer class="mt-auto border-t border-text-main/10">
-	<div
-		class="page-shell flex flex-col gap-4 py-8 text-sm text-text-muted sm:flex-row sm:items-center sm:justify-between"
-	>
+<footer class="mt-auto border-t border-border-soft">
+	<div class="page-shell flex flex-col gap-3 py-8 text-sm text-text-muted sm:flex-row sm:items-center sm:justify-between">
 		<p>© {new Date().getFullYear()} {siteConfig.author.name}</p>
-		<ul class="flex flex-wrap gap-4">
+		<ul class="flex flex-wrap gap-x-5 gap-y-2">
 			{
 				socialLinks.map((link) => (
 					<li>
 						<a
 							href={link.href}
-							class="text-caption font-semibold uppercase tracking-widest transition-colors hover:text-text-main"
-							rel="noopener noreferrer"
+							class="transition-colors hover:text-text-main"
+							rel={link.href.startsWith('mailto:') ? undefined : 'me noopener noreferrer'}
 						>
 							{link.label}
 						</a>

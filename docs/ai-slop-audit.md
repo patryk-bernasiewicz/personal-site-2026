@@ -150,11 +150,13 @@ Zostaje (to jedyna naprawdę Twoja treść). Lista: data + tytuł (+ ewentualnie
 - [x] Logo SVG adaptacyjne (light/dark), `theme-color` dla obu trybów, Shiki z motywem `github-light` / `github-dark`.
 - [ ] Uproszczenie `Header` (~500 l.) — przeniesione do fazy 3 razem z nowym IA (mniej pozycji w menu po scaleniu `/o-mnie`).
 
-### Faza 3 — przepisanie treści (1 PR na stronę; **tu potrzebuję Ciebie**)
-- [ ] Home: nowe copy wg pkt 4 (szkic przygotuję, Ty poprawiasz własnym głosem).
-- [ ] O mnie: wariant A lub B.
-- [ ] CV: jedno źródło danych w `resume-content.ts`, usunięcie `ExperienceTimeline` z wbudowanymi danymi; nowy prosty `ResumePage`.
-- [ ] Reguły copy: zero „nie X, tylko Y”, zero aforyzmów w nagłówkach, nagłówki opisowe („Doświadczenie”, „Wpisy”), każde zdanie ma albo fakt, albo liczbę, albo Twoją opinię.
+### Faza 3 — nowy IA i treść ✅ zrobione (copy = szkic do poprawki przez Patryka)
+- [x] `/o-mnie` scalone z home: zdjęcie, imię, lead + 3 akapity w 1. osobie (`src/config/home-content.ts`), linki tekstowe, 5 ostatnich wpisów. Redirecty `/o-mnie` → `/`, `/about` → `/en`; trasa `about` usunięta.
+- [x] CV: jedno źródło danych `src/config/resume-content.ts` (role z `start`/`end`, punkty, stack; technologie jako 6 grup tekstowych). Usunięte metryki, „W skrócie”, „Obszary pracy”, badge „Wpływ”, karty „Zobacz dalej”.
+- [x] Header bez `position: fixed` i bez wysuwanego menu (logo + CV + Blog + język), stopka z linkami tekstowymi.
+- [x] Jedna kolumna 46rem (`page-shell`) na wszystkich stronach, w tym blog; lista wpisów `BlogPostList` (data + tytuł, na `/blog` + opis).
+- [x] Usunięte: wszystkie stare sekcje home/about/resume, `about-content.ts`, `ui/{Button,Container,SectionHeading}`, `BlogCard`, ikony social, `classNames` + `clsx`/`tailwind-merge`, utility `card-flat`/`btn`/`.eyebrow`.
+- [x] Naprawa po fazie 1: `vite.optimizeDeps.include` wskazywał na odinstalowane paczki.
 
 ### Faza 4 — sprzątanie (1 PR)
 - [ ] Usunąć martwe komponenty CV (~1 330 l.) i nieużywane klucze w `resume-content.ts`, `about-content.ts`, `dictionaries.ts`.

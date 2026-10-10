@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '@/assets/images/portrait.webp';
+import { getHomeContent } from '@/config/home-content';
+import { siteConfig } from '@/config/site';
+import { socialLinks } from '@/config/social';
+import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from '@/lib/i18n/locales';
+import { getLocalizedRoute } from '@/lib/i18n/urls';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
+const content = getHomeContent(locale);
+
+const links = [
+	{ href: getLocalizedRoute('resume', locale), label: dictionary.home.resumeLink, external: false },
+	...socialLinks.map((link) => ({ href: link.href, label: link.label, external: !link.href.startsWith('mailto:') })),
+];
+---
+
+<section class="page-shell section-gap" aria-labelledby="home-heading">
+	<div class="flex flex-col gap-6 sm:flex-row sm:items-center">
+		<Image
+			src={portrait}
+			alt={content.photoAlt}
+			width={288}
+			widths={[144, 288, 432]}
+			sizes="144px"
+			loading="eager"
+			fetchpriority="high"
+			class="aspect-[4/5] w-36 shrink-0 rounded-lg object-cover object-top"
+		/>
+		<div>
+			<h1 id="home-heading" class="font-display text-page-title font-semibold text-text-main">
+				{siteConfig.name}
+			</h1>
+			<p class="mt-3 text-body-large text-text-soft">{content.lead}</p>
+		</div>
+	</div>
+
+	<div class="mt-8 space-y-4 text-body text-text-muted">
+		{content.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+	</div>
+
+	<ul class="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+		{
+			links.map((link) => (
+				<li>
+					<a
+						href={link.href}
+						class="link"
+						rel={link.external ? 'me noopener noreferrer' : undefined}
+					>
+						{link.label}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</section>

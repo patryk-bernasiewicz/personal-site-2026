@@ -1,7 +1,5 @@
 ---
-import BlogCard from '@/components/blog/BlogCard.astro';
-import Container from '@/components/ui/Container.astro';
-import SectionHeading from '@/components/ui/SectionHeading.astro';
+import BlogPostList from '@/components/blog/BlogPostList.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { getAllBlogPosts } from '@/lib/contentful/queries';
 import { getDictionary } from '@/lib/i18n/dictionaries';
@@ -16,7 +14,6 @@ interface Props {
 const { locale } = Astro.props;
 const dictionary = getDictionary(locale);
 const posts = await getAllBlogPosts(locale);
-const pageHeading = locale === 'pl' ? 'Blog' : 'Articles';
 
 const metadata = buildPageMetadata({
 	title: dictionary.meta.blogIndex.title,
@@ -28,25 +25,17 @@ const metadata = buildPageMetadata({
 ---
 
 <PageLayout {metadata} routeKey="blogIndex">
-	<Container tag="section" class="page-content-shell section-gap pt-nav">
-		<SectionHeading
-			eyebrow={dictionary.blog.eyebrow}
-			title={pageHeading}
-			description={dictionary.meta.blogIndex.description}
-			headingLevel="h1"
-		/>
+	<section class="page-shell section-gap" aria-labelledby="blog-heading">
+		<h1 id="blog-heading" class="font-display text-page-title font-semibold text-text-main">
+			{dictionary.blog.title}
+		</h1>
+		<p class="mt-3 mb-8 text-body text-text-muted">{dictionary.meta.blogIndex.description}</p>
 		{
 			posts.length > 0 ? (
-				<ul class="grid gap-4">
-					{posts.map((post) => (
-						<li>
-							<BlogCard post={post} />
-						</li>
-					))}
-				</ul>
+				<BlogPostList {posts} showDescription />
 			) : (
 				<p class="text-body text-text-muted">{dictionary.blog.empty}</p>
 			)
 		}
-	</Container>
+	</section>
 </PageLayout>

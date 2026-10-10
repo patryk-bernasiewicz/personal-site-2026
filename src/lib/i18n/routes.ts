@@ -5,10 +5,6 @@ export const routes = {
 		pl: '/',
 		en: '/en',
 	},
-	about: {
-		pl: '/o-mnie',
-		en: '/about',
-	},
 	resume: {
 		pl: '/cyfrowe-cv',
 		en: '/digital-resume',

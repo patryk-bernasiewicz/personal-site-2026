@@ -23,31 +23,24 @@ function resolveAlternateHref(targetLocale: Locale): string | undefined {
 
 	return getLocalizedRoute(routeKey, targetLocale);
 }
+
+const alternates = locales
+	.filter((targetLocale) => targetLocale !== locale)
+	.flatMap((targetLocale) => {
+		const href = resolveAlternateHref(targetLocale);
+		return href ? [{ locale: targetLocale, href, label: getDictionary(targetLocale).localeName }] : [];
+	});
 ---
 
-<ul class="flex items-center gap-2 border-l border-text-main/10 pl-4 text-sm">
-	{
-		locales
-			.filter((targetLocale) => targetLocale !== locale)
-			.map((targetLocale) => {
-				const href = resolveAlternateHref(targetLocale);
-				if (!href) {
-					return null;
-				}
-
-				const label = getDictionary(targetLocale).localeName;
-
-				return (
-					<li>
-						<a
-							href={href}
-							hreflang={targetLocale}
-							class="text-caption font-semibold uppercase tracking-widest text-text-muted transition-colors hover:text-accent-hover"
-						>
-							{label}
-						</a>
-					</li>
-				);
-			})
-	}
-</ul>
+{
+	alternates.map((alternate) => (
+		<a
+			href={alternate.href}
+			hreflang={alternate.locale}
+			lang={alternate.locale}
+			class="text-text-muted transition-colors hover:text-text-main"
+		>
+			{alternate.label}
+		</a>
+	))
+}
