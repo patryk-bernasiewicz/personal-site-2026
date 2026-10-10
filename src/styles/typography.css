@@ -81,7 +81,7 @@
 }
 
 .prose blockquote {
-	border-left: 1px solid var(--color-accent);
+	border-left: 2px solid var(--color-border-strong);
 	padding: 0.25rem 0 0.25rem 1.25rem;
 	color: var(--color-text-main);
 	font-size: var(--text-body-large);
@@ -112,9 +112,9 @@
 }
 
 .prose :not(pre) > code {
-	border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+	border: 1px solid color-mix(in srgb, var(--color-text-main) 11%, transparent);
 	border-radius: var(--radius-xs);
-	background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+	background: color-mix(in srgb, var(--color-text-main) 4%, transparent);
 	padding: 0.12rem 0.35rem;
 	color: var(--color-accent-hover);
 	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -124,7 +124,7 @@
 .prose .code-block {
 	position: relative;
 	overflow: hidden;
-	border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+	border: 1px solid color-mix(in srgb, var(--color-text-main) 11%, transparent);
 	border-radius: var(--radius-sm);
 	background: color-mix(in srgb, var(--color-page) 78%, transparent);
 }
@@ -165,7 +165,7 @@
 	font-size: var(--text-caption);
 	letter-spacing: var(--text-caption--letter-spacing);
 	text-transform: uppercase;
-	color: var(--color-accent);
+	color: var(--color-text-faint);
 	font-weight: 600;
 }
 

@@ -96,10 +96,9 @@ const labels = getDictionary(locale).audioPlayer;
 <style>
 	.floating-music {
 		--player-accent: var(--color-accent);
-		--player-accent-soft: var(--color-accent-hover);
-		--player-bg: var(--player-accent);
+		--player-bg: var(--color-surface);
 		--player-surface: var(--color-surface);
-		--player-text: var(--color-accent-contrast);
+		--player-text: var(--color-text-main);
 		--player-muted: var(--color-text-muted);
 		--player-control: color-mix(in srgb, var(--player-text) 14%, transparent);
 		--player-control-hover: color-mix(in srgb, var(--player-text) 26%, transparent);
@@ -123,7 +122,7 @@ const labels = getDictionary(locale).audioPlayer;
 		gap: 0.32rem;
 		min-height: 2.125rem;
 		padding: 0.25rem 0.58rem 0.25rem 0.25rem;
-		border: 1px solid var(--player-accent);
+		border: 1px solid var(--color-border-soft);
 		border-radius: 999px;
 		background: var(--player-bg);
 		color: var(--player-text);
@@ -138,8 +137,8 @@ const labels = getDictionary(locale).audioPlayer;
 	}
 
 	.floating-music:hover .music-shell {
-		border-color: var(--player-accent-soft);
-		background: var(--player-accent-soft);
+		border-color: var(--color-border-strong);
+		background: var(--color-surface-strong);
 		opacity: 1;
 		transition:
 			border-color 180ms ease,
@@ -244,6 +243,7 @@ const labels = getDictionary(locale).audioPlayer;
 	}
 
 	.music-visualizer i {
+		color: var(--player-accent);
 		width: 0.16rem;
 		height: 0.9rem;
 		border-radius: 999px;
@@ -261,7 +261,7 @@ const labels = getDictionary(locale).audioPlayer;
 	.music-hint {
 		max-width: min(16rem, calc(100vw - 2rem));
 		padding: 0.28rem 0.55rem;
-		border: 1px solid color-mix(in srgb, var(--player-accent) 34%, transparent);
+		border: 1px solid var(--color-border-soft);
 		border-radius: 999px;
 		background: var(--player-surface);
 		color: var(--color-text-main);

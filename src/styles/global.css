@@ -2,7 +2,8 @@
 @import "./typography.css";
 
 /*
- * Palette "Teal": neutral greys + one accent. Light by default, dark from
+ * Palette "Teal": neutral greys + one muted (low-saturation) accent used only for
+ * links, active nav and focus. Light by default, dark from
  * prefers-color-scheme (no toggle). Components use the semantic tokens only;
  * translucent tints are color-mix() of text-main or accent, so they work in both schemes.
  */
@@ -24,11 +25,10 @@
 	--color-text-faint: #69736e;
 
 	--color-border-soft: color-mix(in srgb, #141816 12%, transparent);
-	--color-border-accent: color-mix(in srgb, #0f766e 45%, transparent);
+	--color-border-strong: color-mix(in srgb, #141816 22%, transparent);
 
-	--color-accent: #0f766e;
-	--color-accent-hover: #115e59;
-	--color-accent-contrast: #ffffff;
+	--color-accent: #3b6864;
+	--color-accent-hover: #2f534f;
 
 	/* Typography */
 	--text-hero: clamp(3rem, 6vw, 5.75rem);
@@ -83,11 +83,10 @@
 			--color-text-faint: #7d8883;
 
 			--color-border-soft: color-mix(in srgb, #e3e8e5 12%, transparent);
-			--color-border-accent: color-mix(in srgb, #4fd1c0 45%, transparent);
+			--color-border-strong: color-mix(in srgb, #e3e8e5 22%, transparent);
 
-			--color-accent: #4fd1c0;
-			--color-accent-hover: #7ee0d3;
-			--color-accent-contrast: #0e1211;
+			--color-accent: #8db9b3;
+			--color-accent-hover: #a9cbc6;
 		}
 	}
 
@@ -110,7 +109,7 @@
 	}
 
 	::selection {
-		background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+		background: color-mix(in srgb, var(--color-text-main) 15%, transparent);
 		color: var(--color-text-main);
 	}
 }
@@ -146,17 +145,17 @@
 	border: 1px solid var(--color-border-soft);
 }
 
-@utility btn-accent {
+@utility btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	gap: 0.75rem;
 	min-height: 3rem;
 	padding-inline: 1.25rem;
-	border: 1px solid var(--color-accent);
+	border: 1px solid var(--color-border-strong);
 	border-radius: var(--radius-button);
-	color: var(--color-accent-contrast);
-	background: var(--color-accent);
+	color: var(--color-text-main);
+	background: transparent;
 	font-size: 0.875rem;
 	font-weight: 600;
 	transition:
@@ -164,8 +163,8 @@
 		border-color 160ms ease;
 
 	&:hover {
-		border-color: var(--color-accent-hover);
-		background: var(--color-accent-hover);
+		border-color: var(--color-text-muted);
+		background: var(--color-surface);
 	}
 }
 
@@ -202,7 +201,7 @@
 		position: relative;
 		min-height: 13rem;
 		overflow: hidden;
-		border: 1px solid color-mix(in srgb, var(--color-accent) 34%, transparent);
+		border: 1px solid color-mix(in srgb, var(--color-text-main) 17%, transparent);
 		border-radius: 0.5rem;
 		background: color-mix(in srgb, var(--color-page) 86%, transparent);
 		padding: 1.45rem;
@@ -213,7 +212,7 @@
 		position: absolute;
 		inset: auto 1.1rem 0 1.1rem;
 		height: 1px;
-		background: var(--color-border-accent);
+		background: var(--color-border-strong);
 		opacity: 0.45;
 	}
 
