@@ -1,6 +1,7 @@
 ---
 import { siteConfig } from '@/config/site';
 import { socialLinks } from '@/config/social';
+import { getDictionary } from '@/lib/i18n/dictionaries';
 import type { Locale } from '@/lib/i18n/locales';
 import { feedPaths } from '@/lib/i18n/routes';
 
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const { locale } = Astro.props;
+const dictionary = getDictionary(locale);
 ---
 
 <footer class="mt-auto border-t border-border-soft">
@@ -28,6 +30,11 @@ const { locale } = Astro.props;
 					</li>
 				))
 			}
+			<li>
+				<a href={siteConfig.repositoryUrl} class="transition-colors hover:text-text-main" rel="noopener noreferrer">
+					{dictionary.footer.sourceCode}
+				</a>
+			</li>
 			<li>
 				<a href={feedPaths[locale]} class="transition-colors hover:text-text-main">RSS</a>
 			</li>

@@ -12,6 +12,9 @@ export const dictionaries = {
 			blog: 'Blog',
 		},
 		skipLink: 'Przejdź do treści',
+		footer: {
+			sourceCode: 'Kod strony',
+		},
 		meta: {
 			home: {
 				title: 'Patryk Bernasiewicz — Frontend Developer',
@@ -70,6 +73,9 @@ export const dictionaries = {
 			blog: 'Articles',
 		},
 		skipLink: 'Skip to content',
+		footer: {
+			sourceCode: 'Source code',
+		},
 		meta: {
 			home: {
 				title: 'Patryk Bernasiewicz — Frontend Developer',

@@ -10,6 +10,8 @@ export const siteConfig = {
 		name: 'Patryk Bernasiewicz',
 		email: 'patryk.bernasiewicz@gmail.com',
 	},
+	/** Public source of this site, linked in the footer. */
+	repositoryUrl: 'https://github.com/patryk-bernasiewicz/personal-site-2026',
 	defaultOgImage: '/og/default.jpg',
 	defaultOgImageAlt: 'Patryk Bernasiewicz - Frontend Developer',
 } as const;

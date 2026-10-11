@@ -163,7 +163,7 @@ Zostaje (to jedyna naprawdę Twoja treść). Lista: data + tytuł (+ ewentualnie
 - [x] React usunięty (`@astrojs/react`, `react`, `react-dom`) — brak wysp; `AGENTS.md` mówi, kiedy go dodać z powrotem.
 - [x] RSS per język: `/rss.xml`, `/en/rss.xml` (`src/lib/feeds.ts`, `@astrojs/rss`), `<link rel="alternate">` w `<head>`, link w stopce.
 - [x] `AGENTS.md` i README zaktualizowane.
-- [ ] Link do repo w stopce — czeka na decyzję (czy repo jest publiczne).
+- [x] Link do repo w stopce („Kod strony” / „Source code”, `siteConfig.repositoryUrl`).
 - [ ] Lighthouse — nie do zmierzenia z tego środowiska; zastępczo porównanie buildów poniżej.
 
 **Wynik (build `master` → branch, bez treści z Contentful):**
